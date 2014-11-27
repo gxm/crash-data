@@ -1,0 +1,153 @@
+<html lang="en" ng-app>
+<head>
+    <title>Oregon Crashes 2007-2012</title>
+    <meta name="keywords" content="heatmap, gmaps, javascript, canvas, html5"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Greg Moulliet">
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <link href="css/transport.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="lib/html5shiv.js"></script> <![endif]-->
+    <script type="text/javascript">
+        var testCanvas = document.createElement("canvas");
+        if (!('getContext' in testCanvas))
+        {
+            alert('Your browser is not supported by the heatmap library.  I recommend using Google Chrome.  ' +
+                    'This website will work in latest version of all major browsers: Chrome, Firefox, Safari and Internet Explorer.');
+        }
+    </script>
+</head>
+<body>
+<div ng-controller="CrashController">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="brand" href="index.html">Oregon Transport Visualizations</a>
+
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        <li class="active"><a href="#">Oregon Crashes</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="containerDiv" >
+        <div id="sideSettingsDiv" class="sideSettings oregonSideSettings">
+            <div id="settingsButton">
+                <button id="changeSettings" type="button" class="btn btn-info hide" data-toggle="collapse" data-target="#settingsTable">
+                    Settings <span class="caret"></span>
+                </button>
+            </div>
+            <div id="settingsTable" class="collapse hide">
+                    <table cellpadding="2" class="table table-condensed table-bordered sideTable">
+                        <tr>
+                            <th>Type:</th>
+                            <td><div title="Show crashes involving only cars"><label for="Car"><input id="Car" type="checkbox" ng-model="settings.cars" ng-change="loadData()"> Cars Only</label> </div></td>
+                            <td><div title="Show crashes involving a bicycle"> <label for="Bike"><input id="Bike" type="checkbox" ng-model='settings.bikes' ng-change="loadData()"> Bike(s)</label></div></td>
+                            <td><div title="Show crashes involving a pedestrian"><label for="Ped"><input id="Ped" type="checkbox" ng-model='settings.peds' ng-change="loadData()"> Ped(s)</label> </div></td>
+                        </tr>
+                        <tr>
+                            <th>Filter By:</th>
+                            <td><label for="Alcohol"><input id="Alcohol" type="checkbox" ng-model='settings.alcohol' ng-change="loadData()"> Alcohol</label></td>
+                            <td><div title="Only show crashes with an light injury"><label for="Injury"><input id="Injury" type="checkbox" ng-model='settings.injury' ng-change="loadData()"> Injury</label></div>  </td>
+                            <td><div title="Only show accidents with a serious injury or fatality"><label for="Fatality"><input id="Fatality" type="checkbox" ng-model='settings.fatality' ng-change="loadData()"> Serious Injury</label></div>  </td>
+                        </tr>
+                        <tr>
+                            <th>Light:</th>
+                            <td><label for="Day"><input id="Day" type="checkbox" ng-model='settings.day' ng-change="loadData()"> Day</label>  </td>
+                            <td><label for="Night"><input id="Night" type="checkbox" ng-model='settings.night' ng-change="loadData()"> Night</label>  </td>
+                            <td><label for="Twilight"><input id="Twilight" type="checkbox" ng-model='settings.twilight' ng-change="loadData()"> Twilight</label>  </td>
+                        </tr>
+                        <tr>
+                            <th>Surface:</th>
+                            <td><label for="Dry"><input id="Dry" type="checkbox" ng-model='settings.dry' ng-change="loadData()"> Dry</label>  </td>
+                            <td><label for="Wet"><input id="Wet" type="checkbox" ng-model='settings.wet' ng-change="loadData()"> Wet</label>  </td>
+                            <td><label for="Snow"><input id="Snow" type="checkbox" ng-model='settings.snowIce' ng-change="loadData()"> Snow/Ice</label>  </td>
+                        </tr>
+                        <tr>
+                            <th>Years:</th>
+                            <td><label for="2007"><input id="2007" type="checkbox" ng-model='settings.y2007' ng-change="loadData()"> 2007</label></td>
+                            <td><label for="2008"><input id="2008" type="checkbox" ng-model='settings.y2008' ng-change="loadData()"> 2008</label></td>
+                            <td><label for="2009"><input id="2009" type="checkbox" ng-model='settings.y2009' ng-change="loadData()"> 2009</label></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><label for="2010"><input id="2010" type="checkbox" ng-model='settings.y2010' ng-change="loadData()"> 2010</label></td>
+                            <td><label for="2011"><input id="2011" type="checkbox" ng-model='settings.y2011' ng-change="loadData()"> 2011</label></td>
+                            <td><label for="2012"><input id="2012" type="checkbox" ng-model='settings.y2012' ng-change="loadData()"> 2012</label></td>
+                        </tr>
+                    </table>
+            </div>
+            <div id="summaryButton">
+                <button id="summary" type="button" class="btn btn-info hide" data-toggle="collapse" data-target="#summaryTable">
+                    Summary <span class="caret"></span>
+                </button>
+            </div>
+            <div id="summaryTable" class="collapse hide settingsDiv">
+                <table class="table table-condensed table-bordered sideTable">
+                    <tr>
+                        <td colspan="2">Total Crashes</td>
+                        <td colspan="4">{{total}}</td>
+                    </tr>
+                    <tr>
+                        <td>Cars</td><td>{{summary.cars}}</td>
+                        <td>Bikes</td><td>{{summary.bikes}}</td>
+                        <td>Peds</td><td>{{summary.peds}}</td>
+                    </tr>
+                    <tr>
+                        <td>Alcohol</td><td>{{summary.alcohol}}</td>
+                        <td>Injury</td><td>{{summary.injury}}</td>
+                        <td>Serious Injury</td><td>{{summary.fatality}}</td>
+                    </tr>
+                    <tr>
+                        <td>Day</td><td>{{summary.day}}</td>
+                        <td>Night</td><td>{{summary.night}}</td>
+                        <td>Twilight</td><td>{{summary.twilight}}</td>
+                    </tr>
+                    <tr>
+                        <td>Dry</td><td>{{summary.dry}}</td>
+                        <td>Wet</td><td>{{summary.wet}}</td>
+                        <td>Snow/Ice</td><td>{{summary.snowIce}}</td>
+                    </tr>
+                    <tr>
+                        <td>Angle</td><td>{{summary.angle}}</td>
+                        <td>Head On</td><td>{{summary.headOn}}</td>
+                        <td>Rear End</td><td>{{summary.rearEnd}}</td>
+                    </tr>
+                    <tr>
+                        <td>Other</td><td>{{summary.other}}</td>
+                        <td>Turning</td><td>{{summary.turning}}</td>
+                        <td>Side Swipe</td><td>{{summary.sideSwipe}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div id="infoDiv" class="infoDiv well hidden"></div>
+
+    </div>
+</div>
+<div id="main">
+    <div id="heatmapArea" class="heatmapArea"></div>
+</div>
+<script type="text/javascript" src="lib/angular.min.js"></script>
+<script type="text/javascript" src="lib/heatmap.js"></script>
+<script type="text/javascript" src="lib/heatmap-gmaps.js"></script>
+<script type="text/javascript" src="lib/jquery-2.0.1.js"></script>
+<script type="text/javascript" src="lib/bootstrap.min.js"></script>
+<script type="text/javascript" src="lib/ang-import.js"></script>
+<script type="text/javascript" src="js/settings.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/oregon.js"></script>
+
+</body>
+</html>
