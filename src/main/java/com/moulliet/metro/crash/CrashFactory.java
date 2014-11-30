@@ -18,7 +18,7 @@ public class CrashFactory {
 
     public static MongoDao getMongoDao() {
         if (null == mongoDao) {
-            mongoDao = new MongoDaoImpl();
+            mongoDao = new MongoDaoImpl("metro", "crashes");
         }
         return mongoDao;
     }

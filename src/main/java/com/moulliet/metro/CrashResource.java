@@ -21,7 +21,6 @@ import java.util.Iterator;
 public class CrashResource {
 
     private static final Logger logger = LoggerFactory.getLogger(CrashResource.class);
-    public static final String QUERY_COLLECTION = "crashes";
 
     @GET
     public String get() throws Exception {
@@ -72,7 +71,7 @@ public class CrashResource {
 
             final Crashes crashes = new Crashes();
 
-            CrashFactory.getMongoDao().query(QUERY_COLLECTION, query.getQuery(), new MongoQueryCallback() {
+            CrashFactory.getMongoDao().query(query.getQuery(), new MongoQueryCallback() {
                 public void callback(Iterator<DBObject> dbObjectIterator) {
                     logger.debug("crash call in " + timer.reset() + " millis.");
                     crashes.loadResults(dbObjectIterator, getDecimalFormat(zoom));

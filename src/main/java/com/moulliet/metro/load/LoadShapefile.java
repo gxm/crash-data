@@ -16,9 +16,14 @@ public class LoadShapefile {
     public static void main(String[] args) throws IOException {
         logger.info("starting load");
         String file = "/Users/greg/code/import/Crashes_07_11.out";
+        int count = load(file, "metro", "crashes");
+        logger.info("completed load of {} items", count);
+    }
+
+    public static int load(String file, String database, String collection) throws IOException {
         MongoClient mongo = new MongoClient();
-        DB metro = mongo.getDB("metro");
-        DBCollection crashes = metro.getCollection("crashes");
+        DB metro = mongo.getDB(database);
+        DBCollection crashes = metro.getCollection(collection);
         DBObject index2d = BasicDBObjectBuilder.start("loc", "2dsphere").get();
         crashes.createIndex(index2d);
         int count = 0;
@@ -30,6 +35,6 @@ public class LoadShapefile {
             line = br.readLine();
         }
         br.close();
-        logger.info("completed load of {} items", count);
+        return count;
     }
 }

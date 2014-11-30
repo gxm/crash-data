@@ -8,8 +8,12 @@ public class MongoDaoImpl implements MongoDao {
 
     private static final Logger logger = LoggerFactory.getLogger(MongoDaoImpl.class);
     private MongoClient mongoClient = null;
+    private final String database;
+    private final String collection;
 
-    public MongoDaoImpl() {
+    public MongoDaoImpl(String database, String collection) {
+        this.database = database;
+        this.collection = collection;
         try {
             //todo - gfm - this presumes running Mongo on the local machine on the default port.
             mongoClient = new MongoClient();
@@ -19,16 +23,11 @@ public class MongoDaoImpl implements MongoDao {
         }
     }
 
-    private DBCollection getCollection(String name) {
-        //todo - gfm - pull db name out as a config parameter
-        DB db = mongoClient.getDB("metro");
-        return db.getCollection(name);
-    }
-
-    public void query(String name, DBObject query, MongoQueryCallback callback) {
+    public void query(DBObject query, MongoQueryCallback callback) {
         DBCursor cursor = null;
         try {
-            cursor = getCollection(name).find(query);
+            DB db = mongoClient.getDB(database);
+            cursor = db.getCollection(collection).find(query);
             cursor.batchSize(100);
             callback.callback(cursor);
         } catch (Exception e) {
@@ -38,6 +37,11 @@ public class MongoDaoImpl implements MongoDao {
                 cursor.close();
             }
         }
+    }
+
+    public void deleteCollection() {
+        DB db = mongoClient.getDB(database);
+        db.getCollection(collection).drop();
     }
 
 }

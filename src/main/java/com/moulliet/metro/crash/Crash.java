@@ -28,21 +28,21 @@ public class Crash  {
 
     private final Point point;
     private DBObject dbObject;
-    private final boolean alcohol;
-    private final int injury;
-    private final int fatality;
-    private final int ped;
-    private final int bike;
-    private final int surface;
-    private final int light;
-    private final String type;
+    private boolean alcohol;
+    private int injury;
+    private int fatality;
+    private int ped;
+    private int bike;
+    private int surface;
+    private int light;
+    private String type;
     private List<String> records = null;
 
     public Crash(DBObject dbObject, DecimalFormat format) {
         this.dbObject = dbObject;
         DBObject loc = (DBObject) dbObject.get("loc");
         BasicDBList coordinates = (BasicDBList) loc.get("coordinates");
-        alcohol = (Boolean) dbObject.get("alcohol");
+        /*alcohol = (Boolean) dbObject.get("alcohol");
         injury = (Integer) dbObject.get("injury");
         fatality = (Integer) dbObject.get("fatality");
         ped = (Integer) dbObject.get("ped");
@@ -53,7 +53,7 @@ public class Crash  {
         //records is a list, may be null BasicDBList
         if (dbObject.containsField("records")) {
             this.records = (List<String>) dbObject.get("records");
-        }
+        }*/
         point = new Point((Number) coordinates.get(0), (Number) coordinates.get(1), format);
     }
 
