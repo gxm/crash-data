@@ -21,7 +21,7 @@ import java.util.Iterator;
 public class CrashResource {
 
     private static final Logger logger = LoggerFactory.getLogger(CrashResource.class);
-    public static final String QUERY_COLLECTION = "metroQuery";
+    public static final String QUERY_COLLECTION = "crashes";
 
     @GET
     public String get() throws Exception {
