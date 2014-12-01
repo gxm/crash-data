@@ -1,6 +1,5 @@
 package com.moulliet.metro.crash;
 
-import com.moulliet.metro.crash.CrashQuery;
 import junit.framework.TestCase;
 
 /**
@@ -97,7 +96,7 @@ public class CrashQueryTest extends TestCase
 
     public void testYears()
     {
-        crashQuery.years(true, false, true, false, true, false);
+        crashQuery.years(true, false, true, false, true, false, false);
         assertEquals("{ \"year\" : { \"$in\" : [ 2007 , 2009 , 2011]}}", crashQuery.getQuery().toString());
     }
 
