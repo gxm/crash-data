@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
 
 /**
  * { "_id" : { "$oid" : "51e07dc30364a5f3a7cc7a75"} ,
@@ -59,18 +58,6 @@ public class Crash  {
 
     public Point getPoint() {
         return point;
-    }
-
-    public DBObject mongoPoint(boolean full) throws ParseException {
-        return dbObject;
-    }
-
-    public String[] getSplit() {
-        return new String[0];
-    }
-
-    public boolean appendLine(String line) {
-        return false;
     }
 
     public boolean isAlcohol() {
