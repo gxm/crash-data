@@ -30,11 +30,24 @@ public class LoadShapefile {
         BufferedReader br = new BufferedReader(new FileReader(file));
         String line = br.readLine();
         while (line != null) {
-            crashes.save((DBObject) JSON.parse(line));
+            DBObject dbObject = (DBObject) JSON.parse(line);
+            mapFields(dbObject);
+            crashes.save(dbObject);
             count++;
             line = br.readLine();
         }
         br.close();
         return count;
+    }
+
+    public static void mapFields(DBObject dbObject) {
+        //OBJECTID=106947, CRASH_SVRT="2", CRASH_SV_1="FAT", CRASH_SV_T="FATAL", TOT_FATAL_=1, TOT_INJ_LV=0, TOT_INJ__1=0, TOT_INJ__2=0, TOT_INJ_CN=0,
+        //OBJECTID=106953, CRASH_SVRT="4", CRASH_SV_1="INJ", CRASH_SV_T="INJURY A", TOT_FATAL_=0, TOT_INJ_LV=1, TOT_INJ__1=0, TOT_INJ__2=0, TOT_INJ_CN=1,
+        //OBJECTID=106951, CRASH_SVRT="4", CRASH_SV_1="INJ", CRASH_SV_T="INJURY B", TOT_FATAL_=0, TOT_INJ_LV=0, TOT_INJ__1=1, TOT_INJ__2=0, TOT_INJ_CN=1,
+        //OBJECTID=106952, CRASH_SVRT="4", CRASH_SV_1="INJ", CRASH_SV_T="INJURY C", TOT_FATAL_=0, TOT_INJ_LV=0, TOT_INJ__1=0, TOT_INJ__2=2, TOT_INJ_CN=2,
+        dbObject.put("injury", dbObject.get("TOT_INJ_CN"));
+        dbObject.put("fatality", dbObject.get("TOT_FATAL_"));
+
+
     }
 }

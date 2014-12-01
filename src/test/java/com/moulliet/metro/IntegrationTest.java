@@ -6,79 +6,91 @@ import com.moulliet.metro.load.LoadShapefile;
 import com.moulliet.metro.mongo.MongoDaoImpl;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
-import junit.framework.TestCase;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 /**
  * Full end to end integration test of server, through the Http interface and using Mongo
  */
-public class IntegrationTest extends TestCase {
-    private static final Logger logger = LoggerFactory.getLogger(IntegrationTest.class);
-
-    public static final String URL = "http://localhost:7070/metro/46/45/-122/-123?callback=stuff";
+public class IntegrationTest {
+    public static final String URL = "http://localhost:7070/metro/47/44/-121/-124?callback=stuff";
     public static final String DATABASE = "test";
-    private Client client = ClientCreator.cached();
+    private static final Logger logger = LoggerFactory.getLogger(IntegrationTest.class);
+    private static MongoDaoImpl mongoDao;
     private final ObjectMapper mapper = new ObjectMapper();
-    private String collection;
-    private MongoDaoImpl mongoDao;
+    private Client client = ClientCreator.cached();
 
-
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public static void beforeClass() throws Exception {
         CrashFactory.reset();
-        collection = RandomStringUtils.random(6);
+        String collection = RandomStringUtils.random(6);
         mongoDao = new MongoDaoImpl(DATABASE, collection);
         CrashFactory.setMongoDao(mongoDao);
+        int load = LoadShapefile.load("/Users/greg/code/crash-data/data/testDataCycle.json", DATABASE, collection);
+        assertEquals(5, load);
         CrashServiceMain.startResources(7070);
     }
 
-    protected void tearDown() throws Exception {
+    @AfterClass
+    public static void tearDown() throws Exception {
         CrashServiceMain.stop();
         mongoDao.deleteCollection();
     }
 
-    public void testDataCycle() throws IOException {
-        int load = LoadShapefile.load("/Users/greg/code/crash-data/data/testDataCycle.json", DATABASE, collection);
-        assertEquals(4, load);
+    @Test
+    public void testAll() throws IOException {
         ClientResponse response = client.resource(URL).get(ClientResponse.class);
         assertEquals(200, response.getStatus());
-        String entity = response.getEntity(String.class);
+        String entity = trimEntity(response.getEntity(String.class));
         System.out.println(entity);
-
-        //todo - gfm - query by params
+        JsonNode rootNode = mapper.readTree(entity);
+        //{"data":[{"lat":"45.55","lng":"-122.826","count":3},{"lat":"45.592","lng":"-123.12","count":2}],"max":3,"total":5,
+        assertEquals(3, rootNode.get("max").asInt());
+        assertEquals(5, rootNode.get("total").asInt());
+        assertTrue(entity.contains("{\"data\":[{\"lat\":\"45.55\",\"lng\":\"-122.826\",\"count\":3},{\"lat\":\"45.592\",\"lng\":\"-123.12\",\"count\":2}]"));
+        // "summary":{"total":5,"cars":5,"bikes":0,"peds":0,"alcohol":0,"injury":0,"fatality":0,"day":5,"night":0,"twilight":0,"dry":5,"wet":0,"snowIce":0,"angle":0,"headOn":0,"rearEnd":0,"sideSwipe":0,"turning":0,"other":5}};
     }
 
-    /*public void testGetPoints() throws Exception
-    {
-        Timer timer = new Timer();
-
-        ClientResponse response = client.resource(URL).get(ClientResponse.class);
-        logger.info("response in " + timer.reset());
+    @Test
+    public void testInjury() throws IOException {
+        ClientResponse response = client.resource(URL + "&injury=true").get(ClientResponse.class);
         assertEquals(200, response.getStatus());
-        String entity = response.getEntity(String.class);
-        assertEquals(MediaType.APPLICATION_JSON_TYPE, response.getType());
-        JsonNode node = mapper.readTree(entity);
-        assertEquals(2656, node.get("data").size());
-        assertEquals(34547, node.get("total").asInt());
-        assertEquals(195, node.get("max").asInt());
-        JsonNode summary = node.get("summary");
-        logger.info(summary.toString());
-        assertEquals(32563, summary.get("cars").asInt());
-        assertEquals(1179, summary.get("bikes").asInt());
-        assertEquals(805, summary.get("peds").asInt());
-        assertEquals(1360, summary.get("alcohol").asInt());
-        //todo - gfm - this value still seems very high, slightly lower now
-        assertEquals(14880, summary.get("injury").asInt());
-        assertEquals(698, summary.get("fatality").asInt());
-        assertEquals(25010, summary.get("day").asInt());
-        assertEquals(7247, summary.get("night").asInt());
-        assertEquals(2290, summary.get("twilight").asInt());
-        assertEquals(25721, summary.get("dry").asInt());
-        assertEquals(8373, summary.get("wet").asInt());
-        assertEquals(453, summary.get("snowIce").asInt());
-    }*/
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(trimEntity(entity));
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(2, rootNode.get("max").asInt());
+        assertEquals(3, rootNode.get("total").asInt());
+        assertEquals(3, rootNode.get("summary").get("injury").asInt());
+        // "summary":{"total":3,"cars":3,"bikes":0,"peds":0,"alcohol":0,"injury":0,"fatality":0,"day":3,"night":0,"twilight":0,"dry":3,"wet":0,"snowIce":0,"angle":0,"headOn":0,"rearEnd":0,"sideSwipe":0,"turning":0,"other":3}});
+    }
+
+    @Test
+    public void testFatality() throws IOException {
+        ClientResponse response = client.resource(URL + "&fatality=true").get(ClientResponse.class);
+        assertEquals(200, response.getStatus());
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(trimEntity(entity));
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(1, rootNode.get("max").asInt());
+        assertEquals(1, rootNode.get("total").asInt());
+        assertEquals(1, rootNode.get("summary").get("fatality").asInt());
+        // "summary":{"total":3,"cars":3,"bikes":0,"peds":0,"alcohol":0,"injury":0,"fatality":0,"day":3,"night":0,"twilight":0,"dry":3,"wet":0,"snowIce":0,"angle":0,"headOn":0,"rearEnd":0,"sideSwipe":0,"turning":0,"other":3}});
+    }
+
+    private String trimEntity(String entity) {
+        return StringUtils.removeEnd(StringUtils.removeStart(entity, "stuff("), ")");
+    }
+
 }

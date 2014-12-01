@@ -166,6 +166,7 @@ public class CrashQuery {
             if (y2012) {
                 list.add(2012);
             }
+            //todo - gfm - add 2013 and ...
 
 
             query.append("year", new BasicDBObject("$in", list));

@@ -42,9 +42,9 @@ public class Crash  {
         this.dbObject = dbObject;
         DBObject loc = (DBObject) dbObject.get("loc");
         BasicDBList coordinates = (BasicDBList) loc.get("coordinates");
-        /*alcohol = (Boolean) dbObject.get("alcohol");
         injury = (Integer) dbObject.get("injury");
         fatality = (Integer) dbObject.get("fatality");
+        /*alcohol = (Boolean) dbObject.get("alcohol");
         ped = (Integer) dbObject.get("ped");
         bike = (Integer) dbObject.get("bike");
         surface = (Integer) dbObject.get("surface");
