@@ -47,6 +47,7 @@ public class LoadShapefile {
         //OBJECTID=106952, CRASH_SVRT="4", CRASH_SV_1="INJ", CRASH_SV_T="INJURY C", TOT_FATAL_=0, TOT_INJ_LV=0, TOT_INJ__1=0, TOT_INJ__2=2, TOT_INJ_CN=2,
         dbObject.put("injury", dbObject.get("TOT_INJ_CN"));
         dbObject.put("fatality", dbObject.get("TOT_FATAL_"));
+        dbObject.put("alcohol", (int) dbObject.get("ALCHL_INVL") > 0);
 
 
     }

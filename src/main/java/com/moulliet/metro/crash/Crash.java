@@ -44,7 +44,8 @@ public class Crash  {
         BasicDBList coordinates = (BasicDBList) loc.get("coordinates");
         injury = (Integer) dbObject.get("injury");
         fatality = (Integer) dbObject.get("fatality");
-        /*alcohol = (Boolean) dbObject.get("alcohol");
+        alcohol = (Boolean) dbObject.get("alcohol");
+        /*
         ped = (Integer) dbObject.get("ped");
         bike = (Integer) dbObject.get("bike");
         surface = (Integer) dbObject.get("surface");

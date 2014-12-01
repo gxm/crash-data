@@ -38,7 +38,7 @@ public class IntegrationTest {
         String collection = RandomStringUtils.random(6);
         mongoDao = new MongoDaoImpl(DATABASE, collection);
         CrashFactory.setMongoDao(mongoDao);
-        int load = LoadShapefile.load("/Users/greg/code/crash-data/data/testDataCycle.json", DATABASE, collection);
+        int load = LoadShapefile.load("/Users/greg/code/crash-data/data/testDataCycle.json.txt", DATABASE, collection);
         assertEquals(5, load);
         CrashServiceMain.startResources(7070);
     }
@@ -56,11 +56,9 @@ public class IntegrationTest {
         String entity = trimEntity(response.getEntity(String.class));
         System.out.println(entity);
         JsonNode rootNode = mapper.readTree(entity);
-        //{"data":[{"lat":"45.55","lng":"-122.826","count":3},{"lat":"45.592","lng":"-123.12","count":2}],"max":3,"total":5,
         assertEquals(3, rootNode.get("max").asInt());
         assertEquals(5, rootNode.get("total").asInt());
         assertTrue(entity.contains("{\"data\":[{\"lat\":\"45.55\",\"lng\":\"-122.826\",\"count\":3},{\"lat\":\"45.592\",\"lng\":\"-123.12\",\"count\":2}]"));
-        // "summary":{"total":5,"cars":5,"bikes":0,"peds":0,"alcohol":0,"injury":0,"fatality":0,"day":5,"night":0,"twilight":0,"dry":5,"wet":0,"snowIce":0,"angle":0,"headOn":0,"rearEnd":0,"sideSwipe":0,"turning":0,"other":5}};
     }
 
     @Test
@@ -73,7 +71,6 @@ public class IntegrationTest {
         assertEquals(2, rootNode.get("max").asInt());
         assertEquals(3, rootNode.get("total").asInt());
         assertEquals(3, rootNode.get("summary").get("injury").asInt());
-        // "summary":{"total":3,"cars":3,"bikes":0,"peds":0,"alcohol":0,"injury":0,"fatality":0,"day":3,"night":0,"twilight":0,"dry":3,"wet":0,"snowIce":0,"angle":0,"headOn":0,"rearEnd":0,"sideSwipe":0,"turning":0,"other":3}});
     }
 
     @Test
@@ -86,7 +83,20 @@ public class IntegrationTest {
         assertEquals(1, rootNode.get("max").asInt());
         assertEquals(1, rootNode.get("total").asInt());
         assertEquals(1, rootNode.get("summary").get("fatality").asInt());
-        // "summary":{"total":3,"cars":3,"bikes":0,"peds":0,"alcohol":0,"injury":0,"fatality":0,"day":3,"night":0,"twilight":0,"dry":3,"wet":0,"snowIce":0,"angle":0,"headOn":0,"rearEnd":0,"sideSwipe":0,"turning":0,"other":3}});
+        assertEquals(0, rootNode.get("summary").get("injury").asInt());
+    }
+
+    @Test
+    public void testAlcohol() throws IOException {
+        ClientResponse response = client.resource(URL + "&alcohol=true").get(ClientResponse.class);
+        assertEquals(200, response.getStatus());
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(trimEntity(entity));
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(1, rootNode.get("max").asInt());
+        assertEquals(1, rootNode.get("total").asInt());
+        assertEquals(1, rootNode.get("summary").get("alcohol").asInt());
+        assertEquals(0, rootNode.get("summary").get("fatality").asInt());
     }
 
     private String trimEntity(String entity) {
