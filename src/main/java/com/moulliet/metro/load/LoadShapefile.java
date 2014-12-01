@@ -50,6 +50,8 @@ public class LoadShapefile {
         dbObject.put("alcohol", (int) dbObject.get("ALCHL_INVL") > 0);
         dbObject.put("ped", dbObject.get("TOT_PED_CN"));
         dbObject.put("bike", dbObject.get("TOT_PEDCYC"));
+        //"RD_SURF_CO": string 0, 1 = dry, 2 wet, 3 snow, 4 ice
+        dbObject.put("surface", Integer.parseInt((String) dbObject.get("RD_SURF_CO")));
 
 
     }

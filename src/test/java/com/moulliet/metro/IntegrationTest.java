@@ -143,6 +143,38 @@ public class IntegrationTest {
         assertEquals(1, rootNode.get("summary").get("fatality").asInt());
     }
 
+    @Test
+    public void testWet() throws IOException {
+        ClientResponse response = client.resource(URL + "&wet=true&dry=false&snowIce=false").get(ClientResponse.class);
+        assertEquals(200, response.getStatus());
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(trimEntity(entity));
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(2, rootNode.get("max").asInt());
+        assertEquals(2, rootNode.get("total").asInt());
+        assertEquals(2, rootNode.get("summary").get("wet").asInt());
+        assertEquals(0, rootNode.get("summary").get("snowIce").asInt());
+        assertEquals(0, rootNode.get("summary").get("bikes").asInt());
+        assertEquals(0, rootNode.get("summary").get("alcohol").asInt());
+        assertEquals(0, rootNode.get("summary").get("fatality").asInt());
+    }
+
+    @Test
+    public void testIce() throws IOException {
+        ClientResponse response = client.resource(URL + "&wet=false&dry=false&snowIce=true").get(ClientResponse.class);
+        assertEquals(200, response.getStatus());
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(trimEntity(entity));
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(1, rootNode.get("max").asInt());
+        assertEquals(1, rootNode.get("total").asInt());
+        assertEquals(0, rootNode.get("summary").get("wet").asInt());
+        assertEquals(1, rootNode.get("summary").get("snowIce").asInt());
+        assertEquals(0, rootNode.get("summary").get("bikes").asInt());
+        assertEquals(0, rootNode.get("summary").get("alcohol").asInt());
+        assertEquals(0, rootNode.get("summary").get("fatality").asInt());
+    }
+
     private String trimEntity(String entity) {
         return StringUtils.removeEnd(StringUtils.removeStart(entity, "stuff("), ")");
     }
