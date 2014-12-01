@@ -99,6 +99,19 @@ public class IntegrationTest {
         assertEquals(0, rootNode.get("summary").get("fatality").asInt());
     }
 
+    @Test
+    public void testPed() throws IOException {
+        ClientResponse response = client.resource(URL + "&peds=true&cars=false&bikes=false").get(ClientResponse.class);
+        assertEquals(200, response.getStatus());
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(trimEntity(entity));
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(1, rootNode.get("max").asInt());
+        assertEquals(1, rootNode.get("total").asInt());
+        assertEquals(1, rootNode.get("summary").get("peds").asInt());
+        assertEquals(0, rootNode.get("summary").get("alcohol").asInt());
+    }
+
     private String trimEntity(String entity) {
         return StringUtils.removeEnd(StringUtils.removeStart(entity, "stuff("), ")");
     }

@@ -48,6 +48,7 @@ public class LoadShapefile {
         dbObject.put("injury", dbObject.get("TOT_INJ_CN"));
         dbObject.put("fatality", dbObject.get("TOT_FATAL_"));
         dbObject.put("alcohol", (int) dbObject.get("ALCHL_INVL") > 0);
+        dbObject.put("ped", dbObject.get("TOT_PED_CN"));
 
 
     }
