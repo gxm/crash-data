@@ -30,9 +30,10 @@ public class LoadShapefile {
         BufferedReader br = new BufferedReader(new FileReader(file));
         String line = br.readLine();
         while (line != null) {
-            DBObject dbObject = (DBObject) JSON.parse(line);
-            mapFields(dbObject);
-            crashes.save(dbObject);
+            DBObject dbObject = mapFields((DBObject) JSON.parse(line));
+            if (dbObject != null) {
+                crashes.save(dbObject);
+            }
             count++;
             line = br.readLine();
         }
@@ -40,15 +41,21 @@ public class LoadShapefile {
         return count;
     }
 
-    public static void mapFields(DBObject dbObject) {
-        dbObject.put("injury", dbObject.get("TOT_INJ_CN"));
-        dbObject.put("fatality", dbObject.get("TOT_FATAL_"));
-        dbObject.put("alcohol", (int) dbObject.get("ALCHL_INVL") > 0);
-        dbObject.put("ped", dbObject.get("TOT_PED_CN"));
-        dbObject.put("bike", dbObject.get("TOT_PEDCYC"));
-        dbObject.put("surface", Integer.parseInt((String) dbObject.get("RD_SURF_CO")));
-        dbObject.put("light", Integer.parseInt((String) dbObject.get("LGT_COND_C")));
-        dbObject.put("type", dbObject.get("COLLIS_TYP"));
-        dbObject.put("year", Integer.parseInt((String) dbObject.get("CRASH_YR_N")));
+    public static BasicDBObject mapFields(DBObject dbObject) {
+        if ((int) dbObject.get("Sink") == 1) {
+            return null;
+        }
+        BasicDBObject object = new BasicDBObject();
+        object.put("injury", dbObject.get("TOT_INJ_CN"));
+        object.put("fatality", dbObject.get("TOT_FATAL_"));
+        object.put("alcohol", (int) dbObject.get("ALCHL_INVL") > 0);
+        object.put("ped", dbObject.get("TOT_PED_CN"));
+        object.put("bike", dbObject.get("TOT_PEDCYC"));
+        object.put("surface", Integer.parseInt((String) dbObject.get("RD_SURF_CO")));
+        object.put("light", Integer.parseInt((String) dbObject.get("LGT_COND_C")));
+        object.put("type", dbObject.get("COLLIS_TYP"));
+        object.put("year", Integer.parseInt((String) dbObject.get("CRASH_YR_N")));
+        object.put("loc", dbObject.get("loc"));
+        return object;
     }
 }

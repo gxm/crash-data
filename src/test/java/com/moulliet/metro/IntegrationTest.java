@@ -39,7 +39,7 @@ public class IntegrationTest {
         mongoDao = new MongoDaoImpl(DATABASE, collection);
         CrashFactory.setMongoDao(mongoDao);
         int load = LoadShapefile.load("/Users/greg/code/crash-data/data/testDataCycle.json.txt", DATABASE, collection);
-        assertEquals(5, load);
+        assertEquals(6, load);
         CrashServiceMain.startResources(7070);
     }
 
