@@ -100,7 +100,7 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testPed() throws IOException {
+    public void testPeds() throws IOException {
         ClientResponse response = client.resource(URL + "&peds=true&cars=false&bikes=false").get(ClientResponse.class);
         assertEquals(200, response.getStatus());
         String entity = trimEntity(response.getEntity(String.class));
@@ -110,6 +110,37 @@ public class IntegrationTest {
         assertEquals(1, rootNode.get("total").asInt());
         assertEquals(1, rootNode.get("summary").get("peds").asInt());
         assertEquals(0, rootNode.get("summary").get("alcohol").asInt());
+        assertEquals(1, rootNode.get("summary").get("fatality").asInt());
+    }
+
+    @Test
+    public void testBikes() throws IOException {
+        ClientResponse response = client.resource(URL + "&peds=false&cars=false&bikes=true").get(ClientResponse.class);
+        assertEquals(200, response.getStatus());
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(trimEntity(entity));
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(1, rootNode.get("max").asInt());
+        assertEquals(1, rootNode.get("total").asInt());
+        assertEquals(0, rootNode.get("summary").get("peds").asInt());
+        assertEquals(1, rootNode.get("summary").get("bikes").asInt());
+        assertEquals(1, rootNode.get("summary").get("alcohol").asInt());
+        assertEquals(0, rootNode.get("summary").get("fatality").asInt());
+    }
+
+    @Test
+    public void testPedsAndBikes() throws IOException {
+        ClientResponse response = client.resource(URL + "&peds=true&cars=false&bikes=true").get(ClientResponse.class);
+        assertEquals(200, response.getStatus());
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(trimEntity(entity));
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(2, rootNode.get("max").asInt());
+        assertEquals(2, rootNode.get("total").asInt());
+        assertEquals(1, rootNode.get("summary").get("peds").asInt());
+        assertEquals(1, rootNode.get("summary").get("bikes").asInt());
+        assertEquals(1, rootNode.get("summary").get("alcohol").asInt());
+        assertEquals(1, rootNode.get("summary").get("fatality").asInt());
     }
 
     private String trimEntity(String entity) {

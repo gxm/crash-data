@@ -46,8 +46,8 @@ public class Crash  {
         fatality = (Integer) dbObject.get("fatality");
         alcohol = (Boolean) dbObject.get("alcohol");
         ped = (Integer) dbObject.get("ped");
-        /*
         bike = (Integer) dbObject.get("bike");
+        /*
         surface = (Integer) dbObject.get("surface");
         light = (Integer) dbObject.get("light");
         type = (String) dbObject.get("type");
