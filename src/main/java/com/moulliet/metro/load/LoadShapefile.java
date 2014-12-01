@@ -52,6 +52,8 @@ public class LoadShapefile {
         dbObject.put("bike", dbObject.get("TOT_PEDCYC"));
         //"RD_SURF_CO": string 0, 1 = dry, 2 wet, 3 snow, 4 ice
         dbObject.put("surface", Integer.parseInt((String) dbObject.get("RD_SURF_CO")));
+        //LGT_COND_C string 0 UNK, 1 day, 2 Dark Lights, 3, DARK no lights, 4 DAWN, 5 DUSK
+        dbObject.put("light", Integer.parseInt((String) dbObject.get("LGT_COND_C")));
 
 
     }

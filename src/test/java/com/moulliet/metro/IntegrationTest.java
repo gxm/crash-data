@@ -109,8 +109,7 @@ public class IntegrationTest {
         assertEquals(1, rootNode.get("max").asInt());
         assertEquals(1, rootNode.get("total").asInt());
         assertEquals(1, rootNode.get("summary").get("peds").asInt());
-        assertEquals(0, rootNode.get("summary").get("alcohol").asInt());
-        assertEquals(1, rootNode.get("summary").get("fatality").asInt());
+        assertEquals(0, rootNode.get("summary").get("bikes").asInt());
     }
 
     @Test
@@ -124,8 +123,6 @@ public class IntegrationTest {
         assertEquals(1, rootNode.get("total").asInt());
         assertEquals(0, rootNode.get("summary").get("peds").asInt());
         assertEquals(1, rootNode.get("summary").get("bikes").asInt());
-        assertEquals(1, rootNode.get("summary").get("alcohol").asInt());
-        assertEquals(0, rootNode.get("summary").get("fatality").asInt());
     }
 
     @Test
@@ -139,8 +136,6 @@ public class IntegrationTest {
         assertEquals(2, rootNode.get("total").asInt());
         assertEquals(1, rootNode.get("summary").get("peds").asInt());
         assertEquals(1, rootNode.get("summary").get("bikes").asInt());
-        assertEquals(1, rootNode.get("summary").get("alcohol").asInt());
-        assertEquals(1, rootNode.get("summary").get("fatality").asInt());
     }
 
     @Test
@@ -155,8 +150,6 @@ public class IntegrationTest {
         assertEquals(2, rootNode.get("summary").get("wet").asInt());
         assertEquals(0, rootNode.get("summary").get("snowIce").asInt());
         assertEquals(0, rootNode.get("summary").get("bikes").asInt());
-        assertEquals(0, rootNode.get("summary").get("alcohol").asInt());
-        assertEquals(0, rootNode.get("summary").get("fatality").asInt());
     }
 
     @Test
@@ -171,8 +164,34 @@ public class IntegrationTest {
         assertEquals(0, rootNode.get("summary").get("wet").asInt());
         assertEquals(1, rootNode.get("summary").get("snowIce").asInt());
         assertEquals(0, rootNode.get("summary").get("bikes").asInt());
-        assertEquals(0, rootNode.get("summary").get("alcohol").asInt());
-        assertEquals(0, rootNode.get("summary").get("fatality").asInt());
+    }
+
+    @Test
+    public void testNight() throws IOException {
+        ClientResponse response = client.resource(URL + "&day=false&twilight=false&night=true").get(ClientResponse.class);
+        assertEquals(200, response.getStatus());
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(trimEntity(entity));
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(2, rootNode.get("max").asInt());
+        assertEquals(2, rootNode.get("total").asInt());
+        assertEquals(2, rootNode.get("summary").get("night").asInt());
+        assertEquals(0, rootNode.get("summary").get("day").asInt());
+        assertEquals(0, rootNode.get("summary").get("twilight").asInt());
+    }
+
+    @Test
+    public void testTwilightNight() throws IOException {
+        ClientResponse response = client.resource(URL + "&day=false&twilight=true&night=true").get(ClientResponse.class);
+        assertEquals(200, response.getStatus());
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(trimEntity(entity));
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(3, rootNode.get("max").asInt());
+        assertEquals(3, rootNode.get("total").asInt());
+        assertEquals(2, rootNode.get("summary").get("night").asInt());
+        assertEquals(0, rootNode.get("summary").get("day").asInt());
+        assertEquals(1, rootNode.get("summary").get("twilight").asInt());
     }
 
     private String trimEntity(String entity) {
