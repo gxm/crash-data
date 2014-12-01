@@ -46,9 +46,7 @@ public class Crash  {
         bike = (Integer) dbObject.get("bike");
         surface = (Integer) dbObject.get("surface");
         light = (Integer) dbObject.get("light");
-        /*
         type = (String) dbObject.get("type");
-        */
         point = new Point((Number) coordinates.get(0), (Number) coordinates.get(1), format);
     }
 

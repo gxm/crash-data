@@ -41,20 +41,14 @@ public class LoadShapefile {
     }
 
     public static void mapFields(DBObject dbObject) {
-        //OBJECTID=106947, CRASH_SVRT="2", CRASH_SV_1="FAT", CRASH_SV_T="FATAL", TOT_FATAL_=1, TOT_INJ_LV=0, TOT_INJ__1=0, TOT_INJ__2=0, TOT_INJ_CN=0,
-        //OBJECTID=106953, CRASH_SVRT="4", CRASH_SV_1="INJ", CRASH_SV_T="INJURY A", TOT_FATAL_=0, TOT_INJ_LV=1, TOT_INJ__1=0, TOT_INJ__2=0, TOT_INJ_CN=1,
-        //OBJECTID=106951, CRASH_SVRT="4", CRASH_SV_1="INJ", CRASH_SV_T="INJURY B", TOT_FATAL_=0, TOT_INJ_LV=0, TOT_INJ__1=1, TOT_INJ__2=0, TOT_INJ_CN=1,
-        //OBJECTID=106952, CRASH_SVRT="4", CRASH_SV_1="INJ", CRASH_SV_T="INJURY C", TOT_FATAL_=0, TOT_INJ_LV=0, TOT_INJ__1=0, TOT_INJ__2=2, TOT_INJ_CN=2,
         dbObject.put("injury", dbObject.get("TOT_INJ_CN"));
         dbObject.put("fatality", dbObject.get("TOT_FATAL_"));
         dbObject.put("alcohol", (int) dbObject.get("ALCHL_INVL") > 0);
         dbObject.put("ped", dbObject.get("TOT_PED_CN"));
         dbObject.put("bike", dbObject.get("TOT_PEDCYC"));
-        //"RD_SURF_CO": string 0, 1 = dry, 2 wet, 3 snow, 4 ice
         dbObject.put("surface", Integer.parseInt((String) dbObject.get("RD_SURF_CO")));
-        //LGT_COND_C string 0 UNK, 1 day, 2 Dark Lights, 3, DARK no lights, 4 DAWN, 5 DUSK
         dbObject.put("light", Integer.parseInt((String) dbObject.get("LGT_COND_C")));
-
+        dbObject.put("type", dbObject.get("COLLIS_TYP"));
 
     }
 }
