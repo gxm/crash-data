@@ -52,7 +52,8 @@ public class CrashResource {
                            @DefaultValue("true") @QueryParam("y2009") boolean y2009,
                            @DefaultValue("true") @QueryParam("y2010") boolean y2010,
                            @DefaultValue("true") @QueryParam("y2011") boolean y2011,
-                           @DefaultValue("true") @QueryParam("y2012") boolean y2012
+                           @DefaultValue("true") @QueryParam("y2012") boolean y2012,
+                           @DefaultValue("true") @QueryParam("y2013") boolean y2013
     ) throws Exception {
         try {
             final Timer timer = new Timer();
@@ -65,7 +66,7 @@ public class CrashResource {
             query.hurt(injury, fatality);
             query.light(day, night, twilight);
             query.surface(dry, wet, snowIce);
-            query.years(y2007, y2008, y2009, y2010, y2011, y2012);
+            query.years(y2007, y2008, y2009, y2010, y2011, y2012, y2013);
 
             logger.debug(query.toString());
 

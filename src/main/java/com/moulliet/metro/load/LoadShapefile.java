@@ -49,6 +49,6 @@ public class LoadShapefile {
         dbObject.put("surface", Integer.parseInt((String) dbObject.get("RD_SURF_CO")));
         dbObject.put("light", Integer.parseInt((String) dbObject.get("LGT_COND_C")));
         dbObject.put("type", dbObject.get("COLLIS_TYP"));
-
+        dbObject.put("year", Integer.parseInt((String) dbObject.get("CRASH_YR_N")));
     }
 }

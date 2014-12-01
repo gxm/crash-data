@@ -194,6 +194,18 @@ public class IntegrationTest {
         assertEquals(1, rootNode.get("summary").get("twilight").asInt());
     }
 
+    @Test
+    public void testYear() throws IOException {
+        ClientResponse response = client.resource(URL +
+                "&y2007=false&y2008=true&y2009=false&y2010=false&y2011=false&y2012=false&y2013=true").get(ClientResponse.class);
+        assertEquals(200, response.getStatus());
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(trimEntity(entity));
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(2, rootNode.get("max").asInt());
+        assertEquals(2, rootNode.get("total").asInt());
+    }
+
     private String trimEntity(String entity) {
         return StringUtils.removeEnd(StringUtils.removeStart(entity, "stuff("), ")");
     }

@@ -141,10 +141,11 @@ public class CrashQuery {
         }
     }
 
-    public void years(boolean y2007, boolean y2008, boolean y2009, boolean y2010, boolean y2011, boolean y2012) {
-        if (y2007 && y2008 && y2009 && y2010 && y2011 && y2012) {
+    public void years(boolean y2007, boolean y2008, boolean y2009,
+                      boolean y2010, boolean y2011, boolean y2012, boolean y2013) {
+        if (y2007 && y2008 && y2009 && y2010 && y2011 && y2012 && y2013) {
             return;
-        } else if (!y2007 && !y2008 && !y2009 && !y2010 && !y2011 && !y2012) {
+        } else if (!y2007 && !y2008 && !y2009 && !y2010 && !y2011 && !y2012 && !y2013) {
             query.append("year", new BasicDBObject("$lt", 0));
         } else {
             BasicDBList list = new BasicDBList();
@@ -166,9 +167,10 @@ public class CrashQuery {
             if (y2012) {
                 list.add(2012);
             }
-            //todo - gfm - add 2013 and ...
-
-
+            if (y2013) {
+                list.add(2013);
+            }
+            //todo - gfm - make this more flexible
             query.append("year", new BasicDBObject("$in", list));
         }
     }
