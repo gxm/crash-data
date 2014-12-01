@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.util.List;
 
 /**
  * { "_id" : { "$oid" : "51e07dc30364a5f3a7cc7a75"} ,
@@ -36,7 +35,6 @@ public class Crash  {
     private int surface;
     private int light;
     private String type;
-    private List<String> records = null;
 
     public Crash(DBObject dbObject, DecimalFormat format) {
         this.dbObject = dbObject;
@@ -51,10 +49,7 @@ public class Crash  {
         surface = (Integer) dbObject.get("surface");
         light = (Integer) dbObject.get("light");
         type = (String) dbObject.get("type");
-        //records is a list, may be null BasicDBList
-        if (dbObject.containsField("records")) {
-            this.records = (List<String>) dbObject.get("records");
-        }*/
+        */
         point = new Point((Number) coordinates.get(0), (Number) coordinates.get(1), format);
     }
 
@@ -110,7 +105,4 @@ public class Crash  {
         return type;
     }
 
-    public List<String> getRecords() {
-        return records;
-    }
 }
