@@ -2,6 +2,7 @@ package com.moulliet.metro;
 
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
+import org.apache.commons.configuration.Configuration;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -11,9 +12,15 @@ import org.slf4j.LoggerFactory;
 public class CrashServiceMain {
     private static final Logger logger = LoggerFactory.getLogger(CrashServiceMain.class);
     private static Server server;
+    public static Configuration config;
 
+    /**
+     * This method expects a path to crash-data.properties in a system property, aka
+     * -Dconfig.properties=/Users/greg/code/crash-data/config/local/crash-data.properties
+     */
     public static void main(String[] args) throws Exception {
-        logger.debug("starting up CrashServiceMain ");
+        Config.load();
+        logger.debug("starting CrashServiceMain");
         startResources(8080);
         server.join();
     }

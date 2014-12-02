@@ -24,7 +24,7 @@ startService ()
 		exit 1
 	fi
 
-	OPTIONS="-Xms384m -Xmx384m -cp ${ROOT_DIR}crash-data-0.1-SNAPSHOT-jar-with-dependencies.jar:${ROOT_DIR}config
+	OPTIONS="-Xms1g -Xmx1g -cp ${ROOT_DIR}crash-data-0.1-SNAPSHOT-jar-with-dependencies.jar:${ROOT_DIR}config
         -Dconfig.properties=config/crash-data.properties
         -Dbase.dir=${ROOT_DIR}
         -Dcom.sun.management.jmxremote
