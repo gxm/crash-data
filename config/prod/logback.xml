@@ -1,12 +1,12 @@
 <configuration scan="true">
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/home/moulliet/transport/logs/transport.log</file>
+        <file>/home/crash/logs/crash-data.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover, automatically compressed -->
             <fileNamePattern>
-                /home/moulliet/transport/logs/transport.log.%d{yyyy-MM-dd}.gz
+                /home/crash/logs/crash-data.log.%d{yyyy-MM-dd}.gz
             </fileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
