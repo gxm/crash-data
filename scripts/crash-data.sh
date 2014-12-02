@@ -10,9 +10,9 @@ if [[ $EUID -eq 0 ]]; then
    exit 1
 fi
 
-ROOT_DIR=/home/crash/crash-data/
-PID_FILE=${ROOT_DIR}crash-data.pid
-STD_OUT_LOG=${ROOT_DIR}logs/crash-data.$(/bin/date '+%Y-%m-%d-%H-%M-%S')
+ROOT_DIR=/home/crash/crash-data
+PID_FILE=${ROOT_DIR}/crash-data.pid
+STD_OUT_LOG=${ROOT_DIR}/logs/crash-data.$(/bin/date '+%Y-%m-%d-%H-%M-%S')
 
 startService ()
 {
@@ -24,9 +24,8 @@ startService ()
 		exit 1
 	fi
 
-	OPTIONS="-Xms1g -Xmx1g -cp ${ROOT_DIR}crash-data-0.1-SNAPSHOT-jar-with-dependencies.jar:${ROOT_DIR}config
-        -Dconfig.properties=config/crash-data.properties
-        -Dbase.dir=${ROOT_DIR}
+	OPTIONS="-Xms1g -Xmx1g -cp ${ROOT_DIR}/crash-data-0.1-SNAPSHOT-jar-with-dependencies.jar:${ROOT_DIR}/config
+        -Dconfig.properties=${ROOT_DIR}/config/crash-data.properties
         -Dcom.sun.management.jmxremote
         -Dcom.sun.management.jmxremote.port=9010
         -Dcom.sun.management.jmxremote.local.only=false
