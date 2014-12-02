@@ -1,6 +1,7 @@
 #!/bin/sh
-ROOT_DIR=/home/crash/crash-data/
+ROOT_DIR=/home/crash/crash-data
 
-java -Xms512m -Xmx512m -cp ${ROOT_DIR}transport-0.1-SNAPSHOT-jar-with-dependencies.jar:${ROOT_DIR}config \
-    -Dbase.dir=${ROOT_DIR} \
-    com.moulliet.transport.crash.odot.OdotDataLoader
+OPTIONS="-Xms512m -Xmx512m -cp ${ROOT_DIR}/crash-data-0.1-SNAPSHOT-jar-with-dependencies.jar:${ROOT_DIR}/config
+        -Dconfig.properties=${ROOT_DIR}/config/crash-data.properties"
+
+java ${OPTIONS} com.moulliet.metro.load.LoadShapefile

@@ -8,7 +8,7 @@ then
 	exit
 fi
 
-SCRIPTS="crash-data/scripts/"
+SCRIPTS="crash-data/scripts"
 
 build() {
     # this requires JAVA_HOME to be set for maven
@@ -26,19 +26,19 @@ build() {
 deploy() {
     echo "deploying files"
     rsync -avr config/prod/ crash01:crash-data/config/
-    rsync -avr scripts/*.sh crash01:${SCRIPTS}
-    ssh crash01 chmod u+x ${SCRIPTS}*.sh
+    rsync -avr scripts/*.sh crash01:${SCRIPTS}/
+    ssh crash01 chmod u+x ${SCRIPTS}/*.sh
     rsync -avr public/ crash01:crash-data/public/
 }
 
 loadData() {
-    echo "loadDataing data"
-    ssh crash01 bash ${SCRIPTS}loadData.sh
+    echo "loading data"
+    ssh crash01 bash ${SCRIPTS}/data_load.sh
 }
 
 restart() {
     echo "restarting service"
-    ssh crash01 bash ${SCRIPTS}crash-data.sh restart
+    ssh crash01 bash ${SCRIPTS}/crash-data.sh restart
 }
 
 case $1 in
@@ -52,10 +52,8 @@ case $1 in
 		restart
 		;;
 	loadData)
-		build
 		deploy
 		loadData
-		restart
 		;;
 	*)
 		echo "Usage: bash $0 {deploy|build|loadData}" >&2
