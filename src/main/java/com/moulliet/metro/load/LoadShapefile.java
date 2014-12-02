@@ -2,6 +2,7 @@ package com.moulliet.metro.load;
 
 import com.mongodb.*;
 import com.mongodb.util.JSON;
+import com.moulliet.metro.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,12 +15,9 @@ public class LoadShapefile {
     private static final Logger logger = LoggerFactory.getLogger(LoadShapefile.class);
 
     public static void main(String[] args) throws IOException {
-        String file = "/Users/greg/code/import/Crashes_07_12.out";
-        if (args.length == 1) {
-            file = args[0];
-        }
-        String database = "metro";
-        String collection = "crashes";
+        String file = Config.getConfig().getString("data.file");
+        String database = Config.getConfig().getString("database");
+        String collection = Config.getConfig().getString("collection");
         logger.info("loading items from {} into {} {} ", file, database, collection);
         int count = load(file, database, collection);
         logger.info("completed load of {} items", count);

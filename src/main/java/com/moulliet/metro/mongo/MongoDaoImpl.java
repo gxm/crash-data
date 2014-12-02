@@ -1,6 +1,9 @@
 package com.moulliet.metro.mongo;
 
-import com.mongodb.*;
+import com.mongodb.DB;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
