@@ -1,4 +1,5 @@
 #!/bin/sh
+#can this be moved into scripts dir?
 if [ $# != 1 ]
 then
 	echo "Usage: bash $0 {deploy|restart|build|load}"
@@ -17,7 +18,7 @@ build()
         echo "Build Failed, exiting"
         exit
     fi
-    rsync -avr target/transport-0.1-SNAPSHOT-jar-with-dependencies.jar transports:transport
+    #rsync -avr target/transport-0.1-SNAPSHOT-jar-with-dependencies.jar transports:transport
 }
 
 deploy()

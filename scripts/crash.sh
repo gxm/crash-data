@@ -10,7 +10,7 @@ if [[ $EUID -eq 0 ]]; then
    exit 1
 fi
 
-ROOT_DIR=/home/moulliet/transport/
+ROOT_DIR=/home/crash/transport/
 PID_FILE=${ROOT_DIR}transport.pid
 STD_OUT_LOG=${ROOT_DIR}logs/transport.$(/bin/date '+%Y-%m-%d-%H-%M-%S')
 
@@ -34,8 +34,8 @@ startService ()
         -Dcom.sun.management.jmxremote.ssl=false
 	"
 
-	#java ${OPTIONS} com.moulliet.metro.CrashServiceMain
-	nohup java ${OPTIONS} com.moulliet.metro.CrashServiceMain  1>> ${STD_OUT_LOG} 2>&1 &
+	#java ${OPTIONS} com.crash.metro.CrashServiceMain
+	nohup java ${OPTIONS} com.crash.metro.CrashServiceMain  1>> ${STD_OUT_LOG} 2>&1 &
 
 	echo -n $! > "${PID_FILE}"
 	echo STARTED
