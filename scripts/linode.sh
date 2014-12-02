@@ -1,23 +1,27 @@
 #!/bin/bash
 
-#https://library.linode.com/getting-started
-#todo what about this? https://library.linode.com/hosting-website#sph_adding-dns-records
-#do I need to register a domain?
+# These are the commands to configure a linode server to host this application
+#
 
 ssh root@74.207.248.81
-sudo useradd moulliet -m -s /bin/bash
-sudo passwd moulliet
-sudo adduser moulliet sudo
-su - moulliet
-sudo visudo
-    #add NOPASSWD: ALL
-sudo echo "transport-server" > /etc/hostname
+sudo echo "crash01" > /etc/hostname
 hostname -F /etc/hostname
 
-sudo apt-get update
-apt-get upgrade --show-upgraded
+sudo useradd crash -m -s /bin/bash
+sudo passwd crash
+sudo adduser crash sudo
+
+#old
 sudo apt-get install openjdk-7-jdk
 
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+apt-get upgrade --show-upgraded
+sudo apt-get install oracle-java8-installer
+sudo apt-get install oracle-java8-set-default
+java -version
+
+# todo ...
 
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
 echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/10gen.list
