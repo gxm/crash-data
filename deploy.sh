@@ -49,6 +49,7 @@ restart()
 case $1 in
 	deploy)
 		deploy
+		restart
 		;;
 	build)
 		build

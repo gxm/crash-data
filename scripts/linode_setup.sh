@@ -6,6 +6,7 @@
 ssh root@104.237.130.146
 sudo echo "crash01" > /etc/hostname
 hostname -F /etc/hostname
+#add '104.237.130.146 crash01' to /etc/hosts
 
 sudo useradd crash -m -s /bin/bash
 sudo passwd crash

@@ -34,8 +34,9 @@ startService ()
         -Dcom.sun.management.jmxremote.ssl=false
 	"
 
-	java ${OPTIONS} com.moulliet.metro.CrashServiceMain
-	#nohup java ${OPTIONS} com.moulliet.metro.CrashServiceMain  1>> ${STD_OUT_LOG} 2>&1 &
+    # only use this version for debugging
+	#java ${OPTIONS} com.moulliet.metro.CrashServiceMain
+	nohup java ${OPTIONS} com.moulliet.metro.CrashServiceMain  1>> ${STD_OUT_LOG} 2>&1 &
 
 	echo -n $! > "${PID_FILE}"
 	echo STARTED
