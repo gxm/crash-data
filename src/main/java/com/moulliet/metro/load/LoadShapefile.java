@@ -14,9 +14,14 @@ public class LoadShapefile {
     private static final Logger logger = LoggerFactory.getLogger(LoadShapefile.class);
 
     public static void main(String[] args) throws IOException {
-        logger.info("starting load");
-        String file = "/Users/greg/code/import/Crashes_07_11.out";
-        int count = load(file, "metro", "crashes");
+        String file = "/Users/greg/code/import/Crashes_07_12.out";
+        if (args.length == 1) {
+            file = args[0];
+        }
+        String database = "metro";
+        String collection = "crashes";
+        logger.info("loading items from {} into {} {} ", file, database, collection);
+        int count = load(file, database, collection);
         logger.info("completed load of {} items", count);
     }
 
@@ -42,7 +47,8 @@ public class LoadShapefile {
     }
 
     public static BasicDBObject mapFields(DBObject dbObject) {
-        if ((int) dbObject.get("Sink") == 1) {
+        Object sink = dbObject.get("Sink");
+        if (sink != null && (int) sink == 1) {
             return null;
         }
         BasicDBObject object = new BasicDBObject();
