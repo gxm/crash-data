@@ -15,3 +15,5 @@ This presumes data file has already pre-parsed to single crash JSON records per 
 * Run CrashServiceMain
 
 ### Deployment
+
+Deployed at 104.237.130.146
