@@ -26,9 +26,9 @@ public class FileResource {
 
     @GET
     @Path("/file/{path:.*}")
-    public String get(@PathParam("path") String path) throws IOException {
+    public Response get(@PathParam("path") String path) throws IOException {
         File file = new File(Config.getConfig().getString("public.dir") + path);
-        return FileUtils.readFileToString(file);
+        return Response.ok(FileUtils.readFileToByteArray(file)).build();
     }
 
     private Response redirect() {
