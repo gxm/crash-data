@@ -17,3 +17,7 @@ This presumes data file has already pre-parsed to single crash JSON records per 
 ### Deployment
 
 Deployed at 104.237.130.146
+
+follow scripts/linode_setup.sh to setup a server
+
+run deploy.sh to build code and deploy to a server.
