@@ -1,7 +1,8 @@
 function Common($scope, $http, $location) {
     'use strict';
 
-    $scope.hosts = ['http://74.207.248.81:8080/',
+    //todo - gfm - this should be in configuration
+    $scope.hosts = ['http://104.237.130.146:8080/',
         'http://localhost:8080/'];
 
     $scope.host = $scope.hosts[0];
