@@ -10,13 +10,13 @@ if [[ $EUID -eq 0 ]]; then
    exit 1
 fi
 
-ROOT_DIR=/home/crash/transport/
-PID_FILE=${ROOT_DIR}transport.pid
-STD_OUT_LOG=${ROOT_DIR}logs/transport.$(/bin/date '+%Y-%m-%d-%H-%M-%S')
+ROOT_DIR=/home/crash/crash-data/
+PID_FILE=${ROOT_DIR}crash-data.pid
+STD_OUT_LOG=${ROOT_DIR}logs/crash-data.$(/bin/date '+%Y-%m-%d-%H-%M-%S')
 
 startService ()
 {
-	echo  "Starting transport service ... "
+	echo  "Starting crash-data service ... "
 
 	if [ -e "${PID_FILE}" ]
 	then
@@ -24,8 +24,8 @@ startService ()
 		exit 1
 	fi
 
-	OPTIONS="-Xms384m -Xmx384m -cp ${ROOT_DIR}transport-0.1-SNAPSHOT-jar-with-dependencies.jar:${ROOT_DIR}config
-        -Dconfig.properties=config/transport.properties
+	OPTIONS="-Xms384m -Xmx384m -cp ${ROOT_DIR}crash-data-0.1-SNAPSHOT-jar-with-dependencies.jar:${ROOT_DIR}config
+        -Dconfig.properties=config/crash-data.properties
         -Dbase.dir=${ROOT_DIR}
         -Dcom.sun.management.jmxremote
         -Dcom.sun.management.jmxremote.port=9010
@@ -34,15 +34,15 @@ startService ()
         -Dcom.sun.management.jmxremote.ssl=false
 	"
 
-	#java ${OPTIONS} com.crash.metro.CrashServiceMain
-	nohup java ${OPTIONS} com.crash.metro.CrashServiceMain  1>> ${STD_OUT_LOG} 2>&1 &
+	java ${OPTIONS} com.moulliet.metro.CrashServiceMain
+	#nohup java ${OPTIONS} com.moulliet.metro.CrashServiceMain  1>> ${STD_OUT_LOG} 2>&1 &
 
 	echo -n $! > "${PID_FILE}"
 	echo STARTED
 }
 stopService ()
 {
-	echo "Stopping transport service ... "
+	echo "Stopping crash-data service ... "
 	if [ ! -e "${PID_FILE}" ]
 	then
 		echo "error: could not find file ${PID_FILE}"

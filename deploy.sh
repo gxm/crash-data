@@ -1,82 +1,66 @@
 #!/bin/sh
-#can this be moved into scripts dir?
+
 if [ $# != 1 ]
 then
-	echo "Usage: bash $0 {deploy|restart|build|load}"
+	echo "Usage: bash $0 {deploy|restart|build|loadData}"
+	echo "deploy: pushes out static files to the server"
+	echo "build: performs a clean build and runs test, then deploys with a restart"
 	exit
 fi
 
-SCRIPTS="transport/scripts/"
+SCRIPTS="crash-data/scripts/"
 
 build()
 {
-    mvn package assembly:single
-    STATUS=$?
-    if [ ${STATUS} -eq 0 ]; then
-        echo "Build Successful"
-    else
-        echo "Build Failed, exiting"
-        exit
-    fi
-    #rsync -avr target/transport-0.1-SNAPSHOT-jar-with-dependencies.jar transports:transport
+    # this requires JAVA_HOME to be set for maven
+#    mvn package assembly:single
+#    STATUS=$?
+#    if [ ${STATUS} -eq 0 ]; then
+#        echo "Build Successful"
+#    else
+#        echo "Build Failed, exiting"
+#        exit
+#    fi
+    #rsync -avr target/crash-data-0.1-SNAPSHOT-jar-with-dependencies.jar crash01:crash-data/
+    echo "uncomment"
 }
 
 deploy()
 {
-    deployService
-    deployWeb
-}
-
-deployService()
-{
     echo "deploying files"
-    rsync -avr raw/* transports:transport/raw
-    rsync -avr config/prod/ transports:transport/config/
-    rsync -avr scripts/*.sh transports:${SCRIPTS}
-    ssh transports chmod u+x ${SCRIPTS}*.sh
+    rsync -avr config/prod/ crash01:crash-data/config/
+    rsync -avr scripts/*.sh crash01:${SCRIPTS}
+    ssh crash01 chmod u+x ${SCRIPTS}*.sh
+    rsync -avr public/ crash01:crash-data/public/
 }
 
-deployWeb()
+loadData()
 {
-    echo "deploying web files"
-    rsync -avr web/ transport:transport.moulliet.com/
-}
-
-load()
-{
-    echo "loading data"
-    ssh transports bash ${SCRIPTS}load.sh
+    echo "loadDataing data"
+    ssh crash01 bash ${SCRIPTS}loadData.sh
 }
 
 restart()
 {
     echo "restarting service"
-    ssh transports bash ${SCRIPTS}transport.sh restart
-    #todo this requires NOPWD set for user
-    #ssh transports sudo service apache2 restart
+    ssh crash01 bash ${SCRIPTS}crash-data.sh restart
 }
-
 
 case $1 in
 	deploy)
 		deploy
-		;;
-	restart)
-		deploy
-		restart
 		;;
 	build)
 		build
 		deploy
 		restart
 		;;
-	load)
+	loadData)
 		build
-		deployService
-		load
-		deployWeb
+		deploy
+		loadData
 		restart
 		;;
 	*)
-		echo "Usage: bash $0 {deploy|restart|build|load}" >&2
+		echo "Usage: bash $0 {deploy|build|loadData}" >&2
 esac

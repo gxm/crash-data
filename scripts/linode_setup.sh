@@ -3,16 +3,16 @@
 # These are the commands to configure a linode server to host this application
 #
 
-ssh root@74.207.248.81
+ssh root@104.237.130.146
 sudo echo "crash01" > /etc/hostname
 hostname -F /etc/hostname
 
 sudo useradd crash -m -s /bin/bash
 sudo passwd crash
 sudo adduser crash sudo
-
-#old
-sudo apt-get install openjdk-7-jdk
+su - crash
+mkdir crash-data
+exit
 
 sudo add-apt-repository ppa:webupd8team/java
 sudo apt-get update
