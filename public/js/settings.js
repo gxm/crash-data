@@ -20,8 +20,12 @@ function CrashSettings($scope) {
 	that.y2010 = $scope.search('y2010', true);
 	that.y2011 = $scope.search('y2011', true);
 	that.y2012 = $scope.search('y2012', true);
-
-
+	that.angle = $scope.search('angle', true);
+	that.headOn = $scope.search('headOn', true);
+	that.rearEnd = $scope.search('rearEnd', true);
+	that.sideSwipe = $scope.search('sideSwipe', true);
+	that.turning = $scope.search('turning', true);
+	that.other = $scope.search('other', true);
 }
 
 CrashSettings.prototype.corners = function ($scope) {
