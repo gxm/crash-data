@@ -51,16 +51,23 @@
             <div id="settingsTable" class="collapse hide">
                     <table cellpadding="2" class="table table-condensed table-bordered sideTable">
                         <tr>
-                            <th>Type:</th>
+                            <th>Vehicles:</th>
                             <td><div title="Show crashes involving only cars"><label for="Car"><input id="Car" type="checkbox" ng-model="settings.cars" ng-change="loadData()"> Cars Only</label> </div></td>
                             <td><div title="Show crashes involving a bicycle"> <label for="Bike"><input id="Bike" type="checkbox" ng-model='settings.bikes' ng-change="loadData()"> Bike(s)</label></div></td>
                             <td><div title="Show crashes involving a pedestrian"><label for="Ped"><input id="Ped" type="checkbox" ng-model='settings.peds' ng-change="loadData()"> Ped(s)</label> </div></td>
                         </tr>
                         <tr>
-                            <th>Filter By:</th>
-                            <td><label for="Alcohol"><input id="Alcohol" type="checkbox" ng-model='settings.alcohol' ng-change="loadData()"> Alcohol</label></td>
-                            <td><div title="Only show crashes with an light injury"><label for="Injury"><input id="Injury" type="checkbox" ng-model='settings.injury' ng-change="loadData()"> Injury</label></div>  </td>
-                            <td><div title="Only show accidents with a serious injury or fatality"><label for="Fatality"><input id="Fatality" type="checkbox" ng-model='settings.fatality' ng-change="loadData()"> Serious Injury</label></div>  </td>
+                            <th>Severity:</th>
+                            <td><div title="Only show accidents with a fatality"><label for="Fatality"><input id="Fatality" type="checkbox" ng-model='settings.fatal' ng-change="loadData()"> Fatality</label></div>  </td>
+                            <td><div title="Only show crashes with a severe injury"><label for="InjuryA"><input id="InjuryA" type="checkbox" ng-model='settings.injuryA' ng-change="loadData()"> Injury A</label></div>  </td>
+                            <td><div title="Only show crashes with a moderate injury"><label for="InjuryB"><input id="InjuryB" type="checkbox" ng-model='settings.injuryB' ng-change="loadData()"> Injury B</label></div>  </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><div title="Only show crashes with a light injury"><label for="InjuryC"><input id="InjuryC" type="checkbox" ng-model='settings.injuryC' ng-change="loadData()"> Injury C</label></div>  </td>
+                            <td><div title="Show crashes with only property damage"><label for="Property"><input id="Property" type="checkbox" ng-model='settings.property' ng-change="loadData()"> Property</label></div>  </td>
+                            <td><div title="Only show crashes involving alcohol"><label for="Alcohol"><input id="Alcohol" type="checkbox" ng-model='settings.alcohol' ng-change="loadData()"> Alcohol</label></div></td>
+
                         </tr>
                         <tr>
                             <th>Light:</th>
