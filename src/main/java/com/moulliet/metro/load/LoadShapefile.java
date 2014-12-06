@@ -60,7 +60,18 @@ public class LoadShapefile {
         object.put("type", dbObject.get("COLLIS_TYP"));
         object.put("year", Integer.parseInt((String) dbObject.get("CRASH_YR_N")));
         object.put("loc", dbObject.get("loc"));
-        object.put("severity", ((String) dbObject.get("CRASH_SV_T")).toUpperCase());
+        if ((int) dbObject.get("TOT_FATAL_") > 0) {
+            object.put("severity", 4);
+        } else if ((int) dbObject.get("TOT_INJ_LV") > 0) {
+            object.put("severity", 3);
+        } else if ((int) dbObject.get("TOT_INJ__1") > 0) {
+            object.put("severity", 2);
+        } else if ((int) dbObject.get("TOT_INJ__2") > 0) {
+            object.put("severity", 1);
+        } else {
+            object.put("severity", 0);
+        }
+
         return object;
     }
 }

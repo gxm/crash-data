@@ -69,23 +69,23 @@ public class CrashQuery {
         if (fatal && injuryA && injuryB && injuryC && property) {
             return;
         } else if (!fatal && !injuryA && !injuryB && !injuryC && !property) {
-            query.append("severity", "X");
+            query.append("severity", new BasicDBObject("$lt", 0));
         } else {
             BasicDBList list = new BasicDBList();
             if (fatal) {
-                list.add("FATAL");
+                list.add(4);
             }
             if (injuryA) {
-                list.add("INJURY A");
+                list.add(3);
             }
             if (injuryB) {
-                list.add("INJURY B");
+                list.add(2);
             }
             if (injuryC) {
-                list.add("INJURY C");
+                list.add(1);
             }
             if (property) {
-                list.add("PDO");
+                list.add(0);
             }
             query.append("severity", new BasicDBObject("$in", list));
         }
