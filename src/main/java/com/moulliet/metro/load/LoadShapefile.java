@@ -25,8 +25,8 @@ public class LoadShapefile {
 
     public static int load(String file, String database, String collection) throws IOException {
         MongoClient mongo = new MongoClient();
-        DB metro = mongo.getDB(database);
-        DBCollection crashes = metro.getCollection(collection);
+        mongo.getDB(database).getCollection(collection).drop();
+        DBCollection crashes = mongo.getDB(database).getCollection(collection);
         DBObject index2d = BasicDBObjectBuilder.start("loc", "2dsphere").get();
         crashes.createIndex(index2d);
         int count = 0;

@@ -52,8 +52,10 @@ case $1 in
 		restart
 		;;
 	loadData)
+	    build
 		deploy
 		loadData
+		restart
 		;;
 	*)
 		echo "Usage: bash $0 {deploy|build|loadData}" >&2
