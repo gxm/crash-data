@@ -31,11 +31,6 @@ public class CrashQueryTest extends TestCase {
                 crashQuery.getQuery().toString());
     }
 
-    public void testHurtAll() {
-        crashQuery.hurt(true, true);
-        assertEquals("{ \"$or\" : [ { \"injury\" : { \"$gt\" : 0}} , { \"fatality\" : { \"$gt\" : 0}}]}", crashQuery.getQuery().toString());
-    }
-
     public void testDay() {
         crashQuery.light(true, false, false);
         assertEquals("{ \"light\" : { \"$in\" : [ 0 , 1]}}", crashQuery.getQuery().toString());
@@ -79,13 +74,6 @@ public class CrashQueryTest extends TestCase {
     public void testYears() {
         crashQuery.years(true, false, true, false, true, false, false);
         assertEquals("{ \"year\" : { \"$in\" : [ 2007 , 2009 , 2011]}}", crashQuery.getQuery().toString());
-    }
-
-    public void testBugWithNoCarsInjuryAndFatality() {
-        crashQuery.vehicle(false, true, true);
-        crashQuery.hurt(true, true);
-        assertEquals("{ \"$and\" : [ { \"$or\" : [ { \"injury\" : { \"$gt\" : 0}} , { \"fatality\" : { \"$gt\" : 0}}]} , { \"$or\" : [ { \"bike\" : { \"$gt\" : 0}} , { \"ped\" : { \"$gt\" : 0}}]}]}",
-                crashQuery.getQuery().toString());
     }
     
     public void testTypeAll() {

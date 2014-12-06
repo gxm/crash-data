@@ -65,16 +65,29 @@ public class CrashQuery {
         }
     }
 
-    public void hurt(boolean injury, boolean fatality) {
-        if (injury && fatality) {
+    public void severity(boolean fatal, boolean injuryA, boolean injuryB, boolean injuryC, boolean property) {
+        if (fatal && injuryA && injuryB && injuryC && property) {
+            return;
+        } else if (!fatal && !injuryA && !injuryB && !injuryC && !property) {
+            query.append("severity", "X");
+        } else {
             BasicDBList list = new BasicDBList();
-            list.add(new BasicDBObject("injury", new BasicDBObject("$gt", 0)));
-            list.add(new BasicDBObject("fatality", new BasicDBObject("$gt", 0)));
-            addOr(list);
-        } else if (injury) {
-            query.append("injury", new BasicDBObject("$gt", 0));
-        } else if (fatality) {
-            query.append("fatality", new BasicDBObject("$gt", 0));
+            if (fatal) {
+                list.add("FATAL");
+            }
+            if (injuryA) {
+                list.add("INJURY A");
+            }
+            if (injuryB) {
+                list.add("INJURY B");
+            }
+            if (injuryC) {
+                list.add("INJURY C");
+            }
+            if (property) {
+                list.add("PDO");
+            }
+            query.append("severity", new BasicDBObject("$in", list));
         }
     }
 

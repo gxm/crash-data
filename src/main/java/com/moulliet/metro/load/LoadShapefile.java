@@ -60,6 +60,7 @@ public class LoadShapefile {
         object.put("type", dbObject.get("COLLIS_TYP"));
         object.put("year", Integer.parseInt((String) dbObject.get("CRASH_YR_N")));
         object.put("loc", dbObject.get("loc"));
+        object.put("severity", ((String) dbObject.get("CRASH_SV_T")).toUpperCase());
         return object;
     }
 }

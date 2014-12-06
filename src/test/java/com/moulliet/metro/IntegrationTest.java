@@ -62,31 +62,6 @@ public class IntegrationTest {
     }
 
     @Test
-    public void testInjury() throws IOException {
-        ClientResponse response = client.resource(URL + "&injury=true").get(ClientResponse.class);
-        assertEquals(200, response.getStatus());
-        String entity = trimEntity(response.getEntity(String.class));
-        System.out.println(trimEntity(entity));
-        JsonNode rootNode = mapper.readTree(entity);
-        assertEquals(2, rootNode.get("max").asInt());
-        assertEquals(3, rootNode.get("total").asInt());
-        assertEquals(3, rootNode.get("summary").get("injury").asInt());
-    }
-
-    @Test
-    public void testFatality() throws IOException {
-        ClientResponse response = client.resource(URL + "&fatality=true").get(ClientResponse.class);
-        assertEquals(200, response.getStatus());
-        String entity = trimEntity(response.getEntity(String.class));
-        System.out.println(trimEntity(entity));
-        JsonNode rootNode = mapper.readTree(entity);
-        assertEquals(1, rootNode.get("max").asInt());
-        assertEquals(1, rootNode.get("total").asInt());
-        assertEquals(1, rootNode.get("summary").get("fatality").asInt());
-        assertEquals(0, rootNode.get("summary").get("injury").asInt());
-    }
-
-    @Test
     public void testAlcohol() throws IOException {
         ClientResponse response = client.resource(URL + "&alcohol=true").get(ClientResponse.class);
         assertEquals(200, response.getStatus());
@@ -227,6 +202,29 @@ public class IntegrationTest {
         JsonNode rootNode = mapper.readTree(entity);
         assertEquals(2, rootNode.get("total").asInt());
     }
+
+    @Test
+    public void testSeverity() throws IOException {
+        ClientResponse response = client.resource(URL +
+                "&fatal=true&injuryA=false&injuryB=true&injuryC=false&property=true").get(ClientResponse.class);
+        assertEquals(200, response.getStatus());
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(trimEntity(entity));
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(3, rootNode.get("total").asInt());
+    }
+
+    @Test
+    public void testSeveritySome() throws IOException {
+        ClientResponse response = client.resource(URL +
+                "&fatal=false&injuryA=true&injuryB=false&injuryC=true&property=false").get(ClientResponse.class);
+        assertEquals(200, response.getStatus());
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(trimEntity(entity));
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(2, rootNode.get("total").asInt());
+    }
+
 
     private String trimEntity(String entity) {
         return StringUtils.removeEnd(StringUtils.removeStart(entity, "stuff("), ")");
