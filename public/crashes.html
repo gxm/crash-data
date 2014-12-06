@@ -86,6 +86,18 @@
                             <td><label for="2011"><input id="2011" type="checkbox" ng-model='settings.y2011' ng-change="loadData()"> 2011</label></td>
                             <td><label for="2012"><input id="2012" type="checkbox" ng-model='settings.y2012' ng-change="loadData()"> 2012</label></td>
                         </tr>
+                        <tr>
+                            <th>Collision</th>
+                            <td><label for="angle"><input id="angle" type="checkbox" ng-model='settings.angle' ng-change="loadData()"> Angle</label></td>
+                            <td><label for="headOn"><input id="headOn" type="checkbox" ng-model='settings.headOn' ng-change="loadData()"> Head On</label></td>
+                            <td><label for="rearEnd"><input id="rearEnd" type="checkbox" ng-model='settings.rearEnd' ng-change="loadData()"> Rear End</label></td>
+                        </tr>
+                        <tr>
+                            <th>Type:</th>
+                            <td><label for="sideSwipe"><input id="sideSwipe" type="checkbox" ng-model='settings.sideSwipe' ng-change="loadData()"> Side Swipe</label></td>
+                            <td><label for="turning"><input id="turning" type="checkbox" ng-model='settings.turning' ng-change="loadData()"> Turning</label></td>
+                            <td><label for="other"><input id="other" type="checkbox" ng-model='settings.other' ng-change="loadData()"> Other</label></td>
+                        </tr>
                     </table>
             </div>
             <div id="summaryButton">
@@ -125,9 +137,9 @@
                         <td>Rear End</td><td>{{summary.rearEnd}}</td>
                     </tr>
                     <tr>
-                        <td>Other</td><td>{{summary.other}}</td>
-                        <td>Turning</td><td>{{summary.turning}}</td>
                         <td>Side Swipe</td><td>{{summary.sideSwipe}}</td>
+                        <td>Turning</td><td>{{summary.turning}}</td>
+                        <td>Other</td><td>{{summary.other}}</td>
                     </tr>
                 </table>
             </div>

@@ -53,7 +53,13 @@ public class CrashResource {
                            @DefaultValue("true") @QueryParam("y2010") boolean y2010,
                            @DefaultValue("true") @QueryParam("y2011") boolean y2011,
                            @DefaultValue("true") @QueryParam("y2012") boolean y2012,
-                           @DefaultValue("true") @QueryParam("y2013") boolean y2013
+                           @DefaultValue("true") @QueryParam("y2013") boolean y2013,
+                           @DefaultValue("true") @QueryParam("angle") boolean angle,
+                           @DefaultValue("true") @QueryParam("headOn") boolean headOn,
+                           @DefaultValue("true") @QueryParam("rearEnd") boolean rearEnd,
+                           @DefaultValue("true") @QueryParam("sideSwipe") boolean sideSwipe,
+                           @DefaultValue("true") @QueryParam("turning") boolean turning,
+                           @DefaultValue("true") @QueryParam("other") boolean other
     ) throws Exception {
         try {
             final Timer timer = new Timer();
@@ -67,6 +73,7 @@ public class CrashResource {
             query.light(day, night, twilight);
             query.surface(dry, wet, snowIce);
             query.years(y2007, y2008, y2009, y2010, y2011, y2012, y2013);
+            query.type(angle, headOn, rearEnd, sideSwipe, turning, other);
 
             logger.debug(query.toString());
 
@@ -74,9 +81,9 @@ public class CrashResource {
 
             CrashFactory.getMongoDao().query(query.getQuery(), new MongoQueryCallback() {
                 public void callback(Iterator<DBObject> dbObjectIterator) {
-                    logger.debug("crash call in " + timer.reset() + " millis.");
+                    logger.debug("crash query in {} millis.", timer.reset());
                     crashes.loadResults(dbObjectIterator, getDecimalFormat(zoom));
-                    logger.debug("loaded results in " + timer.reset() + " millis.");
+                    logger.debug("loaded {} crashes in {} millis.", crashes.size(), timer.reset());
                 }
             });
 
@@ -84,7 +91,8 @@ public class CrashResource {
                 public void write(OutputStream outputStream) throws IOException, WebApplicationException {
                     try {
                         outputStream.write((callback + "(").getBytes());
-                        crashes.aggregatedCrashes(outputStream);
+                        int points = crashes.aggregatedCrashes(outputStream);
+                        logger.debug("wrote {} points in {} millis.", points, timer.reset());
                         outputStream.write(");".getBytes());
                     } catch (IOException e) {
                         logger.warn("IOException ", e);

@@ -2,12 +2,11 @@ package com.moulliet.metro.crash;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
 
 /**
+ * This class represents a crash as displayed by the heatmap.
  * { "_id" : { "$oid" : "51e07dc30364a5f3a7cc7a75"} ,
  * "loc" : { "type" : "Point" ,
  * "coordinates" : [ -122.6671371459961 , 45.511680603027344]} ,
@@ -22,10 +21,8 @@ import java.text.DecimalFormat;
  * "year" : 2012 , "month" : 10 , "day" : 30}
  */
 public class Crash  {
-    private static final Logger logger = LoggerFactory.getLogger(Crash.class);
 
     private final Point point;
-    private DBObject dbObject;
     private boolean alcohol;
     private int injury;
     private int fatality;
@@ -36,7 +33,6 @@ public class Crash  {
     private String type;
 
     public Crash(DBObject dbObject, DecimalFormat format) {
-        this.dbObject = dbObject;
         DBObject loc = (DBObject) dbObject.get("loc");
         BasicDBList coordinates = (BasicDBList) loc.get("coordinates");
         injury = (Integer) dbObject.get("injury");
