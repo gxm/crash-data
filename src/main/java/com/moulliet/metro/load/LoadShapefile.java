@@ -50,8 +50,6 @@ public class LoadShapefile {
             return null;
         }
         BasicDBObject object = new BasicDBObject();
-        object.put("injury", dbObject.get("TOT_INJ_CN"));
-        object.put("fatality", dbObject.get("TOT_FATAL_"));
         object.put("alcohol", (int) dbObject.get("ALCHL_INVL") > 0);
         object.put("ped", dbObject.get("TOT_PED_CN"));
         object.put("bike", dbObject.get("TOT_PEDCYC"));

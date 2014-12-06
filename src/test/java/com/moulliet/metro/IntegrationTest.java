@@ -71,7 +71,6 @@ public class IntegrationTest {
         assertEquals(1, rootNode.get("max").asInt());
         assertEquals(1, rootNode.get("total").asInt());
         assertEquals(1, rootNode.get("summary").get("alcohol").asInt());
-        assertEquals(0, rootNode.get("summary").get("fatality").asInt());
     }
 
     @Test
@@ -212,6 +211,11 @@ public class IntegrationTest {
         System.out.println(trimEntity(entity));
         JsonNode rootNode = mapper.readTree(entity);
         assertEquals(3, rootNode.get("total").asInt());
+        assertEquals(1, rootNode.get("summary").get("fatal").asInt());
+        assertEquals(0, rootNode.get("summary").get("injuryA").asInt());
+        assertEquals(1, rootNode.get("summary").get("injuryB").asInt());
+        assertEquals(0, rootNode.get("summary").get("injuryC").asInt());
+        assertEquals(1, rootNode.get("summary").get("property").asInt());
     }
 
     @Test
@@ -223,6 +227,11 @@ public class IntegrationTest {
         System.out.println(trimEntity(entity));
         JsonNode rootNode = mapper.readTree(entity);
         assertEquals(2, rootNode.get("total").asInt());
+        assertEquals(0, rootNode.get("summary").get("fatal").asInt());
+        assertEquals(1, rootNode.get("summary").get("injuryA").asInt());
+        assertEquals(0, rootNode.get("summary").get("injuryB").asInt());
+        assertEquals(1, rootNode.get("summary").get("injuryC").asInt());
+        assertEquals(0, rootNode.get("summary").get("property").asInt());
     }
 
 
