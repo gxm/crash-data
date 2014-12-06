@@ -21,10 +21,6 @@ public class CrashQuery {
         new PolygonQuery(north, south, east, west).getQuery(query);
     }
 
-    public void location() {
-        new PolygonQuery().getQuery(query);
-    }
-
     public void vehicle(boolean cars, boolean bikes, boolean peds) {
         if (cars && bikes && peds) {
             return;
@@ -138,6 +134,41 @@ public class CrashQuery {
                 list.add(4);
             }
             query.append("surface", new BasicDBObject("$in", list));
+        }
+    }
+
+    public void type(boolean angle, boolean headOn, boolean rearEnd, boolean sideSwipe, boolean turning, boolean other) {
+        if (angle && headOn && rearEnd && turning && sideSwipe && other) {
+            return;
+        } else if (!angle && !headOn && !rearEnd && !turning && !sideSwipe && !other) {
+            query.append("type", "X");
+        } else {
+            BasicDBList list = new BasicDBList();
+            if (angle) {
+                list.add("1");
+            }
+            if (headOn) {
+                list.add("2");
+            }
+            if (rearEnd) {
+                list.add("3");
+            }
+            if (sideSwipe) {
+                list.add("4");
+                list.add("5");
+            }
+            if (turning) {
+                list.add("6");
+            }
+            if (other) {
+                list.add("7");
+                list.add("8");
+                list.add("9");
+                list.add("0");
+                list.add("-");
+                list.add("&");
+            }
+            query.append("type", new BasicDBObject("$in", list));
         }
     }
 
