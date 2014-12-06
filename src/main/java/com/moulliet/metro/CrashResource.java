@@ -74,9 +74,9 @@ public class CrashResource {
 
             CrashFactory.getMongoDao().query(query.getQuery(), new MongoQueryCallback() {
                 public void callback(Iterator<DBObject> dbObjectIterator) {
-                    logger.debug("crash call in " + timer.reset() + " millis.");
+                    logger.debug("crash query in {} millis.", timer.reset());
                     crashes.loadResults(dbObjectIterator, getDecimalFormat(zoom));
-                    logger.debug("loaded results in " + timer.reset() + " millis.");
+                    logger.debug("loaded {} crashes in {} millis.", crashes.size(), timer.reset());
                 }
             });
 
@@ -84,7 +84,8 @@ public class CrashResource {
                 public void write(OutputStream outputStream) throws IOException, WebApplicationException {
                     try {
                         outputStream.write((callback + "(").getBytes());
-                        crashes.aggregatedCrashes(outputStream);
+                        int points = crashes.aggregatedCrashes(outputStream);
+                        logger.debug("wrote {} points in {} millis.", points, timer.reset());
                         outputStream.write(");".getBytes());
                     } catch (IOException e) {
                         logger.warn("IOException ", e);
