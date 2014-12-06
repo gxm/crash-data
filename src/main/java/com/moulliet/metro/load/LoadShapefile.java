@@ -25,8 +25,8 @@ public class LoadShapefile {
 
     public static int load(String file, String database, String collection) throws IOException {
         MongoClient mongo = new MongoClient();
-        DB metro = mongo.getDB(database);
-        DBCollection crashes = metro.getCollection(collection);
+        mongo.getDB(database).getCollection(collection).drop();
+        DBCollection crashes = mongo.getDB(database).getCollection(collection);
         DBObject index2d = BasicDBObjectBuilder.start("loc", "2dsphere").get();
         crashes.createIndex(index2d);
         int count = 0;
@@ -50,8 +50,6 @@ public class LoadShapefile {
             return null;
         }
         BasicDBObject object = new BasicDBObject();
-        object.put("injury", dbObject.get("TOT_INJ_CN"));
-        object.put("fatality", dbObject.get("TOT_FATAL_"));
         object.put("alcohol", (int) dbObject.get("ALCHL_INVL") > 0);
         object.put("ped", dbObject.get("TOT_PED_CN"));
         object.put("bike", dbObject.get("TOT_PEDCYC"));
@@ -60,6 +58,18 @@ public class LoadShapefile {
         object.put("type", dbObject.get("COLLIS_TYP"));
         object.put("year", Integer.parseInt((String) dbObject.get("CRASH_YR_N")));
         object.put("loc", dbObject.get("loc"));
+        if ((int) dbObject.get("TOT_FATAL_") > 0) {
+            object.put("severity", 4);
+        } else if ((int) dbObject.get("TOT_INJ_LV") > 0) {
+            object.put("severity", 3);
+        } else if ((int) dbObject.get("TOT_INJ__1") > 0) {
+            object.put("severity", 2);
+        } else if ((int) dbObject.get("TOT_INJ__2") > 0) {
+            object.put("severity", 1);
+        } else {
+            object.put("severity", 0);
+        }
+
         return object;
     }
 }

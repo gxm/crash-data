@@ -6,8 +6,11 @@ function CrashSettings($scope) {
 	that.peds = $scope.search('peds', true);
 	that.bikes = $scope.search('bikes', true);
 	that.alcohol = $scope.search('alcohol', false);
-	that.injury = $scope.search('injury', false);
-	that.fatality = $scope.search('fatality', false);
+	that.fatal = $scope.search('fatal', true);
+	that.injuryA = $scope.search('injuryA', true);
+	that.injuryB = $scope.search('injuryB', true);
+	that.injuryC = $scope.search('injuryC', true);
+	that.property = $scope.search('property', true);
 	that.day = $scope.search('day', true);
 	that.night = $scope.search('night', true);
 	that.twilight = $scope.search('twilight', true);

@@ -24,8 +24,7 @@ public class Crash  {
 
     private final Point point;
     private boolean alcohol;
-    private int injury;
-    private int fatality;
+    private int severity;
     private int ped;
     private int bike;
     private int surface;
@@ -35,8 +34,7 @@ public class Crash  {
     public Crash(DBObject dbObject, DecimalFormat format) {
         DBObject loc = (DBObject) dbObject.get("loc");
         BasicDBList coordinates = (BasicDBList) loc.get("coordinates");
-        injury = (Integer) dbObject.get("injury");
-        fatality = (Integer) dbObject.get("fatality");
+        severity = (Integer) dbObject.get("severity");
         alcohol = (Boolean) dbObject.get("alcohol");
         ped = (Integer) dbObject.get("ped");
         bike = (Integer) dbObject.get("bike");
@@ -58,12 +56,8 @@ public class Crash  {
         return alcohol;
     }
 
-    public int getInjury() {
-        return injury;
-    }
-
-    public int getFatality() {
-        return fatality;
+    public int getSeverity() {
+        return severity;
     }
 
     public int getPed() {

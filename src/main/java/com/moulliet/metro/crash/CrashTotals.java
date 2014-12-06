@@ -14,8 +14,11 @@ public class CrashTotals {
     private int bikes = 0;
     private int peds = 0;
     private int alcohol = 0;
-    private int injury = 0;
-    private int fatality = 0;
+    private int injuryA = 0;
+    private int injuryB = 0;
+    private int injuryC = 0;
+    private int fatal = 0;
+    private int property = 0;
     private int day = 0;
     private int night = 0;
     private int twilight = 0;
@@ -37,8 +40,7 @@ public class CrashTotals {
             cars++;
         }
         if (crash.isAlcohol()) alcohol++;
-        if (crash.getInjury() > 0) injury++;
-        if (crash.getFatality() > 0) fatality++;
+        severity(crash);
         surface(crash);
         light(crash);
         type(crash);
@@ -51,8 +53,11 @@ public class CrashTotals {
         json.writeNumberField("bikes", bikes);
         json.writeNumberField("peds", peds);
         json.writeNumberField("alcohol", alcohol);
-        json.writeNumberField("injury", injury);
-        json.writeNumberField("fatality", fatality);
+        json.writeNumberField("injuryA", injuryA);
+        json.writeNumberField("injuryB", injuryB);
+        json.writeNumberField("injuryC", injuryC);
+        json.writeNumberField("property", property);
+        json.writeNumberField("fatal", fatal);
         json.writeNumberField("day", day);
         json.writeNumberField("night", night);
         json.writeNumberField("twilight", twilight);
@@ -104,6 +109,29 @@ public class CrashTotals {
                 break;
             default:
                 day++;
+                break;
+        }
+    }
+
+    private void severity(Crash crash) {
+        switch (crash.getSeverity()) {
+            case 0:
+                property++;
+                break;
+            case 1:
+                injuryC++;
+                break;
+            case 2:
+                injuryB++;
+                break;
+            case 3:
+                injuryA++;
+                break;
+            case 4:
+                fatal++;
+                break;
+            default:
+                property++;
                 break;
         }
     }

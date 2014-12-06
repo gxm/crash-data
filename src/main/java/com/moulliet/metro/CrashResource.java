@@ -38,8 +38,6 @@ public class CrashResource {
                            @DefaultValue("true") @QueryParam("peds") boolean peds,
                            @DefaultValue("true") @QueryParam("bikes") boolean bikes,
                            @DefaultValue("false") @QueryParam("alcohol") boolean alcohol,
-                           @DefaultValue("false") @QueryParam("injury") boolean injury,
-                           @DefaultValue("false") @QueryParam("fatality") boolean fatality,
                            @DefaultValue("true") @QueryParam("day") boolean day,
                            @DefaultValue("true") @QueryParam("night") boolean night,
                            @DefaultValue("true") @QueryParam("twilight") boolean twilight,
@@ -59,7 +57,12 @@ public class CrashResource {
                            @DefaultValue("true") @QueryParam("rearEnd") boolean rearEnd,
                            @DefaultValue("true") @QueryParam("sideSwipe") boolean sideSwipe,
                            @DefaultValue("true") @QueryParam("turning") boolean turning,
-                           @DefaultValue("true") @QueryParam("other") boolean other
+                           @DefaultValue("true") @QueryParam("other") boolean other,
+                           @DefaultValue("true") @QueryParam("fatal") boolean fatal,
+                           @DefaultValue("true") @QueryParam("injuryA") boolean injuryA,
+                           @DefaultValue("true") @QueryParam("injuryB") boolean injuryB,
+                           @DefaultValue("true") @QueryParam("injuryC") boolean injuryC,
+                           @DefaultValue("true") @QueryParam("property") boolean property
     ) throws Exception {
         try {
             final Timer timer = new Timer();
@@ -69,11 +72,11 @@ public class CrashResource {
 
             query.vehicle(cars, bikes, peds);
             query.alcohol(alcohol);
-            query.hurt(injury, fatality);
             query.light(day, night, twilight);
             query.surface(dry, wet, snowIce);
             query.years(y2007, y2008, y2009, y2010, y2011, y2012, y2013);
             query.type(angle, headOn, rearEnd, sideSwipe, turning, other);
+            query.severity(fatal, injuryA, injuryB, injuryC, property);
 
             logger.debug(query.toString());
 
