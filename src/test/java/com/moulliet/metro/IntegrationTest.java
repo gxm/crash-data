@@ -206,6 +206,28 @@ public class IntegrationTest {
         assertEquals(2, rootNode.get("total").asInt());
     }
 
+    @Test
+    public void testTypeAll() throws IOException {
+        ClientResponse response = client.resource(URL +
+                "&angle=true&headOn=false&rearEnd=true&sideSwipe=false&turning=true&other=true").get(ClientResponse.class);
+        assertEquals(200, response.getStatus());
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(trimEntity(entity));
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(5, rootNode.get("total").asInt());
+    }
+
+    @Test
+    public void testTypeSome() throws IOException {
+        ClientResponse response = client.resource(URL +
+                "&angle=false&headOn=false&rearEnd=true&sideSwipe=false&turning=true&other=false").get(ClientResponse.class);
+        assertEquals(200, response.getStatus());
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(trimEntity(entity));
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(2, rootNode.get("total").asInt());
+    }
+
     private String trimEntity(String entity) {
         return StringUtils.removeEnd(StringUtils.removeStart(entity, "stuff("), ")");
     }
