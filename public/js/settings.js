@@ -32,12 +32,12 @@ function CrashSettings($scope) {
 }
 
 CrashSettings.prototype.corners = function ($scope) {
-	var bounds = $scope.googleMap.getBounds();
+	var bounds = $scope.map.getBounds();
 	return {
-		north: $scope.latlng(bounds.getNorthEast().lat()),
-		south: $scope.latlng(bounds.getSouthWest().lat()),
-		east: $scope.latlng(bounds.getNorthEast().lng()),
-		west: $scope.latlng(bounds.getSouthWest().lng())
+		north: $scope.latlng(bounds.getNorthEast().lat),
+		south: $scope.latlng(bounds.getSouthWest().lat),
+		east: $scope.latlng(bounds.getNorthEast().lng),
+		west: $scope.latlng(bounds.getSouthWest().lng)
 	};
 };
 

@@ -12,51 +12,10 @@ function Common($scope, $http, $location) {
         $scope.host = $scope.hosts[1];
     }
 
-    $scope.infoDivRefresh = function infoDivRefresh() {
-        var infoDiv = $('.infoDiv');
-        infoDiv.attr('class', 'infoDiv well');
-        infoDiv.text('Refreshing Data...');
-    }
-
-    $scope.config = function config(heatmap, title) {
-        title = title || 'Crash Count';
-        return {
-            element: heatmap,
-            'radius': 20,
-            'visible': true,
-            'opacity': 100,
-            'gradient': {
-                0.2: 'rgb(0,0,255)',
-                0.4: 'rgb(0,255,255)',
-                0.6: 'rgb(0,255,0)',
-                0.8: 'yellow',
-                1.0: 'rgb(255,0,0)'
-            },
-
-            legend: {
-                position: 'br',
-                title: title
-            }
-        }
-    };
-
-    $scope.options = function options(lat, lng, controls, zoom) {
-        return {
-            zoom: zoom,
-            center: new google.maps.LatLng(lat, lng),
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            disableDefaultUI: false,
-            scrollwheel: true,
-            draggable: true,
-            navigationControl: true,
-            mapTypeControl: false,
-            scaleControl: false,
-            disableDoubleClickZoom: false,
-            streetViewControl: false,
-            zoomControl: controls,
-            zoomControlOptions: {style: google.maps.ZoomControlStyle.SMALL},
-            panControl: false
-        }
+    $scope.refreshDiv = function refreshDiv() {
+        var refreshDiv = $('.refreshDiv');
+        refreshDiv.attr('class', 'refreshDiv well');
+        refreshDiv.text('Refreshing Data...');
     };
 
     $scope.percents = function percents(number, sign) {

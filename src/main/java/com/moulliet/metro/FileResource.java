@@ -28,7 +28,11 @@ public class FileResource {
     @Path("/file/{path:.*}")
     public Response get(@PathParam("path") String path) throws IOException {
         File file = new File(Config.getConfig().getString("public.dir") + path);
-        return Response.ok(FileUtils.readFileToByteArray(file)).build();
+        Response.ResponseBuilder response = Response.ok(FileUtils.readFileToByteArray(file));
+        if (path.endsWith(".js")) {
+            response.type("application/javascript");
+        }
+        return response.build();
     }
 
     private Response redirect() {
