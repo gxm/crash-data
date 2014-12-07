@@ -64,6 +64,15 @@ function CrashController($scope, $http, $location) {
     };
 
     $scope.config = function config() {
+        var legendCanvas = document.createElement('canvas');
+        legendCanvas.width = 100;
+        legendCanvas.height = 10;
+        var min = document.querySelector('#min');
+        var max = document.querySelector('#max');
+        var gradientImg = document.querySelector('#gradient');
+        var legendCtx = legendCanvas.getContext('2d');
+        var gradientCfg = {};
+
         return {
             // radius should be small ONLY if scaleRadius is true (or small radius is intended)
             // if scaleRadius is false it will be the constant radius used in pixels
@@ -77,14 +86,22 @@ function CrashController($scope, $http, $location) {
             //"useLocalExtrema": true,
             latField: 'lat',
             lngField: 'lng',
-            valueField: 'count'
-        };
-        /**
-         *  legend: {
-                position: 'br',
-                title: title
+            valueField: 'count',
+            onExtremaChange: function updateLegend(data) {
+                min.innerHTML = data.min;
+                max.innerHTML = data.max;
+                if (data.gradient != gradientCfg) {
+                    gradientCfg = data.gradient;
+                    var gradient = legendCtx.createLinearGradient(0, 0, 100, 1);
+                    for (var key in gradientCfg) {
+                        gradient.addColorStop(key, gradientCfg[key]);
+                    }
+                    legendCtx.fillStyle = gradient;
+                    legendCtx.fillRect(0, 0, 100, 10);
+                    gradientImg.src = legendCanvas.toDataURL();
+                }
             }
-         */
+        };
     };
 
     function windowOnLoad() {

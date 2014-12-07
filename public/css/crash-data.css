@@ -65,6 +65,22 @@
     top: 48%;
 }
 
+.legend {
+    opacity: 0.85;
+    background: #fff;
+    overflow: auto;
+    position: absolute;
+    z-index: 3;
+    right: 10px;
+    bottom: 20px;
+}
+
+#max {
+    position: absolute;
+    z-index: 3;
+    right: 4px;
+}
+
 .sideSettings {
     overflow: auto;
     position: absolute;
