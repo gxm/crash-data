@@ -104,18 +104,26 @@ function CrashController($scope, $http, $location) {
         };
     };
 
+    function getLayer(type, index, opacity) {
+        opacity = opacity || 1;
+        var AGSURL = 'https://{s}.oregonmetro.gov/ArcGIS/rest/services/';
+        var subDomains = ['gistiles1','gistiles2', 'gistiles3', 'gistiles4'];
+        //todo - gfm - figure out proper token generation
+        var token = '7eXr3OCSVOChwnKR1_--HMhwvvtw9hRn9ymyFYCT4O-0-mQQpRre88v7nkfVNK16';
+        return L.tileLayer( AGSURL + 'metromap/' + type + '/MapServer/tile/{z}/{y}/{x}?token=' + token, {
+            maxZoom: 19,
+            attribution: 'Tiles: &copy; Metro RLIS',
+            opacity: opacity,
+            zIndex: index,
+            subdomains : subDomains
+        });
+    }
     function windowOnLoad() {
-
         var loadlat = Number($scope.search('lat', 45.52));
         var loadlng = Number($scope.search('lng', -122.67));
-
-        var baseLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-            '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-            'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-            id: 'examples.map-i875mjb7'
-        });
+        var baseLayer = getLayer('base', 0, 0.6);
+        var activeLayer = getLayer('baseActive', 50, 0.5);
+        var annoLayer = getLayer('baseAnno', 91);
 
         $scope.heatMapOverlay = new HeatmapOverlay($scope.config());
 
@@ -123,7 +131,7 @@ function CrashController($scope, $http, $location) {
             center: new L.LatLng(loadlat, loadlng),
             zoom: $scope.settings.zoom,
             zoomControl: false,
-            layers: [baseLayer, $scope.heatMapOverlay]
+            layers: [baseLayer, activeLayer, annoLayer, $scope.heatMapOverlay]
         });
 
         $scope.map.addControl( L.control.zoom({position: 'topright'}) );
