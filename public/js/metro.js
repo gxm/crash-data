@@ -63,6 +63,30 @@ function CrashController($scope, $http, $location) {
 
     };
 
+    $scope.config = function config() {
+        return {
+            // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+            // if scaleRadius is false it will be the constant radius used in pixels
+            "radius": 35,
+            "maxOpacity": 1,
+            // scales the radius based on map zoom
+            //"scaleRadius": true,
+            // if set to false the heatmap uses the global maximum for colorization
+            // if activated: uses the data maximum within the current map boundaries
+            //   (there will always be a red spot with useLocalExtremas true)
+            //"useLocalExtrema": true,
+            latField: 'lat',
+            lngField: 'lng',
+            valueField: 'count'
+        };
+        /**
+         *  legend: {
+                position: 'br',
+                title: title
+            }
+         */
+    };
+
     function windowOnLoad() {
 
         var loadlat = Number($scope.search('lat', 45.52));
@@ -76,14 +100,16 @@ function CrashController($scope, $http, $location) {
             id: 'examples.map-i875mjb7'
         });
 
-        var config = $scope.config();
-        $scope.heatMapOverlay = new HeatmapOverlay(config);
+        $scope.heatMapOverlay = new HeatmapOverlay($scope.config());
 
         $scope.map = new L.map('heatmapArea', {
             center: new L.LatLng(loadlat, loadlng),
             zoom: $scope.settings.zoom,
+            zoomControl: false,
             layers: [baseLayer, $scope.heatMapOverlay]
         });
+
+        $scope.map.addControl( L.control.zoom({position: 'topright'}) );
 
         $scope.map.on('moveend', function (e) {
             $scope.loadData();

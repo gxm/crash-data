@@ -18,49 +18,6 @@ function Common($scope, $http, $location) {
         infoDiv.text('Refreshing Data...');
     };
 
-    $scope.config = function config() {
-        return {
-            // radius should be small ONLY if scaleRadius is true (or small radius is intended)
-            // if scaleRadius is false it will be the constant radius used in pixels
-            "radius": 35,
-            "maxOpacity": 1,
-            // scales the radius based on map zoom
-            //"scaleRadius": true,
-            // if set to false the heatmap uses the global maximum for colorization
-            // if activated: uses the data maximum within the current map boundaries
-            //   (there will always be a red spot with useLocalExtremas true)
-            //"useLocalExtrema": true,
-            latField: 'lat',
-            lngField: 'lng',
-            valueField: 'count'
-        };
-        /**
-         *  legend: {
-                position: 'br',
-                title: title
-            }
-         */
-    };
-
-/*    $scope.options = function options(lat, lng, controls, zoom) {
-        return {
-            zoom: zoom,
-            //center: new google.maps.LatLng(lat, lng),
-            //mapTypeId: google.maps.MapTypeId.ROADMAP,
-            disableDefaultUI: false,
-            scrollwheel: true,
-            draggable: true,
-            navigationControl: true,
-            mapTypeControl: false,
-            scaleControl: false,
-            disableDoubleClickZoom: false,
-            streetViewControl: false,
-            zoomControl: controls,
-            //zoomControlOptions: {style: google.maps.ZoomControlStyle.SMALL},
-            panControl: false
-        }
-    };*/
-
     $scope.percents = function percents(number, sign) {
         sign = sign || false;
         if (isNaN(number)) {
