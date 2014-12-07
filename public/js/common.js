@@ -22,8 +22,8 @@ function Common($scope, $http, $location) {
         return {
             // radius should be small ONLY if scaleRadius is true (or small radius is intended)
             // if scaleRadius is false it will be the constant radius used in pixels
-            "radius": 40,
-            "maxOpacity": .8,
+            "radius": 35,
+            "maxOpacity": 1,
             // scales the radius based on map zoom
             //"scaleRadius": true,
             // if set to false the heatmap uses the global maximum for colorization
