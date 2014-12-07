@@ -24,20 +24,19 @@ function CrashController($scope, $http, $location) {
 
 	$scope.loadData = function loadData() {
 		$scope.infoDivRefresh();
-		var center = $scope.googleMap.getCenter();
-
 		var config = { params: $scope.settings };
+		//todo - gfm - there might be a bug here on resize
 		var corners = $scope.settings.corners($scope);
 
 		var url = $scope.createUrl(corners) + '?callback=JSON_CALLBACK';
-		config.params.zoom = $scope.googleMap.getZoom();
-		config.params.lat = $scope.latlng(center.lat());
-		config.params.lng = $scope.latlng(center.lng());
+		config.params.zoom = $scope.map.getZoom();
+		var center = $scope.map.getCenter();
+		config.params.lat = $scope.latlng(center.lat);
+		config.params.lng = $scope.latlng(center.lng);
 		$http.jsonp(url, config)
 			.success(function (data, status, headers) {
 				$scope.total = data.total;
-				$scope.heatMapOverlay.setDataSet(data);
-				$scope.heatMapOverlay.draw();
+				$scope.heatMapOverlay.setData(data);
 
 				for (var prop in data.summary){
 					$scope.summary[prop] = $scope.percents(data.summary[prop] / $scope.total);
@@ -69,19 +68,26 @@ function CrashController($scope, $http, $location) {
 		var loadlat = Number($scope.search('lat', 45.52));
 		var loadlng = Number($scope.search('lng', -122.67));
 
-		var myOptions = $scope.options(loadlat, loadlng, true, $scope.settings.zoom);
-		myOptions.zoomControlOptions.position = google.maps.ControlPosition.RIGHT_TOP;
-		$scope.googleMap = new google.maps.Map(document.getElementById('heatmapArea'), myOptions);
-		$scope.googleMap.controls[google.maps.ControlPosition.TOP_LEFT].push($('#sideSettingsDiv')[0]);
-		$scope.googleMap.controls[google.maps.ControlPosition.BOTTOM_CENTER].push($('#infoDiv')[0]);
-
-		var config = $scope.config(document.getElementById('heatmapArea'), 'Crash Count');
-
-		$scope.heatMapOverlay = new HeatmapOverlay($scope.googleMap, config);
-
-		google.maps.event.addListener($scope.googleMap, 'idle', function () {
-			$scope.loadData();
+		var baseLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			id: 'examples.map-i875mjb7'
 		});
+
+		var config = $scope.config();
+		$scope.heatMapOverlay = new HeatmapOverlay(config);
+
+		$scope.map = new L.map('heatmapArea', {
+			center: new L.LatLng(loadlat, loadlng),
+			zoom: $scope.settings.zoom,
+			layers: [baseLayer, $scope.heatMapOverlay]
+		});
+		//todo - gfm - figure out leaflet on-idle event
+		/*google.maps.event.addListener($scope.googleMap, 'idle', function () {
+			$scope.loadData();
+		});*/
 
 		$('#changeSettings').show();
 		$('#summary').show();
@@ -89,7 +95,8 @@ function CrashController($scope, $http, $location) {
 		$('#settingsTable').collapse('show');
 		$('#summaryTable').show();
 		$('#summaryTable').collapse('show');
-
+		//todo - gfm - remove this
+		$scope.loadData();
 	}
 
 	windowOnLoad();

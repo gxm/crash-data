@@ -16,35 +16,37 @@ function Common($scope, $http, $location) {
         var infoDiv = $('.infoDiv');
         infoDiv.attr('class', 'infoDiv well');
         infoDiv.text('Refreshing Data...');
-    }
+    };
 
-    $scope.config = function config(heatmap, title) {
-        title = title || 'Crash Count';
+    $scope.config = function config() {
         return {
-            element: heatmap,
-            'radius': 20,
-            'visible': true,
-            'opacity': 100,
-            'gradient': {
-                0.2: 'rgb(0,0,255)',
-                0.4: 'rgb(0,255,255)',
-                0.6: 'rgb(0,255,0)',
-                0.8: 'yellow',
-                1.0: 'rgb(255,0,0)'
-            },
-
-            legend: {
+            // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+            // if scaleRadius is false it will be the constant radius used in pixels
+            "radius": 40,
+            "maxOpacity": .8,
+            // scales the radius based on map zoom
+            //"scaleRadius": true,
+            // if set to false the heatmap uses the global maximum for colorization
+            // if activated: uses the data maximum within the current map boundaries
+            //   (there will always be a red spot with useLocalExtremas true)
+            //"useLocalExtrema": true,
+            latField: 'lat',
+            lngField: 'lng',
+            valueField: 'count'
+        };
+        /**
+         *  legend: {
                 position: 'br',
                 title: title
             }
-        }
+         */
     };
 
-    $scope.options = function options(lat, lng, controls, zoom) {
+/*    $scope.options = function options(lat, lng, controls, zoom) {
         return {
             zoom: zoom,
-            center: new google.maps.LatLng(lat, lng),
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            //center: new google.maps.LatLng(lat, lng),
+            //mapTypeId: google.maps.MapTypeId.ROADMAP,
             disableDefaultUI: false,
             scrollwheel: true,
             draggable: true,
@@ -54,10 +56,10 @@ function Common($scope, $http, $location) {
             disableDoubleClickZoom: false,
             streetViewControl: false,
             zoomControl: controls,
-            zoomControlOptions: {style: google.maps.ZoomControlStyle.SMALL},
+            //zoomControlOptions: {style: google.maps.ZoomControlStyle.SMALL},
             panControl: false
         }
-    };
+    };*/
 
     $scope.percents = function percents(number, sign) {
         sign = sign || false;
