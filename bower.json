@@ -1,0 +1,13 @@
+{
+  "name": "crash-data-web",
+  "version": "0.0.1",
+  "main": "public/index.html",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "angular": "1.0.7"
+  },
+  "devDependencies": {}
+}
