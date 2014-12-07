@@ -10,7 +10,6 @@
     "angular": "1.0.7",
     "bootstrap-css": "2.3.2",
     "jquery": "2.0.1",
-    "html5shiv": "3.6.2",
     "heatmap.js": "https://github.com/pa7/heatmap.js/archive/v2.0.tar.gz"
   },
   "devDependencies": {}
