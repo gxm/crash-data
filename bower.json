@@ -7,7 +7,8 @@
     "**/*.txt"
   ],
   "dependencies": {
-    "angular": "1.0.7"
+    "angular": "1.0.7",
+    "bootstrap-css": "2.3.2"
   },
   "devDependencies": {}
 }
