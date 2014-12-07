@@ -53,8 +53,16 @@
     font-size: 14px;
 }
 
-.heatmapArea .infoDiv {
+.heatmapArea .refreshDiv {
     font-size: 14px;
+}
+
+.refreshDiv {
+    overflow: auto;
+    position: absolute;
+    z-index: 3;
+    right: 48%;
+    top: 48%;
 }
 
 .sideSettings {
@@ -68,18 +76,6 @@
     padding-left: 5px;
     padding-top: 5px;
 }
-
-/*todo These are here to make the settings div the correct width
- in Android default browser
- I'm sure there is a cleaner way to do this.
- */
-.bikeSideSettings {
-    width: 300px;
-}
-
-/*.oregonSideSettings {
-    width: 437px;
-}*/
 
 .main {
     margin-left: 5px;

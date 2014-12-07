@@ -12,10 +12,10 @@ function Common($scope, $http, $location) {
         $scope.host = $scope.hosts[1];
     }
 
-    $scope.infoDivRefresh = function infoDivRefresh() {
-        var infoDiv = $('.infoDiv');
-        infoDiv.attr('class', 'infoDiv well');
-        infoDiv.text('Refreshing Data...');
+    $scope.refreshDiv = function refreshDiv() {
+        var refreshDiv = $('.refreshDiv');
+        refreshDiv.attr('class', 'refreshDiv well');
+        refreshDiv.text('Refreshing Data...');
     };
 
     $scope.percents = function percents(number, sign) {

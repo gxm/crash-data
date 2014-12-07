@@ -23,7 +23,7 @@ function CrashController($scope, $http, $location) {
     $scope.summary = {};
 
     $scope.loadData = function loadData() {
-        $scope.infoDivRefresh();
+        $scope.refreshDiv();
         var config = {params: $scope.settings};
         //todo - gfm - there might be a bug here on resize
         var corners = $scope.settings.corners($scope);
@@ -42,7 +42,7 @@ function CrashController($scope, $http, $location) {
                     $scope.summary[prop] = $scope.percents(data.summary[prop] / $scope.total);
 
                 }
-                $('.infoDiv').attr('class', 'infoDiv well hidden');
+                $('.refreshDiv').attr('class', 'refreshDiv well hidden');
                 var downloadUrl = $scope.createUrl(corners) + '?';
                 for (var prop in config.params) {
                     if (prop !== 'corners') {
@@ -55,7 +55,7 @@ function CrashController($scope, $http, $location) {
                 + '_' + corners.east + '_' + corners.west + '.csv');
 
             }).error(function (data, status, headers) {
-                $('.infoDiv').text('Unable to load data from remote server');
+                $('.refreshDiv').text('Unable to load data from remote server');
 
             });
 
