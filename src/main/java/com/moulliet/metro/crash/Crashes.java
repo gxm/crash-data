@@ -2,6 +2,7 @@ package com.moulliet.metro.crash;
 
 import com.moulliet.metro.Config;
 import com.moulliet.metro.filter.Filter;
+import com.moulliet.metro.filter.SinkFilter;
 import com.moulliet.metro.load.LoadShapefile;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
@@ -48,9 +49,10 @@ public class Crashes {
     }
 
     public static void loadAll() throws IOException {
+        logger.info("loading sinks");
+        SinkFilter.loadSinkPoints();
         logger.info("loading crashes");
-        allCrashes = Collections.unmodifiableList(
-                LoadShapefile.load(Config.getConfig().getString("data.file")));
+        allCrashes = Collections.unmodifiableList(LoadShapefile.load(Config.getConfig().getString("data.file")));
         logger.info("loaded {} crashes", allCrashes.size());
     }
 
