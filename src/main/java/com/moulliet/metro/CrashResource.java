@@ -2,9 +2,7 @@ package com.moulliet.metro;
 
 import com.moulliet.common.Timer;
 import com.moulliet.metro.crash.Crashes;
-import com.moulliet.metro.filter.Filters;
-import com.moulliet.metro.filter.LocationFilter;
-import com.moulliet.metro.filter.VehicleFilter;
+import com.moulliet.metro.filter.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,19 +65,16 @@ public class CrashResource {
 
             Filters filters = new Filters();
             filters.add(new LocationFilter(north, south, east, west));
-            filters.add(VehicleFilter.create(cars, bikes, peds));
-            /*CrashQuery query = new CrashQuery();
-            query.location(north, south, east, west);
-
-            query.vehicle(cars, bikes, peds);
-            query.alcohol(alcohol);
-            query.light(day, night, twilight);
+            filters.vehicle(cars, bikes, peds);
+            filters.alcohol(alcohol);
+            filters.light(day, night, twilight);
+            /*
             query.surface(dry, wet, snowIce);
             query.years(y2007, y2008, y2009, y2010, y2011, y2012, y2013);
             query.type(angle, headOn, rearEnd, sideSwipe, turning, other);
             query.severity(fatal, injuryA, injuryB, injuryC, property);
 
-            logger.debug(query.toString());*/
+            */
 
             final Crashes crashes = new Crashes();
             DecimalFormat decimalFormat = getDecimalFormat(zoom);
