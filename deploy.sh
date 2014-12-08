@@ -27,6 +27,7 @@ deploy() {
     echo "deploying files"
     rsync -avr config/prod/ crash01:crash-data/config/
     rsync -avr scripts/*.sh crash01:${SCRIPTS}/
+    rsync -avr data/* crash01:data/
     ssh crash01 chmod u+x ${SCRIPTS}/*.sh
     rsync -avr public/ crash01:crash-data/public/
 }

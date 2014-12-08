@@ -147,6 +147,15 @@ function CrashController($scope, $http, $location) {
             layers: layers
         });
 
+        if ($scope.settings.sinks) {
+            var markers = [];
+            sinkPoints.forEach(function (point) {
+                markers.push(L.marker([point.lat, point.lng]));
+            });
+
+            L.layerGroup(markers).addTo($scope.map);
+        }
+
         $scope.map.addControl( L.control.zoom({position: 'topright'}) );
 
         $scope.map.on('moveend', function (e) {

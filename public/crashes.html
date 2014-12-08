@@ -107,7 +107,7 @@
                             <th>Scale:</th>
                             <td><label for="viewport"><input id="viewport" type="radio" value="Viewport" ng-model='settings.scale' ng-change="loadData()"> Viewport</label></td>
                             <td><label for="regional"><input id="regional" type="radio" value="Regional" ng-model='settings.scale' ng-change="loadData()"> Regional</label></td>
-                            <td></td>
+                            <td><label for="sinks"><input id="sinks" type="checkbox" ng-model='settings.sinks' ng-change="loadData()"> Sinks</label></td>
                         </tr>
                         <tr>
                             <th>Tiles:</th>
@@ -187,6 +187,7 @@
 <script type="text/javascript" src="js/settings.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript" src="js/metro.js"></script>
+<script type="text/javascript" src="js/sinks.js"></script>
 
 </body>
 </html>
