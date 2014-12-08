@@ -29,6 +29,7 @@ function CrashSettings($scope) {
 	that.sideSwipe = $scope.search('sideSwipe', true);
 	that.turning = $scope.search('turning', true);
 	that.other = $scope.search('other', true);
+	that.scale = $scope.search('scale', 'Viewport');
 }
 
 CrashSettings.prototype.corners = function ($scope) {

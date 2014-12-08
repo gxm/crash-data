@@ -103,6 +103,12 @@
                             <td><label for="turning"><input id="turning" type="checkbox" ng-model='settings.turning' ng-change="loadData()"> Turning</label></td>
                             <td><label for="other"><input id="other" type="checkbox" ng-model='settings.other' ng-change="loadData()"> Other</label></td>
                         </tr>
+                        <tr>
+                            <th>Scale:</th>
+                            <td><label for="viewport"><input id="viewport" type="radio" value="Viewport" ng-model='settings.scale' ng-change="loadData()"> Viewport</label></td>
+                            <td><label for="regional"><input id="regional" type="radio" value="Regional" ng-model='settings.scale' ng-change="loadData()"> Regional</label></td>
+                            <td></td>
+                        </tr>
                     </table>
             </div>
             <div id="summaryButton">
@@ -113,8 +119,8 @@
             <div id="summaryTable" class="collapse hide settingsDiv">
                 <table class="table table-condensed table-bordered sideTable">
                     <tr>
-                        <td colspan="2">Total Crashes</td>
-                        <td colspan="4">{{total}}</td>
+                        <td colspan="3">Total {{settings.scale}} Crashes</td>
+                        <td colspan="3">{{total}}</td>
                     </tr>
                     <tr>
                         <td>Cars</td><td>{{summary.cars}}</td>
