@@ -2,7 +2,9 @@ package com.moulliet.metro;
 
 import com.moulliet.common.Timer;
 import com.moulliet.metro.crash.Crashes;
-import com.moulliet.metro.crash.LocationFilter;
+import com.moulliet.metro.filter.Filters;
+import com.moulliet.metro.filter.LocationFilter;
+import com.moulliet.metro.filter.VehicleFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,7 +65,9 @@ public class CrashResource {
         try {
             final Timer timer = new Timer();
 
-            LocationFilter filter = new LocationFilter(north, south, east, west);
+            Filters filters = new Filters();
+            filters.add(new LocationFilter(north, south, east, west));
+            filters.add(VehicleFilter.create(cars, bikes, peds));
             /*CrashQuery query = new CrashQuery();
             query.location(north, south, east, west);
 
@@ -84,7 +88,7 @@ public class CrashResource {
                 public void write(OutputStream outputStream) throws IOException, WebApplicationException {
                     try {
                         outputStream.write((callback + "(").getBytes());
-                        int points = crashes.aggregatedCrashes(filter, outputStream, decimalFormat);
+                        int points = crashes.aggregatedCrashes(filters, outputStream, decimalFormat);
                         logger.debug("wrote {} points in {} millis.", points, timer.reset());
                         outputStream.write(");".getBytes());
                     } catch (IOException e) {

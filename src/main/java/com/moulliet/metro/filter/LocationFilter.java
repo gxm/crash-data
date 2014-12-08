@@ -1,4 +1,6 @@
-package com.moulliet.metro.crash;
+package com.moulliet.metro.filter;
+
+import com.moulliet.metro.crash.Crash;
 
 public class LocationFilter implements Filter {
 

@@ -1,6 +1,7 @@
 package com.moulliet.metro.crash;
 
 import com.moulliet.metro.Config;
+import com.moulliet.metro.filter.Filter;
 import com.moulliet.metro.load.LoadShapefile;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
