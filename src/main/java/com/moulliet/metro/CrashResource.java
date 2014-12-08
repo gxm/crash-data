@@ -66,7 +66,7 @@ public class CrashResource {
 
             Filters filters = new Filters();
             if (scale.equals("Viewport")) {
-                filters.add(new LocationFilter(north, south, east, west));
+                filters.location(north, south, east, west);
             }
             filters.vehicle(cars, bikes, peds);
             filters.alcohol(alcohol);

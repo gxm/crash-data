@@ -10,12 +10,6 @@ public class Filters implements Filter {
     private boolean returnFalse = false;
     private List<Filter> filters = new ArrayList<>();
 
-    public void add(Filter filter) {
-        if (filter != null) {
-            filters.add(filter);
-        }
-    }
-
     @Override
     public boolean include(Crash crash) {
         if (returnFalse) {
@@ -27,6 +21,28 @@ public class Filters implements Filter {
             }
         }
         return true;
+    }
+
+    private void add(Filter filter) {
+        if (filter != null) {
+            filters.add(filter);
+        }
+    }
+
+    public void location(double north, double south, double east, double west) {
+        add(new Filter() {
+            @Override
+            public boolean include(Crash crash) {
+                double lat = crash.getLat().doubleValue();
+                if (lat < north && lat > south) {
+                    double lng = crash.getLng().doubleValue();
+                    if (lng < east && lng > west) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     public void alcohol(boolean alcohol) {
