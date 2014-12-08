@@ -109,6 +109,12 @@
                             <td><label for="regional"><input id="regional" type="radio" value="Regional" ng-model='settings.scale' ng-change="loadData()"> Regional</label></td>
                             <td></td>
                         </tr>
+                        <tr>
+                            <th>Tiles:</th>
+                            <td><label for="open"><input id="open" type="radio" value="open" ng-model='settings.tiles' ng-change="loadData()"> Open Street</label></td>
+                            <td><label for="metro"><input id="metro" type="radio" value="metro" ng-model='settings.tiles' ng-change="loadData()"> Metro</label></td>
+                            <td>reload page</td>
+                        </tr>
                     </table>
             </div>
             <div id="summaryButton">
