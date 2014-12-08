@@ -1,5 +1,6 @@
 package com.moulliet.metro;
 
+import com.moulliet.metro.crash.Crashes;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 import org.apache.commons.configuration.Configuration;
@@ -27,6 +28,7 @@ public class CrashServiceMain {
 
     public static void startResources(int port) throws Exception {
         logger.info("starting Crash Service on port " + port);
+        Crashes.loadAll();
         ServletHolder servletHolder = new ServletHolder(ServletContainer.class);
         servletHolder.setInitParameter(PackagesResourceConfig.PROPERTY_PACKAGES, "com.moulliet.metro");
         server = new Server(port);

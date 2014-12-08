@@ -1,11 +1,8 @@
 package com.moulliet.metro;
 
-import com.mongodb.DBObject;
 import com.moulliet.common.Timer;
-import com.moulliet.metro.crash.CrashFactory;
-import com.moulliet.metro.crash.CrashQuery;
 import com.moulliet.metro.crash.Crashes;
-import com.moulliet.metro.mongo.MongoQueryCallback;
+import com.moulliet.metro.filter.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +12,6 @@ import javax.ws.rs.core.StreamingOutput;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
-import java.util.Iterator;
 
 @Path("/metro")
 public class CrashResource {
@@ -29,10 +25,10 @@ public class CrashResource {
 
     @GET
     @Path("/{north}/{south}/{east}/{west}")
-    public Response getBox(@PathParam("north") String north,
-                           @PathParam("south") String south,
-                           @PathParam("east") String east,
-                           @PathParam("west") String west,
+    public Response getBox(@PathParam("north") double north,
+                           @PathParam("south") double south,
+                           @PathParam("east") double east,
+                           @PathParam("west") double west,
                            @QueryParam("callback") final String callback,
                            @DefaultValue("true") @QueryParam("cars") boolean cars,
                            @DefaultValue("true") @QueryParam("peds") boolean peds,
@@ -67,34 +63,24 @@ public class CrashResource {
         try {
             final Timer timer = new Timer();
 
-            CrashQuery query = new CrashQuery();
-            query.location(north, south, east, west);
-
-            query.vehicle(cars, bikes, peds);
-            query.alcohol(alcohol);
-            query.light(day, night, twilight);
-            query.surface(dry, wet, snowIce);
-            query.years(y2007, y2008, y2009, y2010, y2011, y2012, y2013);
-            query.type(angle, headOn, rearEnd, sideSwipe, turning, other);
-            query.severity(fatal, injuryA, injuryB, injuryC, property);
-
-            logger.debug(query.toString());
+            Filters filters = new Filters();
+            filters.add(new LocationFilter(north, south, east, west));
+            filters.vehicle(cars, bikes, peds);
+            filters.alcohol(alcohol);
+            filters.light(day, night, twilight);
+            filters.surface(dry, wet, snowIce);
+            filters.years(y2007, y2008, y2009, y2010, y2011, y2012, y2013);
+            filters.type(angle, headOn, rearEnd, sideSwipe, turning, other);
+            filters.severity(fatal, injuryA, injuryB, injuryC, property);
 
             final Crashes crashes = new Crashes();
-
-            CrashFactory.getMongoDao().query(query.getQuery(), new MongoQueryCallback() {
-                public void callback(Iterator<DBObject> dbObjectIterator) {
-                    logger.debug("crash query in {} millis.", timer.reset());
-                    crashes.loadResults(dbObjectIterator, getDecimalFormat(zoom));
-                    logger.debug("loaded {} crashes in {} millis.", crashes.size(), timer.reset());
-                }
-            });
+            DecimalFormat decimalFormat = getDecimalFormat(zoom);
 
             Response.ResponseBuilder builder = Response.ok(new StreamingOutput() {
                 public void write(OutputStream outputStream) throws IOException, WebApplicationException {
                     try {
                         outputStream.write((callback + "(").getBytes());
-                        int points = crashes.aggregatedCrashes(outputStream);
+                        int points = crashes.aggregatedCrashes(filters, outputStream, decimalFormat);
                         logger.debug("wrote {} points in {} millis.", points, timer.reset());
                         outputStream.write(");".getBytes());
                     } catch (IOException e) {
@@ -111,7 +97,6 @@ public class CrashResource {
         }
     }
 
-    //todo - gfm - this may need to change
     private DecimalFormat getDecimalFormat(int zoom) {
         if (zoom >= 17) {
             return new DecimalFormat("####.#####");

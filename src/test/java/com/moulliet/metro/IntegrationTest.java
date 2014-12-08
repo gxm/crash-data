@@ -1,12 +1,8 @@
 package com.moulliet.metro;
 
 import com.moulliet.common.ClientCreator;
-import com.moulliet.metro.crash.CrashFactory;
-import com.moulliet.metro.load.LoadShapefile;
-import com.moulliet.metro.mongo.MongoDaoImpl;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -26,27 +22,19 @@ import static org.junit.Assert.assertTrue;
  */
 public class IntegrationTest {
     public static final String URL = "http://localhost:7070/metro/47/44/-121/-124?callback=stuff";
-    public static final String DATABASE = "test";
     private static final Logger logger = LoggerFactory.getLogger(IntegrationTest.class);
-    private static MongoDaoImpl mongoDao;
     private final ObjectMapper mapper = new ObjectMapper();
     private Client client = ClientCreator.cached();
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-        CrashFactory.reset();
-        String collection = RandomStringUtils.random(6);
-        mongoDao = new MongoDaoImpl(DATABASE, collection);
-        CrashFactory.setMongoDao(mongoDao);
-        int load = LoadShapefile.load("/Users/greg/code/crash-data/data/testDataCycle.json.txt", DATABASE, collection);
-        assertEquals(6, load);
+        System.setProperty("config.properties", "/Users/greg/code/crash-data/config/test/crash-data.properties");
         CrashServiceMain.startResources(7070);
     }
 
     @AfterClass
     public static void tearDown() throws Exception {
         CrashServiceMain.stop();
-        mongoDao.deleteCollection();
     }
 
     @Test

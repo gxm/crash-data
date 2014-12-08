@@ -24,7 +24,7 @@ startService ()
 		exit 1
 	fi
 
-	OPTIONS="-Xms1g -Xmx1g -cp ${ROOT_DIR}/crash-data-0.1-SNAPSHOT-jar-with-dependencies.jar:${ROOT_DIR}/config
+	OPTIONS="-Xms1g -Xmx2g -cp ${ROOT_DIR}/crash-data-0.1-SNAPSHOT-jar-with-dependencies.jar:${ROOT_DIR}/config
         -Dconfig.properties=${ROOT_DIR}/config/crash-data.properties
         -Dcom.sun.management.jmxremote
         -Dcom.sun.management.jmxremote.port=9010

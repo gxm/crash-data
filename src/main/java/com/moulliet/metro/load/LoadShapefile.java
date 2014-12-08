@@ -1,75 +1,38 @@
 package com.moulliet.metro.load;
 
-import com.mongodb.*;
+import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
-import com.moulliet.metro.Config;
+import com.moulliet.metro.crash.Crash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoadShapefile {
 
     private static final Logger logger = LoggerFactory.getLogger(LoadShapefile.class);
 
-    public static void main(String[] args) throws IOException {
-        String file = Config.getConfig().getString("data.file");
-        String database = Config.getConfig().getString("database");
-        String collection = Config.getConfig().getString("collection");
-        logger.info("loading items from {} into {} {} ", file, database, collection);
-        int count = load(file, database, collection);
-        logger.info("completed load of {} items", count);
-    }
 
-    public static int load(String file, String database, String collection) throws IOException {
-        MongoClient mongo = new MongoClient();
-        mongo.getDB(database).getCollection(collection).drop();
-        DBCollection crashes = mongo.getDB(database).getCollection(collection);
-        DBObject index2d = BasicDBObjectBuilder.start("loc", "2dsphere").get();
-        crashes.createIndex(index2d);
-        int count = 0;
+    public static List<Crash> load(String file) throws IOException {
+        logger.info("loading {}", file);
+        List<Crash> allCrashes = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(file));
         String line = br.readLine();
         while (line != null) {
-            DBObject dbObject = mapFields((DBObject) JSON.parse(line));
-            if (dbObject != null) {
-                crashes.save(dbObject);
+            DBObject dbObject = (DBObject) JSON.parse(line);
+            Object sink = dbObject.get("Sink");
+            if (sink == null || (int) sink != 1) {
+                allCrashes.add(new Crash(dbObject));
             }
-            count++;
             line = br.readLine();
         }
         br.close();
-        return count;
+        return allCrashes;
     }
 
-    public static BasicDBObject mapFields(DBObject dbObject) {
-        Object sink = dbObject.get("Sink");
-        if (sink != null && (int) sink == 1) {
-            return null;
-        }
-        BasicDBObject object = new BasicDBObject();
-        object.put("alcohol", (int) dbObject.get("ALCHL_INVL") > 0);
-        object.put("ped", dbObject.get("TOT_PED_CN"));
-        object.put("bike", dbObject.get("TOT_PEDCYC"));
-        object.put("surface", Integer.parseInt((String) dbObject.get("RD_SURF_CO")));
-        object.put("light", Integer.parseInt((String) dbObject.get("LGT_COND_C")));
-        object.put("type", dbObject.get("COLLIS_TYP"));
-        object.put("year", Integer.parseInt((String) dbObject.get("CRASH_YR_N")));
-        object.put("loc", dbObject.get("loc"));
-        if ((int) dbObject.get("TOT_FATAL_") > 0) {
-            object.put("severity", 4);
-        } else if ((int) dbObject.get("TOT_INJ_LV") > 0) {
-            object.put("severity", 3);
-        } else if ((int) dbObject.get("TOT_INJ__1") > 0) {
-            object.put("severity", 2);
-        } else if ((int) dbObject.get("TOT_INJ__2") > 0) {
-            object.put("severity", 1);
-        } else {
-            object.put("severity", 0);
-        }
 
-        return object;
-    }
 }

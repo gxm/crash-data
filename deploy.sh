@@ -2,7 +2,7 @@
 
 if [ $# != 1 ]
 then
-	echo "Usage: bash $0 {deploy|build|loadData}"
+	echo "Usage: bash $0 {deploy|build}"
 	echo "deploy: pushes out static files to the server"
 	echo "build: performs a clean build and runs test, then deploys with a restart"
 	exit
@@ -31,11 +31,6 @@ deploy() {
     rsync -avr public/ crash01:crash-data/public/
 }
 
-loadData() {
-    echo "loading data"
-    ssh crash01 bash ${SCRIPTS}/data_load.sh
-}
-
 restart() {
     echo "restarting service"
     ssh crash01 bash ${SCRIPTS}/crash-data.sh restart
@@ -51,12 +46,6 @@ case $1 in
 		deploy
 		restart
 		;;
-	loadData)
-	    build
-		deploy
-		loadData
-		restart
-		;;
 	*)
-		echo "Usage: bash $0 {deploy|build|loadData}" >&2
+		echo "Usage: bash $0 {deploy|build}" >&2
 esac
