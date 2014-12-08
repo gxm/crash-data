@@ -96,6 +96,120 @@ public class Filters implements Filter {
                 }
             });
         }
+    }
 
+    public void surface(boolean dry, boolean wet, boolean snowIce) {
+        if (dry && wet && snowIce) {
+            return;
+        } else if (!dry && !wet && !snowIce) {
+            returnFalse = true;
+        } else {
+            add(new Filter() {
+                @Override
+                public boolean include(Crash crash) {
+                    switch (crash.getSurface()) {
+                        case 0:
+                        case 1:
+                            return dry;
+                        case 2:
+                            return wet;
+                        case 3:
+                        case 4:
+                            return snowIce;
+                    }
+                    return false;
+                }
+            });
+        }
+    }
+
+    public void years(boolean y2007, boolean y2008, boolean y2009,
+                      boolean y2010, boolean y2011, boolean y2012, boolean y2013) {
+        if (y2007 && y2008 && y2009 && y2010 && y2011 && y2012 && y2013) {
+            return;
+        } else if (!y2007 && !y2008 && !y2009 && !y2010 && !y2011 && !y2012 && !y2013) {
+            returnFalse = true;
+        } else {
+            add(new Filter() {
+                @Override
+                public boolean include(Crash crash) {
+                    switch (crash.getYear()) {
+                        case 2007:
+                            return y2007;
+                        case 2008:
+                            return y2008;
+                        case 2009:
+                            return y2009;
+                        case 2010:
+                            return y2010;
+                        case 2011:
+                            return y2011;
+                        case 2012:
+                            return y2012;
+                        case 2013:
+                            return y2013;
+                    }
+                    return false;
+                }
+            });
+        }
+    }
+
+    public void type(boolean angle, boolean headOn, boolean rearEnd, boolean sideSwipe, boolean turning, boolean other) {
+        if (angle && headOn && rearEnd && turning && sideSwipe && other) {
+            return;
+        } else if (!angle && !headOn && !rearEnd && !turning && !sideSwipe && !other) {
+            returnFalse = true;
+        } else {
+            add(new Filter() {
+                @Override
+                public boolean include(Crash crash) {
+                    switch (crash.getType()) {
+                        case "1":
+                            return angle;
+                        case "2":
+                            return headOn;
+                        case "3":
+                            return rearEnd;
+                        case "4":
+                        case "5":
+                            return sideSwipe;
+                        case "6":
+                            return turning;
+                        default:
+                            return other;
+                    }
+                }
+            });
+        }
+    }
+
+    public void severity(boolean fatal, boolean injuryA, boolean injuryB, boolean injuryC, boolean property) {
+        if (fatal && injuryA && injuryB && injuryC && property) {
+            return;
+        } else if (!fatal && !injuryA && !injuryB && !injuryC && !property) {
+            returnFalse = true;
+        } else {
+            add(new Filter() {
+                @Override
+                public boolean include(Crash crash) {
+                    switch (crash.getSeverity()) {
+                        case 0:
+                            return property;
+                        case 1:
+                            return injuryC;
+                        case 2:
+                            return injuryB;
+                        case 3:
+                            return injuryA;
+                        case 4:
+                            return fatal;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 }
+
+

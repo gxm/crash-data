@@ -68,13 +68,10 @@ public class CrashResource {
             filters.vehicle(cars, bikes, peds);
             filters.alcohol(alcohol);
             filters.light(day, night, twilight);
-            /*
-            query.surface(dry, wet, snowIce);
-            query.years(y2007, y2008, y2009, y2010, y2011, y2012, y2013);
-            query.type(angle, headOn, rearEnd, sideSwipe, turning, other);
-            query.severity(fatal, injuryA, injuryB, injuryC, property);
-
-            */
+            filters.surface(dry, wet, snowIce);
+            filters.years(y2007, y2008, y2009, y2010, y2011, y2012, y2013);
+            filters.type(angle, headOn, rearEnd, sideSwipe, turning, other);
+            filters.severity(fatal, injuryA, injuryB, injuryC, property);
 
             final Crashes crashes = new Crashes();
             DecimalFormat decimalFormat = getDecimalFormat(zoom);

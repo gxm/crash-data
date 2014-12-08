@@ -100,4 +100,7 @@ public class Crash  {
         return type;
     }
 
+    public int getYear() {
+        return year;
+    }
 }
