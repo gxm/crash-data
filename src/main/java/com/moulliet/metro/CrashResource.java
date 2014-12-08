@@ -1,11 +1,7 @@
 package com.moulliet.metro;
 
-import com.mongodb.DBObject;
 import com.moulliet.common.Timer;
-import com.moulliet.metro.crash.CrashFactory;
-import com.moulliet.metro.crash.CrashQuery;
 import com.moulliet.metro.crash.Crashes;
-import com.moulliet.metro.mongo.MongoQueryCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +11,6 @@ import javax.ws.rs.core.StreamingOutput;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
-import java.util.Iterator;
 
 @Path("/metro")
 public class CrashResource {
@@ -67,7 +62,7 @@ public class CrashResource {
         try {
             final Timer timer = new Timer();
 
-            CrashQuery query = new CrashQuery();
+            /*CrashQuery query = new CrashQuery();
             query.location(north, south, east, west);
 
             query.vehicle(cars, bikes, peds);
@@ -78,23 +73,16 @@ public class CrashResource {
             query.type(angle, headOn, rearEnd, sideSwipe, turning, other);
             query.severity(fatal, injuryA, injuryB, injuryC, property);
 
-            logger.debug(query.toString());
+            logger.debug(query.toString());*/
 
             final Crashes crashes = new Crashes();
-
-            CrashFactory.getMongoDao().query(query.getQuery(), new MongoQueryCallback() {
-                public void callback(Iterator<DBObject> dbObjectIterator) {
-                    logger.debug("crash query in {} millis.", timer.reset());
-                    crashes.loadResults(dbObjectIterator, getDecimalFormat(zoom));
-                    logger.debug("loaded {} crashes in {} millis.", crashes.size(), timer.reset());
-                }
-            });
+            DecimalFormat decimalFormat = getDecimalFormat(zoom);
 
             Response.ResponseBuilder builder = Response.ok(new StreamingOutput() {
                 public void write(OutputStream outputStream) throws IOException, WebApplicationException {
                     try {
                         outputStream.write((callback + "(").getBytes());
-                        int points = crashes.aggregatedCrashes(outputStream);
+                        int points = crashes.aggregatedCrashes(outputStream, decimalFormat);
                         logger.debug("wrote {} points in {} millis.", points, timer.reset());
                         outputStream.write(");".getBytes());
                     } catch (IOException e) {
@@ -111,7 +99,6 @@ public class CrashResource {
         }
     }
 
-    //todo - gfm - this may need to change
     private DecimalFormat getDecimalFormat(int zoom) {
         if (zoom >= 17) {
             return new DecimalFormat("####.#####");

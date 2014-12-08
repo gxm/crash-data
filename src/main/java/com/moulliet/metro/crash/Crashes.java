@@ -1,8 +1,11 @@
 package com.moulliet.metro.crash;
 
-import com.mongodb.DBObject;
+import com.moulliet.metro.Config;
+import com.moulliet.metro.load.LoadShapefile;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -11,12 +14,15 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Crashes {
+    private static final Logger logger = LoggerFactory.getLogger(Crashes.class);
+    private static List<Crash> allCrashes;
+
     private final List<Crash> crashes = new ArrayList<>();
     private final Map<Point, AtomicInteger> pointMap = new TreeMap<>();
     private CrashTotals crashTotals = new CrashTotals();
 
-    public int aggregatedCrashes(OutputStream stream) throws IOException {
-        consolidatePoints();
+    public int aggregatedCrashes(OutputStream stream, DecimalFormat decimalFormat) throws IOException {
+        consolidatePoints(decimalFormat);
         int max = 0;
         JsonFactory jsonFactory = new JsonFactory();
         JsonGenerator json = jsonFactory.createJsonGenerator(stream);
@@ -41,16 +47,16 @@ public class Crashes {
         return pointMap.entrySet().size();
     }
 
-    public void loadResults(Iterator<DBObject> dbObjectIterator, DecimalFormat format) {
-        while (dbObjectIterator.hasNext()) {
-            DBObject next = dbObjectIterator.next();
-            crashes.add(new Crash(next, format));
-        }
+    public static void loadAll() throws IOException {
+        logger.info("loading crashes");
+        allCrashes = Collections.unmodifiableList(
+                LoadShapefile.load(Config.getConfig().getString("data.file")));
+        logger.info("loaded {} crashes", allCrashes.size());
     }
 
-    private void consolidatePoints() {
-        for (Crash crash : crashes) {
-            addPointToMap(crash.getPoint());
+    private void consolidatePoints(DecimalFormat decimalFormat) {
+        for (Crash crash : allCrashes) {
+            addPointToMap(crash.getPoint(decimalFormat));
             crashTotals.addCrash(crash);
         }
     }

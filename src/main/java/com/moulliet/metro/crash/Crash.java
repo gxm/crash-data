@@ -22,34 +22,46 @@ import java.text.DecimalFormat;
  */
 public class Crash  {
 
-    private final Point point;
     private boolean alcohol;
     private int severity;
     private int ped;
     private int bike;
     private int surface;
     private int light;
+    private int year;
     private String type;
+    private BasicDBList coordinates;
 
-    public Crash(DBObject dbObject, DecimalFormat format) {
+    public Crash(DBObject dbObject) {
+        alcohol = (int) dbObject.get("ALCHL_INVL") > 0;
+        ped =  (int) dbObject.get("TOT_PED_CN");
+        bike = (int) dbObject.get("TOT_PEDCYC");
+        surface = Integer.parseInt((String) dbObject.get("RD_SURF_CO"));
+        light = Integer.parseInt((String) dbObject.get("LGT_COND_C"));
+        type = (String) dbObject.get("COLLIS_TYP");
+        year = Integer.parseInt((String) dbObject.get("CRASH_YR_N"));
         DBObject loc = (DBObject) dbObject.get("loc");
-        BasicDBList coordinates = (BasicDBList) loc.get("coordinates");
-        severity = (Integer) dbObject.get("severity");
-        alcohol = (Boolean) dbObject.get("alcohol");
-        ped = (Integer) dbObject.get("ped");
-        bike = (Integer) dbObject.get("bike");
-        surface = (Integer) dbObject.get("surface");
-        light = (Integer) dbObject.get("light");
-        type = (String) dbObject.get("type");
-        point = new Point((Number) coordinates.get(0), (Number) coordinates.get(1), format);
+        coordinates = (BasicDBList) loc.get("coordinates");
+
+        if ((int) dbObject.get("TOT_FATAL_") > 0) {
+            severity = 4;
+        } else if ((int) dbObject.get("TOT_INJ_LV") > 0) {
+            severity = 3;
+        } else if ((int) dbObject.get("TOT_INJ__1") > 0) {
+            severity = 2;
+        } else if ((int) dbObject.get("TOT_INJ__2") > 0) {
+            severity = 1;
+        } else {
+            severity = 0;
+        }
     }
 
     public boolean isCrash() {
         return true;
     }
 
-    public Point getPoint() {
-        return point;
+    public Point getPoint(DecimalFormat format) {
+        return new Point((Number) coordinates.get(0), (Number) coordinates.get(1), format);
     }
 
     public boolean isAlcohol() {

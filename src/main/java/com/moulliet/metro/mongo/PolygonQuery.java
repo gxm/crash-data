@@ -8,10 +8,10 @@ import com.mongodb.BasicDBObject;
  */
 public class PolygonQuery {
 
-    private String north = "45.558234864509195";
-    private String south = "45.48173913538092";
-    private String east = "-122.56125251770021";
-    private String west = "-122.77874748229982";
+    private String north = "45.896698";
+    private String south = "44.89674";
+    private String east = "-121.37695";
+    private String west = "-124.01367";
 
     public PolygonQuery() {
     }

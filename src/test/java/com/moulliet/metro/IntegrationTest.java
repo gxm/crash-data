@@ -2,7 +2,6 @@ package com.moulliet.metro;
 
 import com.moulliet.common.ClientCreator;
 import com.moulliet.metro.crash.CrashFactory;
-import com.moulliet.metro.load.LoadShapefile;
 import com.moulliet.metro.mongo.MongoDaoImpl;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -38,8 +37,8 @@ public class IntegrationTest {
         String collection = RandomStringUtils.random(6);
         mongoDao = new MongoDaoImpl(DATABASE, collection);
         CrashFactory.setMongoDao(mongoDao);
-        int load = LoadShapefile.load("/Users/greg/code/crash-data/data/testDataCycle.json.txt", DATABASE, collection);
-        assertEquals(6, load);
+        //int load = LoadShapefile.load("/Users/greg/code/crash-data/data/testDataCycle.json.txt", DATABASE, collection);
+        //assertEquals(6, load);
         CrashServiceMain.startResources(7070);
     }
 

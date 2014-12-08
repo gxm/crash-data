@@ -1,5 +1,6 @@
 package com.moulliet.metro;
 
+import com.moulliet.metro.crash.Crashes;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 import org.apache.commons.configuration.Configuration;
@@ -21,6 +22,7 @@ public class CrashServiceMain {
     public static void main(String[] args) throws Exception {
         Config.load();
         logger.debug("starting CrashServiceMain");
+        Crashes.loadAll();
         startResources(8080);
         server.join();
     }

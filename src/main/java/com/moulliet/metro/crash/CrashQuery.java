@@ -18,7 +18,7 @@ public class CrashQuery {
     }
 
     public void location(String north, String south, String east, String west) {
-        new PolygonQuery(north, south, east, west).getQuery(query);
+        new PolygonQuery().getQuery(query);
     }
 
     public void vehicle(boolean cars, boolean bikes, boolean peds) {
