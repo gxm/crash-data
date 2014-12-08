@@ -17,12 +17,11 @@ public class Crashes {
     private static final Logger logger = LoggerFactory.getLogger(Crashes.class);
     private static List<Crash> allCrashes;
 
-    private final List<Crash> crashes = new ArrayList<>();
     private final Map<Point, AtomicInteger> pointMap = new TreeMap<>();
     private CrashTotals crashTotals = new CrashTotals();
 
-    public int aggregatedCrashes(OutputStream stream, DecimalFormat decimalFormat) throws IOException {
-        consolidatePoints(decimalFormat);
+    public int aggregatedCrashes(Filter filter, OutputStream stream, DecimalFormat decimalFormat) throws IOException {
+        consolidatePoints(filter, decimalFormat);
         int max = 0;
         JsonFactory jsonFactory = new JsonFactory();
         JsonGenerator json = jsonFactory.createJsonGenerator(stream);
@@ -54,10 +53,12 @@ public class Crashes {
         logger.info("loaded {} crashes", allCrashes.size());
     }
 
-    private void consolidatePoints(DecimalFormat decimalFormat) {
+    private void consolidatePoints(Filter filter, DecimalFormat decimalFormat) {
         for (Crash crash : allCrashes) {
-            addPointToMap(crash.getPoint(decimalFormat));
-            crashTotals.addCrash(crash);
+            if (filter.include(crash)) {
+                addPointToMap(crash.getPoint(decimalFormat));
+                crashTotals.addCrash(crash);
+            }
         }
     }
 
@@ -68,10 +69,6 @@ public class Crashes {
         } else {
             integer.incrementAndGet();
         }
-    }
-
-    public long size() {
-        return crashes.size();
     }
 
 }

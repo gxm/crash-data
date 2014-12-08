@@ -61,7 +61,15 @@ public class Crash  {
     }
 
     public Point getPoint(DecimalFormat format) {
-        return new Point((Number) coordinates.get(0), (Number) coordinates.get(1), format);
+        return new Point(getLng(), getLat(), format);
+    }
+
+    public Number getLng() {
+        return (Number) coordinates.get(0);
+    }
+
+    public Number getLat() {
+        return (Number) coordinates.get(1);
     }
 
     public boolean isAlcohol() {

@@ -2,6 +2,7 @@ package com.moulliet.metro;
 
 import com.moulliet.common.Timer;
 import com.moulliet.metro.crash.Crashes;
+import com.moulliet.metro.crash.LocationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,10 +25,10 @@ public class CrashResource {
 
     @GET
     @Path("/{north}/{south}/{east}/{west}")
-    public Response getBox(@PathParam("north") String north,
-                           @PathParam("south") String south,
-                           @PathParam("east") String east,
-                           @PathParam("west") String west,
+    public Response getBox(@PathParam("north") double north,
+                           @PathParam("south") double south,
+                           @PathParam("east") double east,
+                           @PathParam("west") double west,
                            @QueryParam("callback") final String callback,
                            @DefaultValue("true") @QueryParam("cars") boolean cars,
                            @DefaultValue("true") @QueryParam("peds") boolean peds,
@@ -62,6 +63,7 @@ public class CrashResource {
         try {
             final Timer timer = new Timer();
 
+            LocationFilter filter = new LocationFilter(north, south, east, west);
             /*CrashQuery query = new CrashQuery();
             query.location(north, south, east, west);
 
@@ -82,7 +84,7 @@ public class CrashResource {
                 public void write(OutputStream outputStream) throws IOException, WebApplicationException {
                     try {
                         outputStream.write((callback + "(").getBytes());
-                        int points = crashes.aggregatedCrashes(outputStream, decimalFormat);
+                        int points = crashes.aggregatedCrashes(filter, outputStream, decimalFormat);
                         logger.debug("wrote {} points in {} millis.", points, timer.reset());
                         outputStream.write(");".getBytes());
                     } catch (IOException e) {
