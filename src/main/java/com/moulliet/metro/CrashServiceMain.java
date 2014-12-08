@@ -22,13 +22,13 @@ public class CrashServiceMain {
     public static void main(String[] args) throws Exception {
         Config.load();
         logger.debug("starting CrashServiceMain");
-        Crashes.loadAll();
         startResources(8080);
         server.join();
     }
 
     public static void startResources(int port) throws Exception {
         logger.info("starting Crash Service on port " + port);
+        Crashes.loadAll();
         ServletHolder servletHolder = new ServletHolder(ServletContainer.class);
         servletHolder.setInitParameter(PackagesResourceConfig.PROPERTY_PACKAGES, "com.moulliet.metro");
         server = new Server(port);
