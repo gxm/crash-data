@@ -117,20 +117,34 @@ function CrashController($scope, $http, $location) {
             subdomains : subDomains
         });
     }
+
     function windowOnLoad() {
         var loadlat = Number($scope.search('lat', 45.52));
         var loadlng = Number($scope.search('lng', -122.67));
-        var baseLayer = getLayer('base', 0, 0.6);
-        var activeLayer = getLayer('baseActive', 50, 0.5);
-        var annoLayer = getLayer('baseAnno', 91);
+        var layers = [];
+        if ($scope.settings.tiles === 'open') {
+            layers.push(L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                id: 'examples.map-i875mjb7'
+            }));
+
+        } else {
+            layers.push(getLayer('base', 0, 0.6));
+            layers.push(getLayer('baseActive', 50, 0.5));
+            layers.push(getLayer('baseAnno', 91));
+        }
 
         $scope.heatMapOverlay = new HeatmapOverlay($scope.config());
+        layers.push($scope.heatMapOverlay);
 
         $scope.map = new L.map('heatmapArea', {
             center: new L.LatLng(loadlat, loadlng),
             zoom: $scope.settings.zoom,
             zoomControl: false,
-            layers: [baseLayer, activeLayer, annoLayer, $scope.heatMapOverlay]
+            layers: layers
         });
 
         $scope.map.addControl( L.control.zoom({position: 'topright'}) );

@@ -30,6 +30,7 @@ function CrashSettings($scope) {
 	that.turning = $scope.search('turning', true);
 	that.other = $scope.search('other', true);
 	that.scale = $scope.search('scale', 'Viewport');
+	that.tiles = $scope.search('tiles', 'open');
 }
 
 CrashSettings.prototype.corners = function ($scope) {
