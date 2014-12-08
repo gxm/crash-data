@@ -72,7 +72,6 @@ function CrashController($scope, $http, $location) {
         var gradientImg = document.querySelector('#gradient');
         var legendCtx = legendCanvas.getContext('2d');
         var gradientCfg = {};
-
         return {
             // radius should be small ONLY if scaleRadius is true (or small radius is intended)
             // if scaleRadius is false it will be the constant radius used in pixels
@@ -83,7 +82,7 @@ function CrashController($scope, $http, $location) {
             // if set to false the heatmap uses the global maximum for colorization
             // if activated: uses the data maximum within the current map boundaries
             //   (there will always be a red spot with useLocalExtremas true)
-            "useLocalExtrema": true,
+            "useLocalExtrema": false,
             latField: 'lat',
             lngField: 'lng',
             valueField: 'count',

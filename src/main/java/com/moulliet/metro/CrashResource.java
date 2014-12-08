@@ -58,13 +58,16 @@ public class CrashResource {
                            @DefaultValue("true") @QueryParam("injuryA") boolean injuryA,
                            @DefaultValue("true") @QueryParam("injuryB") boolean injuryB,
                            @DefaultValue("true") @QueryParam("injuryC") boolean injuryC,
-                           @DefaultValue("true") @QueryParam("property") boolean property
+                           @DefaultValue("true") @QueryParam("property") boolean property,
+                           @DefaultValue("Viewport") @QueryParam("scale") String scale
     ) throws Exception {
         try {
             final Timer timer = new Timer();
 
             Filters filters = new Filters();
-            filters.add(new LocationFilter(north, south, east, west));
+            if (scale.equals("Viewport")) {
+                filters.location(north, south, east, west);
+            }
             filters.vehicle(cars, bikes, peds);
             filters.alcohol(alcohol);
             filters.light(day, night, twilight);
