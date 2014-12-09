@@ -36,6 +36,10 @@ function CrashController($scope, $http, $location) {
         $http.jsonp(url, config)
             .success(function (data, status, headers) {
                 $scope.total = data.total;
+                var radius =  getRadius();
+                data.data.forEach(function (point) {
+                    point.radius = radius;
+                });
                 $scope.heatMapOverlay.setData(data);
 
                 for (var prop in data.summary) {
@@ -63,6 +67,28 @@ function CrashController($scope, $http, $location) {
 
     };
 
+    function getRadius() {
+        switch($scope.map.getZoom()) {
+            case 19:
+            case 18:
+            case 17:
+            case 16:
+                return 35;
+            case 15:
+                return 33;
+            case 14:
+                return 24;
+            case 13:
+                return 17;
+            case 12:
+                return 12;
+            case 11:
+                return 8.5;
+            default:
+                return 6;
+        }
+    }
+
     $scope.config = function config() {
         var legendCanvas = document.createElement('canvas');
         legendCanvas.width = 100;
@@ -73,15 +99,8 @@ function CrashController($scope, $http, $location) {
         var legendCtx = legendCanvas.getContext('2d');
         var gradientCfg = {};
         return {
-            // radius should be small ONLY if scaleRadius is true (or small radius is intended)
-            // if scaleRadius is false it will be the constant radius used in pixels
-            "radius": 0.002,
+            "radius": 35,
             "maxOpacity": 1,
-            // scales the radius based on map zoom
-            "scaleRadius": true,
-            // if set to false the heatmap uses the global maximum for colorization
-            // if activated: uses the data maximum within the current map boundaries
-            //   (there will always be a red spot with useLocalExtremas true)
             "useLocalExtrema": false,
             latField: 'lat',
             lngField: 'lng',
