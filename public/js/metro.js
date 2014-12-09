@@ -75,10 +75,10 @@ function CrashController($scope, $http, $location) {
         return {
             // radius should be small ONLY if scaleRadius is true (or small radius is intended)
             // if scaleRadius is false it will be the constant radius used in pixels
-            "radius": 35,
+            "radius": 0.002,
             "maxOpacity": 1,
             // scales the radius based on map zoom
-            //"scaleRadius": true,
+            "scaleRadius": true,
             // if set to false the heatmap uses the global maximum for colorization
             // if activated: uses the data maximum within the current map boundaries
             //   (there will always be a red spot with useLocalExtremas true)

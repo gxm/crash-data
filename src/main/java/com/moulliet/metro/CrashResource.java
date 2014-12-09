@@ -101,16 +101,7 @@ public class CrashResource {
     }
 
     private DecimalFormat getDecimalFormat(int zoom) {
-        if (zoom >= 17) {
-            return new DecimalFormat("####.#####");
-        } else if (zoom >= 15) {
-            return new DecimalFormat("####.####");
-        } else if (zoom >= 12) {
-            return new DecimalFormat("####.###");
-        } else if (zoom >= 10) {
-            return new DecimalFormat("####.##");
-        }
-        return new DecimalFormat("####.#");
+        return new DecimalFormat("####.####");
     }
 
 }
