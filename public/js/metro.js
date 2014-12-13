@@ -25,9 +25,7 @@ function CrashController($scope, $http, $location) {
     $scope.loadData = function loadData() {
         $scope.refreshDiv();
         var config = {params: $scope.settings};
-        //todo - gfm - there might be a bug here on resize
         var corners = $scope.settings.corners($scope);
-
         var url = $scope.createUrl(corners) + '?callback=JSON_CALLBACK';
         config.params.zoom = $scope.map.getZoom();
         var center = $scope.map.getCenter();
@@ -37,7 +35,6 @@ function CrashController($scope, $http, $location) {
             .success(function (data, status, headers) {
                 $scope.total = data.total;
                 $scope.heatMapOverlay.setData(data);
-
                 for (var prop in data.summary) {
                     $scope.summary[prop] = $scope.percents(data.summary[prop] / $scope.total);
 
