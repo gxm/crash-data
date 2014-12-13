@@ -2,7 +2,7 @@ package com.moulliet.metro;
 
 import com.moulliet.common.Timer;
 import com.moulliet.metro.crash.Crashes;
-import com.moulliet.metro.filter.*;
+import com.moulliet.metro.filter.Filters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +11,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.DecimalFormat;
 
 @Path("/metro")
 public class CrashResource {
@@ -77,13 +76,11 @@ public class CrashResource {
             filters.severity(fatal, injuryA, injuryB, injuryC, property);
 
             final Crashes crashes = new Crashes();
-            DecimalFormat decimalFormat = getDecimalFormat(zoom);
-
             Response.ResponseBuilder builder = Response.ok(new StreamingOutput() {
                 public void write(OutputStream outputStream) throws IOException, WebApplicationException {
                     try {
                         outputStream.write((callback + "(").getBytes());
-                        int points = crashes.aggregatedCrashes(filters, outputStream, decimalFormat);
+                        int points = crashes.aggregatedCrashes(filters, outputStream);
                         logger.debug("wrote {} points in {} millis.", points, timer.reset());
                         outputStream.write(");".getBytes());
                     } catch (IOException e) {
@@ -98,10 +95,6 @@ public class CrashResource {
             logger.warn("unable to handle request", e);
             throw e;
         }
-    }
-
-    private DecimalFormat getDecimalFormat(int zoom) {
-        return new DecimalFormat("####.####");
     }
 
 }

@@ -21,6 +21,8 @@ import java.text.DecimalFormat;
  * "year" : 2012 , "month" : 10 , "day" : 30}
  */
 public class Crash  {
+    private static DecimalFormat format = new DecimalFormat("####.####");
+    private final Point point;
 
     private boolean alcohol;
     private int severity;
@@ -54,14 +56,15 @@ public class Crash  {
         } else {
             severity = 0;
         }
+        point = new Point(getLng(), getLat(), format);
     }
 
     public boolean isCrash() {
         return true;
     }
 
-    public Point getPoint(DecimalFormat format) {
-        return new Point(getLng(), getLat(), format);
+    public Point getPoint() {
+        return point;
     }
 
     public Number getLng() {
