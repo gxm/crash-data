@@ -2,7 +2,7 @@ package com.moulliet.metro;
 
 import com.moulliet.common.Timer;
 import com.moulliet.metro.crash.Crashes;
-import com.moulliet.metro.filter.*;
+import com.moulliet.metro.filter.Filters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +11,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.DecimalFormat;
 
 @Path("/metro")
 public class CrashResource {
@@ -77,13 +76,11 @@ public class CrashResource {
             filters.severity(fatal, injuryA, injuryB, injuryC, property);
 
             final Crashes crashes = new Crashes();
-            DecimalFormat decimalFormat = getDecimalFormat(zoom);
-
             Response.ResponseBuilder builder = Response.ok(new StreamingOutput() {
                 public void write(OutputStream outputStream) throws IOException, WebApplicationException {
                     try {
                         outputStream.write((callback + "(").getBytes());
-                        int points = crashes.aggregatedCrashes(filters, outputStream, decimalFormat);
+                        int points = crashes.aggregatedCrashes(filters, outputStream, getRadius(zoom));
                         logger.debug("wrote {} points in {} millis.", points, timer.reset());
                         outputStream.write(");".getBytes());
                     } catch (IOException e) {
@@ -100,17 +97,26 @@ public class CrashResource {
         }
     }
 
-    private DecimalFormat getDecimalFormat(int zoom) {
-        if (zoom >= 17) {
-            return new DecimalFormat("####.#####");
-        } else if (zoom >= 15) {
-            return new DecimalFormat("####.####");
-        } else if (zoom >= 12) {
-            return new DecimalFormat("####.###");
-        } else if (zoom >= 10) {
-            return new DecimalFormat("####.##");
+    private int getRadius(int zoom) {
+        switch(zoom) {
+            case 19:
+            case 18:
+            case 17:
+            case 16:
+                return 35;
+            case 15:
+                return 33;
+            case 14:
+                return 24;
+            case 13:
+                return 17;
+            case 12:
+                return 12;
+            case 11:
+                return 9;
+            default:
+                return 6;
         }
-        return new DecimalFormat("####.#");
     }
 
 }

@@ -11,8 +11,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.DecimalFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Crashes {
@@ -22,8 +24,8 @@ public class Crashes {
     private final Map<Point, AtomicInteger> pointMap = new TreeMap<>();
     private CrashTotals crashTotals = new CrashTotals();
 
-    public int aggregatedCrashes(Filter filter, OutputStream stream, DecimalFormat decimalFormat) throws IOException {
-        consolidatePoints(filter, decimalFormat);
+    public int aggregatedCrashes(Filter filter, OutputStream stream, int radius) throws IOException {
+        consolidatePoints(filter);
         int max = 0;
         JsonFactory jsonFactory = new JsonFactory();
         JsonGenerator json = jsonFactory.createJsonGenerator(stream);
@@ -37,6 +39,7 @@ public class Crashes {
             json.writeStringField("lat", key.getY());
             json.writeStringField("lng", key.getX());
             json.writeNumberField("count", value);
+            json.writeNumberField("radius", radius);
             json.writeEndObject();
         }
         json.writeEndArray();
@@ -56,10 +59,10 @@ public class Crashes {
         logger.info("loaded {} crashes", allCrashes.size());
     }
 
-    private void consolidatePoints(Filter filter, DecimalFormat decimalFormat) {
+    private void consolidatePoints(Filter filter) {
         for (Crash crash : allCrashes) {
             if (filter.include(crash)) {
-                addPointToMap(crash.getPoint(decimalFormat));
+                addPointToMap(crash.getPoint());
                 crashTotals.addCrash(crash);
             }
         }

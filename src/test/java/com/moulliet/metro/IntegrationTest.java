@@ -46,7 +46,8 @@ public class IntegrationTest {
         JsonNode rootNode = mapper.readTree(entity);
         assertEquals(3, rootNode.get("max").asInt());
         assertEquals(5, rootNode.get("total").asInt());
-        assertTrue(entity.contains("{\"data\":[{\"lat\":\"45.55\",\"lng\":\"-122.926\",\"count\":3},{\"lat\":\"45.592\",\"lng\":\"-123.22\",\"count\":2}]"));
+        assertTrue(entity.contains("{\"data\":[{\"lat\":\"45.5496\",\"lng\":\"-122.9256\",\"count\":3,\"radius\":24}," +
+                "{\"lat\":\"45.5922\",\"lng\":\"-123.2204\",\"count\":2,\"radius\":24}]"));
     }
 
     @Test

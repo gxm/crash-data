@@ -2,6 +2,7 @@ package com.moulliet.metro;
 
 import com.moulliet.metro.crash.Crashes;
 import com.sun.jersey.api.core.PackagesResourceConfig;
+import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 import org.apache.commons.configuration.Configuration;
 import org.eclipse.jetty.server.Server;
@@ -31,6 +32,8 @@ public class CrashServiceMain {
         Crashes.loadAll();
         ServletHolder servletHolder = new ServletHolder(ServletContainer.class);
         servletHolder.setInitParameter(PackagesResourceConfig.PROPERTY_PACKAGES, "com.moulliet.metro");
+        servletHolder.setInitParameter(ResourceConfig.PROPERTY_CONTAINER_RESPONSE_FILTERS,
+                "com.sun.jersey.api.container.filter.GZIPContentEncodingFilter");
         server = new Server(port);
 
         ServletContextHandler context = new ServletContextHandler(server, "/");
