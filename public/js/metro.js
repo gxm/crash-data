@@ -36,10 +36,6 @@ function CrashController($scope, $http, $location) {
         $http.jsonp(url, config)
             .success(function (data, status, headers) {
                 $scope.total = data.total;
-                var radius =  getRadius();
-                data.data.forEach(function (point) {
-                    point.radius = radius;
-                });
                 $scope.heatMapOverlay.setData(data);
 
                 for (var prop in data.summary) {
@@ -66,28 +62,6 @@ function CrashController($scope, $http, $location) {
         $location.search($scope.settings);
 
     };
-
-    function getRadius() {
-        switch($scope.map.getZoom()) {
-            case 19:
-            case 18:
-            case 17:
-            case 16:
-                return 35;
-            case 15:
-                return 33;
-            case 14:
-                return 24;
-            case 13:
-                return 17;
-            case 12:
-                return 12;
-            case 11:
-                return 8.5;
-            default:
-                return 6;
-        }
-    }
 
     $scope.config = function config() {
         var legendCanvas = document.createElement('canvas');

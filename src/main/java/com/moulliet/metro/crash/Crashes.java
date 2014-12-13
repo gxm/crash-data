@@ -24,7 +24,7 @@ public class Crashes {
     private final Map<Point, AtomicInteger> pointMap = new TreeMap<>();
     private CrashTotals crashTotals = new CrashTotals();
 
-    public int aggregatedCrashes(Filter filter, OutputStream stream) throws IOException {
+    public int aggregatedCrashes(Filter filter, OutputStream stream, int radius) throws IOException {
         consolidatePoints(filter);
         int max = 0;
         JsonFactory jsonFactory = new JsonFactory();
@@ -39,6 +39,7 @@ public class Crashes {
             json.writeStringField("lat", key.getY());
             json.writeStringField("lng", key.getX());
             json.writeNumberField("count", value);
+            json.writeNumberField("radius", radius);
             json.writeEndObject();
         }
         json.writeEndArray();

@@ -80,7 +80,7 @@ public class CrashResource {
                 public void write(OutputStream outputStream) throws IOException, WebApplicationException {
                     try {
                         outputStream.write((callback + "(").getBytes());
-                        int points = crashes.aggregatedCrashes(filters, outputStream);
+                        int points = crashes.aggregatedCrashes(filters, outputStream, getRadius(zoom));
                         logger.debug("wrote {} points in {} millis.", points, timer.reset());
                         outputStream.write(");".getBytes());
                     } catch (IOException e) {
@@ -94,6 +94,28 @@ public class CrashResource {
         } catch (Exception e) {
             logger.warn("unable to handle request", e);
             throw e;
+        }
+    }
+
+    private int getRadius(int zoom) {
+        switch(zoom) {
+            case 19:
+            case 18:
+            case 17:
+            case 16:
+                return 35;
+            case 15:
+                return 33;
+            case 14:
+                return 24;
+            case 13:
+                return 17;
+            case 12:
+                return 12;
+            case 11:
+                return 9;
+            default:
+                return 6;
         }
     }
 
