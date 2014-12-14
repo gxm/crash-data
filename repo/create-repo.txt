@@ -1,0 +1,4 @@
+# use this to install the custom built giscore lib to the local maven repo
+mvn install:install-file -Dfile=/Users/greg/code/giscore/build/libs/giscore-2.0.3-SNAPSHOT.jar -DgroupId=org.opensextant \
+                         -DartifactId=giscore -Dversion=2.0.3-SNAPSHOT \
+                         -Dpackaging=jar -DlocalRepositoryPath=./repo

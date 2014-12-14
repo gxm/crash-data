@@ -48,6 +48,12 @@
             <name>Open Source Geospatial Foundation Repository</name>
             <url>http://download.osgeo.org/webdav/geotools/</url>
         </repository>
+        <!--this can be removed once giscore has been properly published-->
+        <repository>
+            <id>org.opensextant</id>
+            <name>giscore</name>
+            <url>file:${project.basedir}/repo</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -133,6 +139,29 @@
             <groupId>org.geotools</groupId>
             <artifactId>gt-shapefile</artifactId>
             <version>12.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opensextant</groupId>
+            <artifactId>giscore</artifactId>
+            <version>2.0.3-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--geodesy is only explicitly needed because our custom repo doesn't link to it-->
+        <dependency>
+            <groupId>org.opensextant</groupId>
+            <artifactId>geodesy</artifactId>
+            <version>2.0.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
