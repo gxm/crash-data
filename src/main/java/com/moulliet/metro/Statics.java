@@ -7,3 +7,4 @@ public class Statics {
     public static final MongoDao mongoDao = new MongoDao(Config.getConfig().getString("database", "metro"));
     public static final DataService datasetService = new DataService();
 }
+N
