@@ -43,7 +43,7 @@
     <div class="container">
         <div id="dataSelection">
             <h3>Available Data Sets</h3>
-            <table>
+            <table cellpadding="2" class="table table-bordered">
                 <tr>
                     <th>Name</th>
                     <th>Active</th>
@@ -51,8 +51,7 @@
                 </tr>
                 <tr ng-repeat="item in datasets">
                     <td>{{ item.name }}</td>
-                    <td>{{ item.active }}</td>
-                    <td><input type="checkbox" ng-model='item.active'  ng-change="updateData()"></td>
+                    <td><input type="checkbox" ng-model='item.active'  ng-change="updateData($index)"></td>
                     <td>{{ item.uploaded }}</td>
                 </tr>
             </table>

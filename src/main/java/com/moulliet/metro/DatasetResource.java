@@ -1,9 +1,9 @@
 package com.moulliet.metro;
 
 import com.google.common.io.Files;
-import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.moulliet.metro.mongo.MongoDao;
+import com.mongodb.util.JSON;
 import com.moulliet.metro.mongo.MongoQueryCallback;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
@@ -19,7 +19,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
@@ -59,15 +58,10 @@ public class DatasetResource {
     @Produces("application/json")
     public Response putDatasets(String data) {
         logger.info("posted data {}" , data);
-        //[
-        // {"name":"Crashes_2013","active":false,"uploaded":"Sun Dec 14 18:40:57 PST 2014"},
-        // {"name":"TestCrash","active":false,"uploaded":"Sun Dec 14 18:40:57 PST 2014"}
-        // ]
-        //todo - gfm - parse json
-        //todo - gfm - update mongo
+        DBObject update = (DBObject) JSON.parse(data);
+        BasicDBObject query = new BasicDBObject("name", update.get("name"));
+        Statics.mongoDao.getDb().getCollection("datasets").update(query, update);
         //todo - gfm - re-load active datasets
-
-
         return getDatasets();
     }
 

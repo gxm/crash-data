@@ -7,21 +7,19 @@ function DatasetsController($scope, $http, $location) {
     $scope.datasets = [];
 
     $scope.loadData = function loadData() {
-        $http.jsonp($scope.host + 'datasets')
+        $http.get($scope.host + 'datasets')
             .success(function (data, status, headers) {
                 $scope.datasets = data;
             }).error(function (data, status, headers) {
-                console.log('error', data, status);
+                console.log('error', status);
             });
         $location.search($scope.settings);
     };
 
-    $scope.updateData = function updateData() {
-        $http.put($scope.host + 'datasets', $scope.datasets)
+    $scope.updateData = function updateData(index) {
+        $http.put($scope.host + 'datasets', $scope.datasets[index])
             .success(function (data, status, headers) {
-                console.log('got back', data, status);
-                //todo - gfm -
-                // $scope.datasets = data;
+                $scope.datasets = data;
             }).error(function (data, status, headers) {
                 console.log('error', data, status);
             });
