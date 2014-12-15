@@ -63,6 +63,7 @@ public class Crashes {
         Set<Crash> crashes = new HashSet<>();
 
         for (String dataset : Statics.datasetService.getActiveNames()) {
+            logger.info("loading dataset: {}", dataset);
             Statics.mongoDao.query(dataset, null, new MongoQueryCallback() {
                 @Override
                 public void callback(Iterator<DBObject> iterator) {
@@ -75,6 +76,7 @@ public class Crashes {
                     }
                 }
             });
+            logger.info("loaded dataset: {}, total items: {}", dataset, crashes.size());
         }
 
         allCrashes = Collections.unmodifiableList(new ArrayList<>(crashes));

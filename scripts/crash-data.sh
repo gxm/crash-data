@@ -10,7 +10,8 @@ if [[ $EUID -eq 0 ]]; then
    exit 1
 fi
 
-ROOT_DIR=/home/crash/crash-data
+USR_DIR=/home/crash
+ROOT_DIR=$(USR_DIR}/crash-data
 PID_FILE=${ROOT_DIR}/crash-data.pid
 STD_OUT_LOG=${ROOT_DIR}/logs/crash-data.$(/bin/date '+%Y-%m-%d-%H-%M-%S')
 
@@ -31,6 +32,7 @@ startService ()
         -Dcom.sun.management.jmxremote.local.only=false
         -Dcom.sun.management.jmxremote.authenticate=false
         -Dcom.sun.management.jmxremote.ssl=false
+        -Djava.library.path=$(USR_DIR}/giscore/filegdb/linux/filegdb/dist/Release/GNU-Linux-x86/
 	"
 
     # only use this version for debugging
