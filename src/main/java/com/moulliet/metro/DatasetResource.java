@@ -32,7 +32,7 @@ public class DatasetResource {
     @GET
     @Produces("application/json")
     public Response getDatasets() {
-        ArrayNode datasets = Statics.datasetService.get();
+        ArrayNode datasets = Statics.datasetService.getAll();
         return Response.status(200).entity(datasets.toString()).build();
     }
 

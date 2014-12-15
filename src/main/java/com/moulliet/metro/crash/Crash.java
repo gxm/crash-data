@@ -4,8 +4,6 @@ import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class represents a crash as displayed by the heatmap.
@@ -130,6 +128,23 @@ public class Crash  {
     }
 
     public int getCrashId() {
+        return crashId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Crash crash = (Crash) o;
+
+        if (crashId != crash.crashId) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
         return crashId;
     }
 }

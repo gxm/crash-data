@@ -12,14 +12,16 @@ import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 public class DataService {
     private static final Logger logger = LoggerFactory.getLogger(DataService.class);
     private ObjectMapper mapper = new ObjectMapper();
 
-    public ArrayNode get() {
+    public ArrayNode getAll() {
         ArrayNode list = mapper.createArrayNode();
         Statics.mongoDao.query("datasets", null, new MongoQueryCallback() {
             @Override
@@ -36,6 +38,20 @@ public class DataService {
             }
         });
         return list;
+    }
+
+    public List<String> getActiveNames() {
+        List<String> datasets = new ArrayList<>();
+        Statics.mongoDao.query("datasets", new BasicDBObject("active", true), new MongoQueryCallback() {
+            @Override
+            public void callback(Iterator<DBObject> iterator) {
+                while (iterator.hasNext()) {
+                    DBObject next = iterator.next();
+                    datasets.add(next.get("name").toString());
+                }
+            }
+        });
+        return datasets;
     }
 
     public void update(String json) {

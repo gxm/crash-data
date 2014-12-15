@@ -1,15 +1,12 @@
 package com.moulliet.metro.crash;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.moulliet.metro.Statics;
 import com.moulliet.metro.filter.Filter;
 import com.moulliet.metro.filter.SinkFilter;
-import com.moulliet.metro.mongo.MongoDao;
 import com.moulliet.metro.mongo.MongoQueryCallback;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,9 +14,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -61,20 +60,9 @@ public class Crashes {
         logger.info("loading sinks");
         SinkFilter.loadSinkPoints();
         logger.info("loading crashes");
-        List<Crash> crashes = new ArrayList<>();
-        List<String> datasets = new ArrayList<>();
+        Set<Crash> crashes = new HashSet<>();
 
-        Statics.mongoDao.query("datasets", new BasicDBObject("active", true), new MongoQueryCallback() {
-            @Override
-            public void callback(Iterator<DBObject> iterator) {
-                while (iterator.hasNext()) {
-                    DBObject next = iterator.next();
-                    datasets.add(next.get("name").toString());
-                }
-            }
-        });
-
-        for (String dataset : datasets) {
+        for (String dataset : Statics.datasetService.getActiveNames()) {
             Statics.mongoDao.query(dataset, null, new MongoQueryCallback() {
                 @Override
                 public void callback(Iterator<DBObject> iterator) {
@@ -89,7 +77,7 @@ public class Crashes {
             });
         }
 
-        allCrashes = Collections.unmodifiableList(crashes);
+        allCrashes = Collections.unmodifiableList(new ArrayList<>(crashes));
         logger.info("loaded {} crashes", allCrashes.size());
     }
 
