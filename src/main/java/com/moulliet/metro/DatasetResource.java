@@ -4,6 +4,7 @@ import com.google.common.io.Files;
 import com.moulliet.metro.crash.Crashes;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
+import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.node.ArrayNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,41 +48,19 @@ public class DatasetResource {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(
-            @FormDataParam("file") InputStream fileInputStream,
-            @FormDataParam("file") FormDataContentDisposition contentDispositionHeader) {
-        logger.info("posting...");
-        File tempDir = Files.createTempDir();
-        String filePath = tempDir + contentDispositionHeader.getFileName();
+            @FormDataParam("file") InputStream inputStream,
+            @FormDataParam("file") FormDataContentDisposition contentDispositionHeader
+            )
+            throws Exception {
+        String fileName = contentDispositionHeader.getFileName();
+        logger.info("posting..." + fileName);
 
-        // save the file to the server
-        saveFile(fileInputStream, filePath);
-
-        String output = "File saved to server location : " + filePath;
-
+        File file = new File(Files.createTempDir() + fileName);
+        OutputStream outpuStream = new FileOutputStream(file);
+        IOUtils.copy(inputStream, outpuStream);
+        String output = "File saved to server location : " + file.getAbsolutePath();
         logger.info("posted " + output);
         return Response.status(200).entity(output).build();
-
     }
 
-    // save uploaded file to a defined location on the server
-    private void saveFile(InputStream uploadedInputStream,
-                          String serverLocation) {
-
-        try {
-            OutputStream outpuStream = new FileOutputStream(new File(serverLocation));
-            int read = 0;
-            byte[] bytes = new byte[1024];
-
-            outpuStream = new FileOutputStream(new File(serverLocation));
-            while ((read = uploadedInputStream.read(bytes)) != -1) {
-                outpuStream.write(bytes, 0, read);
-            }
-            outpuStream.flush();
-            outpuStream.close();
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
-
-    }
 }
