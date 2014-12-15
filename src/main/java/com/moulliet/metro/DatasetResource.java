@@ -57,19 +57,12 @@ public class DatasetResource {
         String fileName = contentDispositionHeader.getFileName();
         //todo - gfm - check for valid file name
         logger.info("posting file {} as {}", fileName, datasetName);
-
         File file = new File(Files.createTempDir() + fileName);
         OutputStream outpuStream = new FileOutputStream(file);
         IOUtils.copy(inputStream, outpuStream);
-
-        File gdbDir = GdbService.unzip(file);
-
-        //todo - gfm - load gdb into mongo
-        //todo - gfm - load datasetName into mongo
-        String output = "File saved to server location : " + file.getAbsolutePath();
-        logger.info("posted " + output);
-        //todo - gfm - return useful output
-        return Response.status(200).entity(output).build();
+        int rows = GdbService.load(datasetName, file);
+        Statics.datasetService.insert(datasetName, rows);
+        return Response.status(200).entity(getDatasets()).build();
     }
 
 }

@@ -46,11 +46,13 @@
             <table cellpadding="2" class="table table-bordered">
                 <tr>
                     <th>Name</th>
+                    <th>Count</th>
                     <th>Active</th>
                     <th>Upload Date</th>
                 </tr>
                 <tr ng-repeat="item in datasets">
                     <td>{{ item.name }}</td>
+                    <td>{{ item.count }}</td>
                     <td><input type="checkbox" ng-model='item.active'  ng-change="updateData($index)"></td>
                     <td>{{ item.uploaded }}</td>
                 </tr>

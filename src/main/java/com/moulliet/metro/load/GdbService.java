@@ -1,7 +1,20 @@
 package com.moulliet.metro.load;
 
 import com.google.common.io.Files;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.moulliet.metro.Statics;
+import com.moulliet.metro.crash.Crash;
+import com.moulliet.metro.mongo.MongoDao;
 import org.apache.commons.io.IOUtils;
+import org.opensextant.geodesy.Geodetic2DPoint;
+import org.opensextant.giscore.DocumentType;
+import org.opensextant.giscore.GISFactory;
+import org.opensextant.giscore.events.ContainerStart;
+import org.opensextant.giscore.events.Feature;
+import org.opensextant.giscore.events.IGISObject;
+import org.opensextant.giscore.events.SimpleField;
+import org.opensextant.giscore.input.IGISInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +32,11 @@ public class GdbService {
         unzip(new File("/Users/greg/code/import/TestCrash.gdb.zip"));
     }
 
-    public static File unzip(File file) throws IOException {
+    public static int load(String datasetName, File file) throws IOException {
+        return importData(datasetName, unzip(file));
+    }
+
+    static File unzip(File file) throws IOException {
         File tempDir = Files.createTempDir();
         logger.info("using temp dir " + tempDir);
         ZipFile zipFile = new ZipFile(file);
@@ -35,5 +52,61 @@ public class GdbService {
             }
         }
         return tempDir;
+    }
+
+    static int importData(String datasetName, File file) {
+        logger.info("starting import {} {}", datasetName, file);
+        MongoDao mongoDao = Statics.mongoDao;
+        IGISInputStream stream = null;
+        try {
+            stream = GISFactory.getInputStream(DocumentType.FileGDB, file);
+            IGISObject read = stream.read();
+            int objects = 0;
+            int rows = 0;
+            while (read != null) {
+                objects++;
+                if (read instanceof ContainerStart) {
+                    logger.info("container start " + read);
+                } else if (read instanceof Feature) {
+                    rows++;
+                    BasicDBObject dbObject = new BasicDBObject();
+                    Feature feature = (Feature) read;
+                    for (String fieldName : Crash.fieldNames) {
+                        dbObject.put(fieldName, feature.getData(new SimpleField(fieldName)));
+                    }
+
+                    dbObject.put("loc", parseLoc(feature));
+                    mongoDao.insert(dbObject, datasetName);
+                    if (feature.getData(new SimpleField("CRASH_YR_NO")) == null) {
+                        logger.info("row " + rows + " null year " + feature);
+                    }
+                } else {
+                    //do nothing
+                }
+                if (objects % 1000 == 0) {
+                    logger.debug("objects " + objects);
+                }
+                read = stream.read();
+            }
+            logger.info("completed import {} {} {}", datasetName, file, rows);
+            return rows;
+        } catch (IOException e) {
+            logger.warn("unable to parse " + file, e);
+        } finally {
+            if (stream != null) {
+                stream.close();
+            }
+        }
+        return 0;
+    }
+
+    private static BasicDBObject parseLoc(Feature feature) {
+        BasicDBList coordinates = new BasicDBList();
+        Geodetic2DPoint center = feature.getGeometry().getCenter();
+        coordinates.add(center.getLongitudeAsDegrees());
+        coordinates.add(center.getLatitudeAsDegrees());
+        BasicDBObject loc = new BasicDBObject("type", "Point");
+        loc.put("coordinates", coordinates);
+        return loc;
     }
 }

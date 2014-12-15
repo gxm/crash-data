@@ -29,8 +29,7 @@ public class DataService {
                     ObjectNode node = mapper.createObjectNode();
                     node.put("name", (String) next.get("name"));
                     node.put("active", (boolean) next.get("active"));
-                    //todo - gfm - turn this on
-                    //node.put("count", (long) next.get("count"));
+                    node.put("count", (long) next.get("count"));
                     node.put("uploaded", next.get("uploaded").toString());
                     list.add(node);
                 }
