@@ -48,6 +48,7 @@ public class DatasetResource {
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces("application/json")
     public Response uploadFile(
             @FormDataParam("datasetName") String datasetName,
             @FormDataParam("file") InputStream inputStream,
@@ -62,7 +63,7 @@ public class DatasetResource {
         IOUtils.copy(inputStream, outpuStream);
         int rows = GdbService.load(datasetName, file);
         Statics.datasetService.insert(datasetName, rows);
-        return Response.status(200).entity(getDatasets()).build();
+        return getDatasets();
     }
 
 }

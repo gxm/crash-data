@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -33,7 +34,16 @@ public class GdbService {
     }
 
     public static int load(String datasetName, File file) throws IOException {
-        return importData(datasetName, unzip(file));
+        File unzipTempDir = unzip(file);
+        File[] files = unzipTempDir.listFiles();
+        logger.info("found " + Arrays.toString(files));
+        int records = 0;
+        for (File found : files) {
+            if (found.isDirectory() && found.getPath().endsWith(".gdb")) {
+                records += importData(datasetName, found);
+            }
+        }
+        return records;
     }
 
     static File unzip(File file) throws IOException {
@@ -62,34 +72,35 @@ public class GdbService {
             stream = GISFactory.getInputStream(DocumentType.FileGDB, file);
             IGISObject read = stream.read();
             int objects = 0;
-            int rows = 0;
+            int inserted = 0;
             while (read != null) {
                 objects++;
                 if (read instanceof ContainerStart) {
                     logger.info("container start " + read);
                 } else if (read instanceof Feature) {
-                    rows++;
                     BasicDBObject dbObject = new BasicDBObject();
                     Feature feature = (Feature) read;
                     for (String fieldName : Crash.fieldNames) {
                         dbObject.put(fieldName, feature.getData(new SimpleField(fieldName)));
                     }
-
                     dbObject.put("loc", parseLoc(feature));
-                    mongoDao.insert(dbObject, datasetName);
-                    if (feature.getData(new SimpleField("CRASH_YR_NO")) == null) {
-                        logger.info("row " + rows + " null year " + feature);
+                    Object year = feature.getData(new SimpleField("CRASH_YR_NO"));
+                    if (year != null) {
+                        mongoDao.insert(dbObject, datasetName);
+                        inserted++;
+                    } else {
+                        logger.info(" null year " + feature);
                     }
                 } else {
                     //do nothing
                 }
                 if (objects % 1000 == 0) {
-                    logger.debug("objects " + objects);
+                    logger.debug("objects " + objects + " inserted " + inserted);
                 }
                 read = stream.read();
             }
-            logger.info("completed import {} {} {}", datasetName, file, rows);
-            return rows;
+            logger.info("completed import {} {} {}", datasetName, file, inserted);
+            return inserted;
         } catch (IOException e) {
             logger.warn("unable to parse " + file, e);
         } finally {

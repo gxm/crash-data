@@ -29,7 +29,7 @@ public class DataService {
                     ObjectNode node = mapper.createObjectNode();
                     node.put("name", (String) next.get("name"));
                     node.put("active", (boolean) next.get("active"));
-                    node.put("count", (long) next.get("count"));
+                    node.put("count", (int) next.get("count"));
                     node.put("uploaded", next.get("uploaded").toString());
                     list.add(node);
                 }
@@ -48,7 +48,7 @@ public class DataService {
         return Statics.mongoDao.getDb().getCollection("datasets");
     }
 
-    public void insert(String name, long count) {
+    public void insert(String name, int count) {
         BasicDBObject insert = new BasicDBObject("name", name)
                 .append("uploaded", new Date())
                 .append("active", false)
