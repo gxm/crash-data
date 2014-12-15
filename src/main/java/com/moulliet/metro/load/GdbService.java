@@ -78,21 +78,13 @@ public class GdbService {
                 if (read instanceof ContainerStart) {
                     logger.info("container start " + read);
                 } else if (read instanceof Feature) {
-                    BasicDBObject dbObject = new BasicDBObject();
                     Feature feature = (Feature) read;
-                    for (String fieldName : Crash.fieldNames) {
-                        dbObject.put(fieldName, feature.getData(new SimpleField(fieldName)));
-                    }
-                    dbObject.put("loc", parseLoc(feature));
-                    Object year = feature.getData(new SimpleField("CRASH_YR_NO"));
-                    if (year != null) {
+                    BasicDBObject dbObject = new BasicDBObject();
+                    if (findFields(dbObject, feature)) {
+                        dbObject.put("loc", parseLoc(feature));
                         mongoDao.insert(dbObject, datasetName);
                         inserted++;
-                    } else {
-                        logger.info(" null year " + feature);
                     }
-                } else {
-                    //do nothing
                 }
                 if (objects % 1000 == 0) {
                     logger.debug("objects " + objects + " inserted " + inserted);
@@ -109,6 +101,27 @@ public class GdbService {
             }
         }
         return 0;
+    }
+
+    private static boolean findFields(BasicDBObject dbObject, Feature feature) {
+        if (putFields(dbObject, feature, Crash.fieldNamesLong)) {
+            return true;
+        }
+        if (putFields(dbObject, feature, Crash.fieldNamesShort)) {
+            return true;
+        }
+        logger.info("can't parse: " + feature);
+        return false;
+    }
+
+    private static boolean putFields(BasicDBObject dbObject, Feature feature, String[] fieldNames) {
+        if (feature.getData(new SimpleField(fieldNames[0])) != null) {
+            for (int i = 0; i < fieldNames.length; i++) {
+                dbObject.put(Crash.fieldNamesLong[i], feature.getData(new SimpleField(fieldNames[i])));
+            }
+            return true;
+        }
+        return false;
     }
 
     private static BasicDBObject parseLoc(Feature feature) {

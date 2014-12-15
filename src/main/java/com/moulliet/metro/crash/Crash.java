@@ -35,7 +35,7 @@ public class Crash  {
     private int crashId;
     private BasicDBList coordinates;
 
-    public static final String[] fieldNames = {
+    public static final String[] fieldNamesLong = {
             "ALCHL_INVLV_FLG",
             "TOT_PED_CNT",
             "TOT_PEDCYCL_CNT",
@@ -50,27 +50,42 @@ public class Crash  {
             "CRASH_ID"
     };
 
-    public Crash(DBObject dbObject) {
-        alcohol = (int) dbObject.get(fieldNames[0]) > 0;
-        ped =  (int) dbObject.get(fieldNames[1]);
-        bike = (int) dbObject.get(fieldNames[2]);
-        surface = Integer.parseInt((String) dbObject.get(fieldNames[3]));
-        light = Integer.parseInt((String) dbObject.get(fieldNames[4]));
-        type = (String) dbObject.get(fieldNames[5]);
-        year = Integer.parseInt((String) dbObject.get(fieldNames[6]));
+    public static final String[] fieldNamesShort = {
+            "ALCHL_INVL",
+            "TOT_PED_CN",
+            "TOT_PEDCYC",
+            "RD_SURF_CO",
+            "LGT_COND_C",
+            "COLLIS_TYP",
+            "CRASH_YR_N",
+            "TOT_FATAL_",
+            "TOT_INJ_LV",
+            "TOT_INJ__1",
+            "TOT_INJ__2",
+            "CRASH_ID"
+    };
 
-        if ((int) dbObject.get(fieldNames[7]) > 0) {
+    public Crash(DBObject dbObject) {
+        alcohol = (int) dbObject.get(fieldNamesLong[0]) > 0;
+        ped = (int) dbObject.get(fieldNamesLong[1]);
+        bike = (int) dbObject.get(fieldNamesLong[2]);
+        surface = Integer.parseInt((String) dbObject.get(fieldNamesLong[3]));
+        light = Integer.parseInt((String) dbObject.get(fieldNamesLong[4]));
+        type = (String) dbObject.get(fieldNamesLong[5]);
+        year = Integer.parseInt((String) dbObject.get(fieldNamesLong[6]));
+
+        if ((int) dbObject.get(fieldNamesLong[7]) > 0) {
             severity = 4;
-        } else if ((int) dbObject.get(fieldNames[8]) > 0) {
+        } else if ((int) dbObject.get(fieldNamesLong[8]) > 0) {
             severity = 3;
-        } else if ((int) dbObject.get(fieldNames[9]) > 0) {
+        } else if ((int) dbObject.get(fieldNamesLong[9]) > 0) {
             severity = 2;
-        } else if ((int) dbObject.get(fieldNames[10]) > 0) {
+        } else if ((int) dbObject.get(fieldNamesLong[10]) > 0) {
             severity = 1;
         } else {
             severity = 0;
         }
-        crashId = (int) dbObject.get(fieldNames[11]);
+        crashId = (int) dbObject.get(fieldNamesLong[11]);
 
         DBObject loc = (DBObject) dbObject.get("loc");
         coordinates = (BasicDBList) loc.get("coordinates");

@@ -2,7 +2,6 @@ package com.moulliet.metro.load;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
-
 import com.moulliet.metro.Statics;
 import com.moulliet.metro.crash.Crash;
 import com.moulliet.metro.mongo.MongoDao;
@@ -10,8 +9,8 @@ import org.opensextant.geodesy.Geodetic2DPoint;
 import org.opensextant.giscore.DocumentType;
 import org.opensextant.giscore.GISFactory;
 import org.opensextant.giscore.events.ContainerStart;
-import org.opensextant.giscore.events.IGISObject;
 import org.opensextant.giscore.events.Feature;
+import org.opensextant.giscore.events.IGISObject;
 import org.opensextant.giscore.events.SimpleField;
 import org.opensextant.giscore.input.IGISInputStream;
 import org.slf4j.Logger;
@@ -58,7 +57,7 @@ public class LoadGdb {
                     rows++;
                     BasicDBObject dbObject = new BasicDBObject();
                     Feature feature = (Feature) read;
-                    for (String fieldName : Crash.fieldNames) {
+                    for (String fieldName : Crash.fieldNamesLong) {
                         dbObject.put(fieldName, feature.getData(new SimpleField(fieldName)));
                     }
 
