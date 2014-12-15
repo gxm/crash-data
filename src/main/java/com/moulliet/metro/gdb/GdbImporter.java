@@ -37,15 +37,11 @@ public class GdbImporter {
             int rows = 0;
             while (read != null) {
                 objects++;
-                logger.info("read " + read );
                 if (read instanceof Row) {
                     rows++;
-                    logger.info("row " + rows);
-                    logger.info("\t " + read);
-                    //if (rows % 100 == 0) logger.info("row " + rows);
+                    logger.info("row " + rows + " " + read);
                 } else {
-                    logger.info("other " + read.getClass());
-                    logger.info("\t " + read);
+                    logger.info("other " + read.getClass() + " " + read);
                 }
                 read = stream.read();
             }
