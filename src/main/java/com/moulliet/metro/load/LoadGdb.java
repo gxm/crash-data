@@ -22,6 +22,14 @@ import java.io.IOException;
 public class LoadGdb {
     private static final Logger logger = LoggerFactory.getLogger(LoadGdb.class);
 
+    /**
+     * https://github.com/OpenSextant/giscore
+     * This works using the un-zipped gdb folder.
+     * The filegdb lib is the default
+     * The ESRI File Geodatabase API is on DYLD_LIBRARY_PATH
+     * export DYLD_LIBRARY_PATH=/Users/greg/code/FileGDB_API/lib
+     * http://www.esri.com/apps/products/download/#File_Geodatabase_API_1.3
+     */
     public static void main(String[] args) {
         //String file = "/Users/greg/code/metro/OregonMetro_Crashes_09_11.gdb";
 
