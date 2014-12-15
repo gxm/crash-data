@@ -1,16 +1,10 @@
 package com.moulliet.metro;
 
 import com.google.common.io.Files;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
-import com.mongodb.util.JSON;
 import com.moulliet.metro.crash.Crashes;
-import com.moulliet.metro.mongo.MongoQueryCallback;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,41 +21,25 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Iterator;
 
 @Path("/datasets")
 public class DatasetResource {
     private static final Logger logger = LoggerFactory.getLogger(DatasetResource.class);
-    private ObjectMapper mapper = new ObjectMapper();
+
 
     @GET
     @Produces("application/json")
     public Response getDatasets() {
-        ArrayNode list = mapper.createArrayNode();
-        Statics.mongoDao.query("datasets", null, new MongoQueryCallback() {
-            @Override
-            public void callback(Iterator<DBObject> iterator) {
-                while (iterator.hasNext()) {
-                    DBObject next = iterator.next();
-                    ObjectNode node = mapper.createObjectNode();
-                    node.put("name", next.get("name").toString());
-                    node.put("active", (boolean) next.get("active"));
-                    node.put("uploaded", next.get("uploaded").toString());
-                    list.add(node);
-                }
-            }
-        });
-        return Response.status(200).entity(list.toString()).build();
+        ArrayNode datasets = Statics.datasetService.get();
+        return Response.status(200).entity(datasets.toString()).build();
     }
 
     @PUT
     @Consumes("application/json")
     @Produces("application/json")
     public Response putDatasets(String data) throws IOException {
-        logger.info("posted data {}" , data);
-        DBObject update = (DBObject) JSON.parse(data);
-        BasicDBObject query = new BasicDBObject("name", update.get("name"));
-        Statics.mongoDao.getDb().getCollection("datasets").update(query, update);
+        logger.info("posted data {}", data);
+        Statics.datasetService.update(data);
         Crashes.loadAll();
         return getDatasets();
     }

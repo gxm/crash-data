@@ -57,6 +57,8 @@ public class LoadGdb {
                     rows++;
                     BasicDBObject dbObject = new BasicDBObject();
                     Feature feature = (Feature) read;
+                    //todo - gfm - also load CRASH_ID
+                    //todo - gfm - switch to longer field names
                     dbObject.put("ALCHL_INVL", feature.getData(new SimpleField("ALCHL_INVLV_FLG")));
                     dbObject.put("TOT_PED_CN", feature.getData(new SimpleField("TOT_PED_CNT")));
                     dbObject.put("TOT_PEDCYC", feature.getData(new SimpleField("TOT_PEDCYCL_CNT")));
