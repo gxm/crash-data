@@ -62,12 +62,25 @@
         <hr/>
         <div id="upload">
             <h3>Upload a new Data Set</h3>
-            <form action="/datasets" method="post" enctype="multipart/form-data">
+            <label for="fileToUpload">Select a File to Upload</label><br/>
+            <input type="file" ng-model-instant id="fileToUpload" multiple
+                   onchange="angular.element(this).scope().setFiles(this)"/>
+            <label for="datasetName">Name<input type="text" id="datasetName" ng-model='datasetName' name="datasetName"></label>
+            <input type="button" ng-click="uploadFile()" value="Upload"/>
 
-                <label for="fileUpload">Select a file : <input id="fileUpload" type="file" name="file" size="50" /></label>
-                <label for="datasetName">Name<input type="text" id="datasetName" name="datasetName"></label>
-                <input type="submit" value="Upload It" />
-            </form>
+            <div ng-show="progressVisible">
+                <div class="percent">{{progress}}%</div>
+                <div class="progress-bar">
+                    <div class="uploaded" ng-style="{'width': progress+'%'}"></div>
+                </div>
+            </div>
+
+            <!--            <form action="/datasets" method="post" enctype="multipart/form-data">
+
+                            <label for="fileUpload">Select a file : <input id="fileUpload" type="file" name="file" size="50" /></label>
+                            <label for="datasetName">Name<input type="text" id="datasetName" name="datasetName"></label>
+                            <input type="submit" value="Upload It" />
+                        </form>-->
         </div>
 
 
