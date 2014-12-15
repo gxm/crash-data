@@ -1,9 +1,10 @@
 package com.moulliet.metro.crash;
 
-import com.moulliet.metro.Config;
+import com.mongodb.DBObject;
 import com.moulliet.metro.filter.Filter;
 import com.moulliet.metro.filter.SinkFilter;
-import com.moulliet.metro.load.LoadShapefile;
+import com.moulliet.metro.mongo.MongoDao;
+import com.moulliet.metro.mongo.MongoQueryCallback;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
 import org.slf4j.Logger;
@@ -11,7 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -55,7 +58,23 @@ public class Crashes {
         logger.info("loading sinks");
         SinkFilter.loadSinkPoints();
         logger.info("loading crashes");
-        allCrashes = Collections.unmodifiableList(LoadShapefile.load(Config.getConfig().getString("data.file")));
+        List<Crash> crashes = new ArrayList<>();
+        //todo - gfm - get the collection name dynamically
+        MongoDao mongoDao = new MongoDao("crashes", "Crashes_2013");
+        //MongoDao mongoDao = new MongoDao("crashes", "TestCrash");
+        mongoDao.query(null, new MongoQueryCallback() {
+            @Override
+            public void callback(Iterator<DBObject> iterator) {
+               while (iterator.hasNext()) {
+                   Crash crash = new Crash(iterator.next());
+                   if (!SinkFilter.isSink(crash.getPoint())) {
+                       crashes.add(crash);
+                   }
+
+               }
+            }
+        });
+        allCrashes = Collections.unmodifiableList(crashes);
         logger.info("loaded {} crashes", allCrashes.size());
     }
 

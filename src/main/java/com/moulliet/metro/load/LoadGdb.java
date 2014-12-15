@@ -3,6 +3,7 @@ package com.moulliet.metro.load;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 
+import com.moulliet.metro.mongo.MongoDao;
 import org.opensextant.geodesy.Geodetic2DPoint;
 import org.opensextant.giscore.DocumentType;
 import org.opensextant.giscore.GISFactory;
@@ -29,6 +30,7 @@ public class LoadGdb {
         //String file = "/Users/greg/code/metro/OregonMetro_Crashes_2012.gdb";
         String file = "/Users/greg/code/metro/OregonMetro_Crashes_2013.gdb";
 
+        MongoDao mongoDao = new MongoDao("crashes", "Crashes_2013");
         //String file = "/Users/greg/code/metro/TestCrash.gdb";
         IGISInputStream stream = null;
         try {
@@ -47,10 +49,16 @@ public class LoadGdb {
                     Feature feature = (Feature) read;
                     dbObject.put("ALCHL_INVL", feature.getData(new SimpleField("ALCHL_INVLV_FLG")));
                     dbObject.put("TOT_PED_CN", feature.getData(new SimpleField("TOT_PED_CNT")));
-                    dbObject.put("TOT_PEDCYCL", feature.getData(new SimpleField("TOT_PEDCYCL_CNT")));
+                    dbObject.put("TOT_PEDCYC", feature.getData(new SimpleField("TOT_PEDCYCL_CNT")));
                     dbObject.put("RD_SURF_CO", feature.getData(new SimpleField("RD_SURF_COND_CD")));
                     dbObject.put("LGT_COND_C", feature.getData(new SimpleField("LGT_COND_CD")));
                     dbObject.put("COLLIS_TYP", feature.getData(new SimpleField("COLLIS_TYP_CD")));
+
+                    dbObject.put("TOT_FATAL_", feature.getData(new SimpleField("TOT_FATAL_CNT")));
+                    dbObject.put("TOT_INJ_LV", feature.getData(new SimpleField("TOT_INJ_LVL_A_CNT")));
+                    dbObject.put("TOT_INJ__1", feature.getData(new SimpleField("TOT_INJ_LVL_B_CNT")));
+                    dbObject.put("TOT_INJ__2", feature.getData(new SimpleField("TOT_INJ_LVL_C_CNT")));
+
                     Object year = feature.getData(new SimpleField("CRASH_YR_NO"));
                     dbObject.put("CRASH_YR_N", year);
                     BasicDBList coords = new BasicDBList();
@@ -60,9 +68,9 @@ public class LoadGdb {
                     BasicDBObject loc = new BasicDBObject("type", "Point");
                     loc.put("coordinates", coords);
                     dbObject.put("loc", loc);
-
+                    mongoDao.insert(dbObject);
                     if (year == null) {
-                        logger.info("row " + rows + " " + feature);
+                        logger.info("row " + rows + " null year " + feature);
                     }
                 } else {
                     //do nothing
