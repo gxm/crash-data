@@ -4,6 +4,7 @@ import com.google.common.io.Files;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
+import com.moulliet.metro.crash.Crashes;
 import com.moulliet.metro.mongo.MongoQueryCallback;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
@@ -56,12 +57,12 @@ public class DatasetResource {
     @PUT
     @Consumes("application/json")
     @Produces("application/json")
-    public Response putDatasets(String data) {
+    public Response putDatasets(String data) throws IOException {
         logger.info("posted data {}" , data);
         DBObject update = (DBObject) JSON.parse(data);
         BasicDBObject query = new BasicDBObject("name", update.get("name"));
         Statics.mongoDao.getDb().getCollection("datasets").update(query, update);
-        //todo - gfm - re-load active datasets
+        Crashes.loadAll();
         return getDatasets();
     }
 

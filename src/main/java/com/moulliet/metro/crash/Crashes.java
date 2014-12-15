@@ -1,5 +1,6 @@
 package com.moulliet.metro.crash;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.moulliet.metro.Statics;
 import com.moulliet.metro.filter.Filter;
@@ -8,6 +9,7 @@ import com.moulliet.metro.mongo.MongoDao;
 import com.moulliet.metro.mongo.MongoQueryCallback;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,24 +57,38 @@ public class Crashes {
         return pointMap.entrySet().size();
     }
 
-    public static void loadAll() throws IOException {
+    public static synchronized void loadAll() throws IOException {
         logger.info("loading sinks");
         SinkFilter.loadSinkPoints();
         logger.info("loading crashes");
         List<Crash> crashes = new ArrayList<>();
-        //todo - gfm - get the collection name dynamically
-        Statics.mongoDao.query("Crashes_2013", null, new MongoQueryCallback() {
+        List<String> datasets = new ArrayList<>();
+
+        Statics.mongoDao.query("datasets", new BasicDBObject("active", true), new MongoQueryCallback() {
             @Override
             public void callback(Iterator<DBObject> iterator) {
-               while (iterator.hasNext()) {
-                   Crash crash = new Crash(iterator.next());
-                   if (!SinkFilter.isSink(crash.getPoint())) {
-                       crashes.add(crash);
-                   }
-
-               }
+                while (iterator.hasNext()) {
+                    DBObject next = iterator.next();
+                    datasets.add(next.get("name").toString());
+                }
             }
         });
+
+        for (String dataset : datasets) {
+            Statics.mongoDao.query(dataset, null, new MongoQueryCallback() {
+                @Override
+                public void callback(Iterator<DBObject> iterator) {
+                    while (iterator.hasNext()) {
+                        Crash crash = new Crash(iterator.next());
+                        if (!SinkFilter.isSink(crash.getPoint())) {
+                            crashes.add(crash);
+                        }
+
+                    }
+                }
+            });
+        }
+
         allCrashes = Collections.unmodifiableList(crashes);
         logger.info("loaded {} crashes", allCrashes.size());
     }
