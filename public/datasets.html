@@ -1,20 +1,56 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Form Page</title>
+    <meta charset="utf-8">
+    <title>Metro Crashes - Data Set Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Metro Crashes">
+    <meta name="author" content="Greg Moulliet">
+
+    <link href="lib/bootstrap-css/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        }
+    </style>
+    <link href="lib/bootstrap-css/css/bootstrap-responsive.min.css" rel="stylesheet">
+
 </head>
+
 <body>
-<h1>Upload a File</h1>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="index.html">Metro Crashes - Home</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li><a href="crashes.html">Crash Map</a></li>
+                    <li class="active"><a href="datasets.html">Data Sets</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <form action="/datasets" method="post" enctype="multipart/form-data">
 
-<form action="/datasets" method="post" enctype="multipart/form-data">
+        <p>
+            Select a file : <input type="file" name="file" size="50" />
+        </p>
 
-    <p>
-        Select a file : <input type="file" name="file" size="50" />
-    </p>
+        <input type="submit" value="Upload It" />
+    </form>
 
-    <input type="submit" value="Upload It" />
-</form>
+</div>
 
+<script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="lib/bootstrap-css/js/bootstrap.js"></script>
 </body>
+
 </html>
