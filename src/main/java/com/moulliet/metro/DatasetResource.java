@@ -2,6 +2,7 @@ package com.moulliet.metro;
 
 import com.google.common.io.Files;
 import com.moulliet.metro.crash.Crashes;
+import com.moulliet.metro.load.GdbService;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 import org.apache.commons.io.IOUtils;
@@ -54,12 +55,15 @@ public class DatasetResource {
             )
             throws Exception {
         String fileName = contentDispositionHeader.getFileName();
+        //todo - gfm - check for valid file name
         logger.info("posting file {} as {}", fileName, datasetName);
 
         File file = new File(Files.createTempDir() + fileName);
         OutputStream outpuStream = new FileOutputStream(file);
         IOUtils.copy(inputStream, outpuStream);
-        //todo - gfm - unzip the file if needed
+
+        File gdbDir = GdbService.unzip(file);
+
         //todo - gfm - load gdb into mongo
         //todo - gfm - load datasetName into mongo
         String output = "File saved to server location : " + file.getAbsolutePath();
