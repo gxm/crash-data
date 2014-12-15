@@ -23,7 +23,7 @@ import java.util.List;
  * "year" : 2012 , "month" : 10 , "day" : 30}
  */
 public class Crash  {
-    private static DecimalFormat format = new DecimalFormat("####.####");
+    private static final DecimalFormat format = new DecimalFormat("####.####");
     private final Point point;
 
     private boolean alcohol;
@@ -127,5 +127,9 @@ public class Crash  {
 
     public int getYear() {
         return year;
+    }
+
+    public int getCrashId() {
+        return crashId;
     }
 }
