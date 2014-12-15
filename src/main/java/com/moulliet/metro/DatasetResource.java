@@ -48,18 +48,23 @@ public class DatasetResource {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(
+            @FormDataParam("datasetName") String datasetName,
             @FormDataParam("file") InputStream inputStream,
             @FormDataParam("file") FormDataContentDisposition contentDispositionHeader
             )
             throws Exception {
         String fileName = contentDispositionHeader.getFileName();
-        logger.info("posting..." + fileName);
+        logger.info("posting file {} as {}", fileName, datasetName);
 
         File file = new File(Files.createTempDir() + fileName);
         OutputStream outpuStream = new FileOutputStream(file);
         IOUtils.copy(inputStream, outpuStream);
+        //todo - gfm - unzip the file if needed
+        //todo - gfm - load gdb into mongo
+        //todo - gfm - load datasetName into mongo
         String output = "File saved to server location : " + file.getAbsolutePath();
         logger.info("posted " + output);
+        //todo - gfm - return useful output
         return Response.status(200).entity(output).build();
     }
 
