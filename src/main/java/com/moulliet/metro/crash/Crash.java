@@ -4,6 +4,8 @@ import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents a crash as displayed by the heatmap.
@@ -25,37 +27,57 @@ public class Crash  {
     private final Point point;
 
     private boolean alcohol;
-    private int severity;
     private int ped;
     private int bike;
     private int surface;
     private int light;
-    private int year;
     private String type;
+    private int year;
+    private int severity;
+    private int crashId;
     private BasicDBList coordinates;
 
-    public Crash(DBObject dbObject) {
-        alcohol = (int) dbObject.get("ALCHL_INVL") > 0;
-        ped =  (int) dbObject.get("TOT_PED_CN");
-        bike = (int) dbObject.get("TOT_PEDCYC");
-        surface = Integer.parseInt((String) dbObject.get("RD_SURF_CO"));
-        light = Integer.parseInt((String) dbObject.get("LGT_COND_C"));
-        type = (String) dbObject.get("COLLIS_TYP");
-        year = Integer.parseInt((String) dbObject.get("CRASH_YR_N"));
-        DBObject loc = (DBObject) dbObject.get("loc");
-        coordinates = (BasicDBList) loc.get("coordinates");
+    public static final String[] fieldNames = {
+            "ALCHL_INVLV_FLG",
+            "TOT_PED_CNT",
+            "TOT_PEDCYCL_CNT",
+            "RD_SURF_COND_CD",
+            "LGT_COND_CD",
+            "COLLIS_TYP_CD",
+            "CRASH_YR_NO",
+            "TOT_FATAL_CNT",
+            "TOT_INJ_LVL_A_CNT",
+            "TOT_INJ_LVL_B_CNT",
+            "TOT_INJ_LVL_C_CNT",
+            "CRASH_ID"
+    };
 
-        if ((int) dbObject.get("TOT_FATAL_") > 0) {
+    public Crash(DBObject dbObject) {
+        alcohol = (int) dbObject.get(fieldNames[0]) > 0;
+        ped =  (int) dbObject.get(fieldNames[1]);
+        bike = (int) dbObject.get(fieldNames[2]);
+        surface = Integer.parseInt((String) dbObject.get(fieldNames[3]));
+        light = Integer.parseInt((String) dbObject.get(fieldNames[4]));
+        type = (String) dbObject.get(fieldNames[5]);
+        year = Integer.parseInt((String) dbObject.get(fieldNames[6]));
+
+        if ((int) dbObject.get(fieldNames[7]) > 0) {
             severity = 4;
-        } else if ((int) dbObject.get("TOT_INJ_LV") > 0) {
+        } else if ((int) dbObject.get(fieldNames[8]) > 0) {
             severity = 3;
-        } else if ((int) dbObject.get("TOT_INJ__1") > 0) {
+        } else if ((int) dbObject.get(fieldNames[9]) > 0) {
             severity = 2;
-        } else if ((int) dbObject.get("TOT_INJ__2") > 0) {
+        } else if ((int) dbObject.get(fieldNames[10]) > 0) {
             severity = 1;
         } else {
             severity = 0;
         }
+        crashId = (int) dbObject.get(fieldNames[11]);
+
+        DBObject loc = (DBObject) dbObject.get("loc");
+        coordinates = (BasicDBList) loc.get("coordinates");
+
+
         point = new Point(getLng(), getLat(), format);
     }
 
