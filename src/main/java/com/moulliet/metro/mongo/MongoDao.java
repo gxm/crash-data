@@ -12,11 +12,10 @@ public class MongoDao {
     private static final Logger logger = LoggerFactory.getLogger(MongoDao.class);
     private MongoClient mongoClient = null;
     private final String database;
-    private final String collection;
+    private DB db;
 
-    public MongoDao(String database, String collection) {
+    public MongoDao(String database) {
         this.database = database;
-        this.collection = collection;
         try {
             //todo - gfm - this presumes running Mongo on the local machine on the default port.
             mongoClient = new MongoClient();
@@ -24,19 +23,20 @@ public class MongoDao {
             logger.error("unable to create MongoClient", e);
             throw new RuntimeException(e);
         }
+        db = mongoClient.getDB(database);
     }
 
-    public void insert(DBObject dbObject) {
-        DB db = mongoClient.getDB(database);
+    public void insert(DBObject dbObject, String collection) {
         db.getCollection(collection).insert(dbObject);
     }
 
-    public void query(DBObject query, MongoQueryCallback callback) {
+    public void query(String collection, DBObject query, MongoQueryCallback callback) {
         DBCursor cursor = null;
         try {
             DB db = mongoClient.getDB(database);
             cursor = db.getCollection(collection).find(query);
             cursor.batchSize(100);
+
             callback.callback(cursor);
         } catch (Exception e) {
             logger.warn("unable to crash " + query, e);
@@ -47,9 +47,5 @@ public class MongoDao {
         }
     }
 
-    public void deleteCollection() {
-        DB db = mongoClient.getDB(database);
-        db.getCollection(collection).drop();
-    }
 
 }

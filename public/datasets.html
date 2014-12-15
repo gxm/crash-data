@@ -8,6 +8,7 @@
     <meta name="author" content="Greg Moulliet">
 
     <link href="lib/bootstrap-css/css/bootstrap.min.css" rel="stylesheet">
+    <link href="lib/bootstrap-css/css/bootstrap-responsive.min.css" rel="stylesheet">
 
     <style>
         body {
@@ -38,14 +39,18 @@
     </div>
 </div>
 <div class="container">
-    <form action="/datasets" method="post" enctype="multipart/form-data">
+    <div id="dataSelection">
+        <!--show which datasets are available-->
+    </div>
+    <div id="upload">
+        <form action="/datasets" method="post" enctype="multipart/form-data">
 
-        <p>
-            Select a file : <input type="file" name="file" size="50" />
-        </p>
+            <label for="fileUpload">Select a file : <input id="fileUpload" type="file" name="file" size="50" /></label>
 
-        <input type="submit" value="Upload It" />
-    </form>
+            <input type="submit" value="Upload It" />
+        </form>
+    </div>
+
 
 </div>
 

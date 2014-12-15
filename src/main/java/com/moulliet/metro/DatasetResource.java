@@ -1,14 +1,23 @@
 package com.moulliet.metro;
 
 import com.google.common.io.Files;
+import com.mongodb.BasicDBList;
+import com.mongodb.DBObject;
+import com.moulliet.metro.mongo.MongoDao;
+import com.moulliet.metro.mongo.MongoQueryCallback;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
@@ -16,10 +25,35 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Iterator;
 
 @Path("/datasets")
 public class DatasetResource {
     private static final Logger logger = LoggerFactory.getLogger(DatasetResource.class);
+    private ObjectMapper mapper = new ObjectMapper();
+
+    @GET
+    @Produces("application/json")
+    public Response getDatasets() {
+        ArrayNode list = mapper.createArrayNode();
+        MongoDao mongoDao = new MongoDao("crashes");
+        mongoDao.query("datasets", null, new MongoQueryCallback() {
+            @Override
+            public void callback(Iterator<DBObject> iterator) {
+                while (iterator.hasNext()) {
+                    DBObject next = iterator.next();
+                    ObjectNode node = mapper.createObjectNode();
+                    node.put("name", next.get("name").toString());
+                    node.put("active", (boolean) next.get("active"));
+                    node.put("uploaded", next.get("uploaded").toString());
+                    list.add(node);
+                }
+            }
+        });
+        return Response.status(200).entity(list.toString()).build();
+    }
+
+    //do put for modifying the collection
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)

@@ -60,9 +60,9 @@ public class Crashes {
         logger.info("loading crashes");
         List<Crash> crashes = new ArrayList<>();
         //todo - gfm - get the collection name dynamically
-        MongoDao mongoDao = new MongoDao("crashes", "Crashes_2013");
+        MongoDao mongoDao = new MongoDao("crashes");
         //MongoDao mongoDao = new MongoDao("crashes", "TestCrash");
-        mongoDao.query(null, new MongoQueryCallback() {
+        mongoDao.query("Crashes_2013", null, new MongoQueryCallback() {
             @Override
             public void callback(Iterator<DBObject> iterator) {
                while (iterator.hasNext()) {

@@ -30,7 +30,8 @@ public class LoadGdb {
         //String file = "/Users/greg/code/metro/OregonMetro_Crashes_2012.gdb";
         String file = "/Users/greg/code/metro/OregonMetro_Crashes_2013.gdb";
 
-        MongoDao mongoDao = new MongoDao("crashes", "Crashes_2013");
+        String collection = "Crashes_2013";
+        MongoDao mongoDao = new MongoDao("crashes");
         //String file = "/Users/greg/code/metro/TestCrash.gdb";
         IGISInputStream stream = null;
         try {
@@ -68,7 +69,7 @@ public class LoadGdb {
                     BasicDBObject loc = new BasicDBObject("type", "Point");
                     loc.put("coordinates", coords);
                     dbObject.put("loc", loc);
-                    mongoDao.insert(dbObject);
+                    mongoDao.insert(dbObject, collection);
                     if (year == null) {
                         logger.info("row " + rows + " null year " + feature);
                     }
