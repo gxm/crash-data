@@ -1,8 +1,6 @@
 package com.moulliet.metro.mongo;
 
-import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
-import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
@@ -12,10 +10,10 @@ import org.slf4j.LoggerFactory;
 public class MongoDao {
 
     private static final Logger logger = LoggerFactory.getLogger(MongoDao.class);
-    private MongoClient mongoClient = null;
     private DB db;
 
     public MongoDao(String database) {
+        MongoClient mongoClient;
         try {
             //todo - gfm - this presumes running Mongo on the local machine on the default port.
             mongoClient = new MongoClient();

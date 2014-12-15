@@ -65,8 +65,6 @@ public class DatasetResource {
         return getDatasets();
     }
 
-    //do put for modifying the collection
-
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(
