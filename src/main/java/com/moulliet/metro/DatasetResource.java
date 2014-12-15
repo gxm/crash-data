@@ -38,8 +38,7 @@ public class DatasetResource {
     @Produces("application/json")
     public Response getDatasets() {
         ArrayNode list = mapper.createArrayNode();
-        MongoDao mongoDao = new MongoDao("crashes");
-        mongoDao.query("datasets", null, new MongoQueryCallback() {
+        Statics.mongoDao.query("datasets", null, new MongoQueryCallback() {
             @Override
             public void callback(Iterator<DBObject> iterator) {
                 while (iterator.hasNext()) {

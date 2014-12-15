@@ -1,13 +1,14 @@
 package com.moulliet.metro.load;
 
 import com.mongodb.BasicDBObject;
+import com.moulliet.metro.Statics;
 import com.moulliet.metro.mongo.MongoDao;
 
 import java.util.Date;
 
 public class DatasetLoad {
     public static void main(String[] args) {
-        MongoDao mongoDao = new MongoDao("crashes");
+        MongoDao mongoDao = Statics.mongoDao;
         insert(mongoDao, "Crashes_2013", true);
         insert(mongoDao, "TestCrash", false);
     }

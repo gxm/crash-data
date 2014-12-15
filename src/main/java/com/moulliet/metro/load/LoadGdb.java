@@ -3,6 +3,7 @@ package com.moulliet.metro.load;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 
+import com.moulliet.metro.Statics;
 import com.moulliet.metro.mongo.MongoDao;
 import org.opensextant.geodesy.Geodetic2DPoint;
 import org.opensextant.giscore.DocumentType;
@@ -31,7 +32,7 @@ public class LoadGdb {
         String file = "/Users/greg/code/metro/OregonMetro_Crashes_2013.gdb";
 
         String collection = "Crashes_2013";
-        MongoDao mongoDao = new MongoDao("crashes");
+        MongoDao mongoDao = Statics.mongoDao;
         //String file = "/Users/greg/code/metro/TestCrash.gdb";
         IGISInputStream stream = null;
         try {
