@@ -40,17 +40,6 @@ function CrashController($scope, $http, $location) {
 
                 }
                 $('.refreshDiv').attr('class', 'refreshDiv well hidden');
-                var downloadUrl = $scope.createUrl(corners) + '?';
-                for (var prop in config.params) {
-                    if (prop !== 'corners') {
-                        downloadUrl += prop + '=' + config.params[prop] + '&';
-                    }
-                }
-                downloadUrl += 'download=true';
-                $('#download').attr('href', downloadUrl);
-                $('#download').attr('download', 'odot_' + corners.north + '_' + corners.south
-                + '_' + corners.east + '_' + corners.west + '.csv');
-
             }).error(function (data, status, headers) {
                 $('.refreshDiv').text('Unable to load data from remote server');
 

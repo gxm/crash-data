@@ -10,9 +10,10 @@ if [[ $EUID -eq 0 ]]; then
    exit 1
 fi
 
-ROOT_DIR=/home/crash/crash-data
+USR_DIR=/home/crash
+ROOT_DIR=${USR_DIR}/crash-data
 PID_FILE=${ROOT_DIR}/crash-data.pid
-STD_OUT_LOG=${ROOT_DIR}/logs/crash-data.$(/bin/date '+%Y-%m-%d-%H-%M-%S')
+STD_OUT_LOG=${USR_DIR}/logs/crash-data.$(/bin/date '+%Y-%m-%d-%H-%M-%S')
 
 startService ()
 {
@@ -24,13 +25,20 @@ startService ()
 		exit 1
 	fi
 
-	OPTIONS="-Xms1g -Xmx2g -cp ${ROOT_DIR}/crash-data-0.1-SNAPSHOT-jar-with-dependencies.jar:${ROOT_DIR}/config
+	LD_LIBRARY_PATH=${USR_DIR}/FileGDB_API/lib
+	export LD_LIBRARY_PATH
+	echo "LD_LIB_PATH $LD_LIBRARY_PATH"
+
+	# jersey-multipart-1.8.jar only exists here to get around and issue with using SNAPSHOT-jar-with-dependencies
+	# http://stackoverflow.com/questions/25470505/missing-dependency-for-formdataparam-with-jersey-multipart-1-18-1-solved
+	OPTIONS="-Xms1g -Xmx2g -cp ${ROOT_DIR}/jersey-multipart-1.8.jar:${ROOT_DIR}/crash-data-0.1-SNAPSHOT-jar-with-dependencies.jar:${ROOT_DIR}/config
         -Dconfig.properties=${ROOT_DIR}/config/crash-data.properties
         -Dcom.sun.management.jmxremote
         -Dcom.sun.management.jmxremote.port=9010
         -Dcom.sun.management.jmxremote.local.only=false
         -Dcom.sun.management.jmxremote.authenticate=false
         -Dcom.sun.management.jmxremote.ssl=false
+        -Djava.library.path=${USR_DIR}/giscore/filegdb/linux/filegdb/dist/Release/GNU-Linux-x86/
 	"
 
     # only use this version for debugging

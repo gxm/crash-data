@@ -21,41 +21,76 @@ import java.text.DecimalFormat;
  * "year" : 2012 , "month" : 10 , "day" : 30}
  */
 public class Crash  {
-    private static DecimalFormat format = new DecimalFormat("####.####");
+    private static final DecimalFormat format = new DecimalFormat("####.####");
     private final Point point;
 
     private boolean alcohol;
-    private int severity;
     private int ped;
     private int bike;
     private int surface;
     private int light;
-    private int year;
     private String type;
+    private int year;
+    private int severity;
+    private int crashId;
     private BasicDBList coordinates;
 
-    public Crash(DBObject dbObject) {
-        alcohol = (int) dbObject.get("ALCHL_INVL") > 0;
-        ped =  (int) dbObject.get("TOT_PED_CN");
-        bike = (int) dbObject.get("TOT_PEDCYC");
-        surface = Integer.parseInt((String) dbObject.get("RD_SURF_CO"));
-        light = Integer.parseInt((String) dbObject.get("LGT_COND_C"));
-        type = (String) dbObject.get("COLLIS_TYP");
-        year = Integer.parseInt((String) dbObject.get("CRASH_YR_N"));
-        DBObject loc = (DBObject) dbObject.get("loc");
-        coordinates = (BasicDBList) loc.get("coordinates");
+    public static final String[] fieldNamesLong = {
+            "ALCHL_INVLV_FLG",
+            "TOT_PED_CNT",
+            "TOT_PEDCYCL_CNT",
+            "RD_SURF_COND_CD",
+            "LGT_COND_CD",
+            "COLLIS_TYP_CD",
+            "CRASH_YR_NO",
+            "TOT_FATAL_CNT",
+            "TOT_INJ_LVL_A_CNT",
+            "TOT_INJ_LVL_B_CNT",
+            "TOT_INJ_LVL_C_CNT",
+            "CRASH_ID"
+    };
 
-        if ((int) dbObject.get("TOT_FATAL_") > 0) {
+    public static final String[] fieldNamesShort = {
+            "ALCHL_INVL",
+            "TOT_PED_CN",
+            "TOT_PEDCYC",
+            "RD_SURF_CO",
+            "LGT_COND_C",
+            "COLLIS_TYP",
+            "CRASH_YR_N",
+            "TOT_FATAL_",
+            "TOT_INJ_LV",
+            "TOT_INJ__1",
+            "TOT_INJ__2",
+            "CRASH_ID"
+    };
+
+    public Crash(DBObject dbObject) {
+        alcohol = (int) dbObject.get(fieldNamesLong[0]) > 0;
+        ped = (int) dbObject.get(fieldNamesLong[1]);
+        bike = (int) dbObject.get(fieldNamesLong[2]);
+        surface = Integer.parseInt((String) dbObject.get(fieldNamesLong[3]));
+        light = Integer.parseInt((String) dbObject.get(fieldNamesLong[4]));
+        type = (String) dbObject.get(fieldNamesLong[5]);
+        year = Integer.parseInt((String) dbObject.get(fieldNamesLong[6]));
+
+        if ((int) dbObject.get(fieldNamesLong[7]) > 0) {
             severity = 4;
-        } else if ((int) dbObject.get("TOT_INJ_LV") > 0) {
+        } else if ((int) dbObject.get(fieldNamesLong[8]) > 0) {
             severity = 3;
-        } else if ((int) dbObject.get("TOT_INJ__1") > 0) {
+        } else if ((int) dbObject.get(fieldNamesLong[9]) > 0) {
             severity = 2;
-        } else if ((int) dbObject.get("TOT_INJ__2") > 0) {
+        } else if ((int) dbObject.get(fieldNamesLong[10]) > 0) {
             severity = 1;
         } else {
             severity = 0;
         }
+        crashId = (int) dbObject.get(fieldNamesLong[11]);
+
+        DBObject loc = (DBObject) dbObject.get("loc");
+        coordinates = (BasicDBList) loc.get("coordinates");
+
+
         point = new Point(getLng(), getLat(), format);
     }
 
@@ -105,5 +140,26 @@ public class Crash  {
 
     public int getYear() {
         return year;
+    }
+
+    public int getCrashId() {
+        return crashId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Crash crash = (Crash) o;
+
+        if (crashId != crash.crashId) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return crashId;
     }
 }
