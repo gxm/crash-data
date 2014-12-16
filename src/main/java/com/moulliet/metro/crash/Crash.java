@@ -3,8 +3,6 @@ package com.moulliet.metro.crash;
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 
-import java.text.DecimalFormat;
-
 /**
  * This class represents a crash as displayed by the heatmap.
  * { "_id" : { "$oid" : "51e07dc30364a5f3a7cc7a75"} ,
@@ -21,7 +19,6 @@ import java.text.DecimalFormat;
  * "year" : 2012 , "month" : 10 , "day" : 30}
  */
 public class Crash  {
-    private static final DecimalFormat format = new DecimalFormat("####.####");
     private final Point point;
 
     private boolean alcohol;
@@ -91,7 +88,7 @@ public class Crash  {
         coordinates = (BasicDBList) loc.get("coordinates");
 
 
-        point = new Point(getLng(), getLat(), format);
+        point = new Point(getLng(), getLat());
     }
 
     public boolean isCrash() {

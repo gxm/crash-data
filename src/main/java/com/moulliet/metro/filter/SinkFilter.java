@@ -28,16 +28,18 @@ public class SinkFilter {
             Point point = new Point(lng, lat);
             filterMap.put(point.createHash(), point);
         }
+        logger.debug("sinks{}", filterMap);
     }
 
     public static boolean isSink(Point point) {
-        Point sinkPoint = filterMap.get(point.createHash());
+        String hash = point.createHash();
+        Point sinkPoint = filterMap.get(hash);
         if (sinkPoint == null) {
-            logger.trace("point doesn't match hash {} ", point);
+            logger.trace("point {} not in hash map {} ", point, hash);
             return false;
         }
         boolean within = point.isWithin(sinkPoint, 0.0001F);
-        logger.trace("point {} matched hash.  within sink? {}", point, within);
+        logger.trace("point: {} withing? {} sink: {}", point, within, sinkPoint);
         return within;
     }
 

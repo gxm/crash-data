@@ -14,8 +14,8 @@ public class Point implements Comparable<Point> {
     private String x;
     private String y;
 
-    public static DecimalFormat FORMAT = new DecimalFormat("####.#####");
-    private static DecimalFormat HASH = new DecimalFormat("####.##");
+    public static DecimalFormat FORMAT = new DecimalFormat("####.####");
+    private static DecimalFormat HASH = new DecimalFormat("###0.000");
 
     public Point(String x, String y) {
         this.x = FORMAT.format(Float.parseFloat(x));
@@ -25,22 +25,6 @@ public class Point implements Comparable<Point> {
     public Point(Number x, Number y) {
         this.x = FORMAT.format(x);
         this.y = FORMAT.format(y);
-    }
-
-    public Point(Number x, Number y, DecimalFormat format) {
-        this.x = format.format(x);
-        this.y = format.format(y);
-
-    }
-
-    /**
-     * 45,28,25.4600000,-122,38,55.4200007
-     * Decimal value = Degrees + (Minutes/60) + (Seconds/3600)
-     */
-    public Point(String longDegrees, String longMinutes, String longSeconds,
-                 String latDegrees, String latMinutes, String latSeconds) {
-        y = FORMAT.format(Float.parseFloat(longDegrees) + Float.parseFloat(longMinutes) / 60 + Float.parseFloat(longSeconds) / 3600);
-        x = FORMAT.format(Float.parseFloat(latDegrees) - Float.parseFloat(latMinutes) / 60 - Float.parseFloat(latSeconds) / 3600);
     }
 
     public String toString() {

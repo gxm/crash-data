@@ -1,4 +1,12 @@
 var sinkPoints = [
+  { // custom point
+    lat: '45.49288',
+    lng: '-122.5733'
+  },
+  { // custom point
+    "lat": "45.4921",
+    "lng": "-122.5751"
+  },
   {
     "lat": "45.49284",
     "lng": "-122.57478"
