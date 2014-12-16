@@ -5,9 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
 
-/**
- *
- */
 public class Point implements Comparable<Point> {
     private static final Logger logger = LoggerFactory.getLogger(Point.class);
 
@@ -15,7 +12,7 @@ public class Point implements Comparable<Point> {
     private String y;
 
     public static DecimalFormat FORMAT = new DecimalFormat("####.####");
-    private static DecimalFormat HASH = new DecimalFormat("###0.000");
+    private static DecimalFormat HASH = new DecimalFormat("###0.0000");
 
     public Point(String x, String y) {
         this.x = FORMAT.format(Float.parseFloat(x));
@@ -73,12 +70,17 @@ public class Point implements Comparable<Point> {
     }
 
     public boolean isWithin(Point other, float delta) {
-        if (Math.abs(getLatitude() - other.getLatitude()) > delta) {
+        float latDiff = getLatitude() - other.getLatitude();
+        if (Math.abs(latDiff) > delta) {
+            logger.trace("lat diff {}", latDiff);
             return false;
         }
-        if (Math.abs(getLongitude() - other.getLongitude()) > delta) {
+        float longDiff = getLongitude() - other.getLongitude();
+        if (Math.abs(longDiff) > delta) {
+            logger.trace("lng diff {}", longDiff);
             return false;
         }
+        logger.trace("within {} {}", longDiff, latDiff);
         return true;
     }
 

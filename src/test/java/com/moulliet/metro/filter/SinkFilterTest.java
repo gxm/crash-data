@@ -24,10 +24,21 @@ public class SinkFilterTest {
 
     @Test
     public void testUnfiltered() {
-        Point sinkPoint = new Point("-122.80298", "45.47047");
-        assertTrue(SinkFilter.isSink(sinkPoint));
-        Point unfiltered = new Point("-122.8030", "45.4705");
-        assertTrue(SinkFilter.isSink(unfiltered));
+        assertTrue(SinkFilter.isSink(new Point("-122.80298", "45.47047")));
+        assertTrue(SinkFilter.isSink(new Point("-122.8029", "45.4704")));
+        assertTrue(SinkFilter.isSink(new Point("-122.8030", "45.4705")));
+    }
+
+    @Test
+    public void testAnother() {
+        assertTrue(SinkFilter.isSink(new Point("-122.7084", "45.4790")));
+        assertTrue(SinkFilter.isSink(new Point("-122.7084", "45.479")));
+    }
+
+    @Test
+    public void testMore() {
+        assertTrue(SinkFilter.isSink(new Point("-122.76199", "45.53664")));
+        assertTrue(SinkFilter.isSink(new Point("-122.762", "45.5367")));
     }
 
     @Test
