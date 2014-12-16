@@ -97,6 +97,29 @@ function CrashController($scope, $http, $location) {
         });
     }
 
+    function addSinks() {
+        $http.get($scope.host + 'sinks')
+            .success(function (data, status, headers) {
+                var markers = [];
+                data.forEach(function (point) {
+                    var marker = L.marker([point.lat, point.lng]);
+                    var source = point.source || 'odot';
+                    marker.bindPopup(point.lat + ', ' + point.lng + ' source:' + source);
+                    markers.push(marker);
+                    var circle = L.circle([point.lat, point.lng], 13, {
+                        color: 'red',
+                        weight: 2,
+                        fillOpacity: 0
+                    });
+                    markers.push(circle);
+                });
+
+                L.layerGroup(markers).addTo($scope.map);
+            }).error(function (data, status, headers) {
+                console.log('unable to load sinks', status);
+            });
+    }
+
     function windowOnLoad() {
         var loadlat = Number($scope.search('lat', 45.52));
         var loadlng = Number($scope.search('lng', -122.67));
@@ -127,22 +150,7 @@ function CrashController($scope, $http, $location) {
         });
 
         if ($scope.settings.sinks) {
-            var markers = [];
-            sinkPoints.forEach(function (point) {
-                var marker = L.marker([point.lat, point.lng]);
-                var source = point.source || 'odot';
-                marker.bindPopup(point.lat + ', ' + point.lng + ' source:' + source);
-                markers.push(marker);
-                var circle = L.circle([point.lat, point.lng], 13, {
-                    color: 'red',
-                    weight: 2,
-                    fillOpacity: 0
-                });
-                markers.push(circle);
-
-            });
-
-            L.layerGroup(markers).addTo($scope.map);
+            addSinks();
         }
 
         $scope.map.addControl( L.control.zoom({position: 'topright'}) );
