@@ -60,6 +60,10 @@ public class DataService {
         getCollection().update(new BasicDBObject("name", update.get("name")), update);
     }
 
+    public void delete(String name) {
+        getCollection().remove(new BasicDBObject("name", name));
+    }
+
     private DBCollection getCollection() {
         return Statics.mongoDao.getDb().getCollection("datasets");
     }

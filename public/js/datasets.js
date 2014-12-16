@@ -29,6 +29,19 @@ function DatasetsController($scope, $http, $location) {
         $location.search($scope.settings);
     };
 
+    $scope.deleteDataset = function deleteDataset(index) {
+        var url = $scope.host + 'datasets/' + $scope.datasets[index].name;
+        console.log('calling', url);
+        $http.delete(url)
+            .success(function (data, status, headers) {
+                $scope.datasets = data;
+                $scope.message = 'deleted ' + new Date();
+            }).error(function (data, status, headers) {
+                console.log('error', data, status);
+            });
+        $location.search($scope.settings);
+    };
+
     $scope.loadData();
 
     $scope.setFiles = function (element) {
