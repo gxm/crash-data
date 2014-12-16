@@ -135,3 +135,13 @@ body {
     padding: 0px 0px 0px 0px;
 
 }
+
+input[type="file"] {
+    width: 500px;
+}
+
+input,
+textarea,
+.uneditable-input {
+    width: 500px;
+}

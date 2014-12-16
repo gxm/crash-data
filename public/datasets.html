@@ -6,9 +6,9 @@
     <meta name="description" content="Metro Crashes">
     <meta name="author" content="Greg Moulliet">
 
-    <link href="css/crash-data.css" rel="stylesheet">
     <link href="lib/bootstrap-css/css/bootstrap.min.css" rel="stylesheet">
     <link href="lib/bootstrap-css/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="css/crash-data.css" rel="stylesheet">
 
     <style>
         body {
@@ -49,12 +49,14 @@
                     <th>Count</th>
                     <th>Active</th>
                     <th>Upload Date</th>
+                    <th>Delete</th>
                 </tr>
                 <tr ng-repeat="item in datasets">
                     <td>{{ item.name }}</td>
                     <td>{{ item.count }}</td>
                     <td><input type="checkbox" ng-model='item.active'  ng-change="updateData($index)"></td>
                     <td>{{ item.uploaded }}</td>
+                    <td><input type="button" ng-click="deleteDataset($index)" value="Delete"></td>
                 </tr>
             </table>
             <div>{{ message }}</div>
@@ -62,10 +64,10 @@
         <hr/>
         <div id="upload">
             <h3>Upload a new Data Set</h3>
-            <label for="fileToUpload">Select a File to Upload</label><br/>
-            <input type="file" ng-model-instant id="fileToUpload" multiple
+            <label for="fileToUpload">Select a zipped File GDB dataset to upload</label><br/>
+            <input type="file" ng-model-instant id="fileToUpload"
                    onchange="angular.element(this).scope().setFiles(this)"/>
-            <label for="datasetName">Name<input type="text" id="datasetName" ng-model='datasetName' name="datasetName"></label>
+            <label for="datasetName">Name <input type="text" id="datasetName" ng-model='datasetName' name="datasetName"></label>
             <input type="button" ng-click="uploadFile()" value="Upload"/>
         </div>
 
