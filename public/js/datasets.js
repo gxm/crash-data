@@ -50,7 +50,9 @@ function DatasetsController($scope, $http, $location) {
             // Turn the FileList object into an Array
             scope.files = [];
             for (var i = 0; i < element.files.length; i++) {
-                scope.files.push(element.files[i])
+                scope.files.push(element.files[i]);
+                console.log('file ', element.files[i]);
+                $scope.datasetName = element.files[i].name;
             }
         });
     };

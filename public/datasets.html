@@ -64,10 +64,10 @@
         <hr/>
         <div id="upload">
             <h3>Upload a new Data Set</h3>
-            <label for="fileToUpload">Select a File to Upload</label><br/>
-            <input type="file" ng-model-instant id="fileToUpload" multiple
+            <label for="fileToUpload">Select a zipped File GDB dataset to upload</label><br/>
+            <input type="file" ng-model-instant id="fileToUpload"
                    onchange="angular.element(this).scope().setFiles(this)"/>
-            <label for="datasetName">Name<input type="text" id="datasetName" ng-model='datasetName' name="datasetName"></label>
+            <label for="datasetName">Name <input type="text" id="datasetName" ng-model='datasetName' name="datasetName"></label>
             <input type="button" ng-click="uploadFile()" value="Upload"/>
         </div>
 
