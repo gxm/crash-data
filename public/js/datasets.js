@@ -69,6 +69,7 @@ function DatasetsController($scope, $http, $location) {
         $scope.$apply(function () {
             $scope.datasets = JSON.parse(evt.target.responseText);
             $scope.message = 'upload complete ' + new Date();
+            $scope.datasetName = '';
         });
     }
 
