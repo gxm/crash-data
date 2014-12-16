@@ -14,19 +14,8 @@ public class Point implements Comparable<Point> {
     private String x;
     private String y;
 
-    /**
-     * 3 decimals - max 135 total 141
-     * 4 decimals - max 85, total 570
-     * 5 decimals - max 83 total 804
-     * 6 decimals - max 80 total 822
-     * 8 decimals - max 80 total 822
-     * <p/>
-     * Multnomah Data
-     * 3 decimals max 559, points 6541
-     * 4 decimals max 555, points 24049
-     */
     public static DecimalFormat FORMAT = new DecimalFormat("####.#####");
-    private static DecimalFormat HASH = new DecimalFormat("####.###");
+    private static DecimalFormat HASH = new DecimalFormat("####.##");
 
     public Point(String x, String y) {
         this.x = FORMAT.format(Float.parseFloat(x));
