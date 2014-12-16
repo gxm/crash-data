@@ -130,7 +130,8 @@ function CrashController($scope, $http, $location) {
             var markers = [];
             sinkPoints.forEach(function (point) {
                 var marker = L.marker([point.lat, point.lng]);
-                marker.bindPopup(point.lat + ', ' + point.lng);
+                var source = point.source || 'odot';
+                marker.bindPopup(point.lat + ', ' + point.lng + ' source:' + source);
                 markers.push(marker);
             });
 
