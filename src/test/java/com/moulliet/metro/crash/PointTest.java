@@ -2,8 +2,6 @@ package com.moulliet.metro.crash;
 
 import junit.framework.TestCase;
 
-import java.text.DecimalFormat;
-
 /**
  *
  */
@@ -11,7 +9,7 @@ public class PointTest extends TestCase
 {
     public void testFormat()
     {
-        Point point = new Point(45.55555, -122.44444, new DecimalFormat("####.####"));
+        Point point = new Point(45.55555, -122.44444);
         assertEquals("45.5555", point.getX());
         //todo - gfm - this seems wrong
         //assertEquals("45.5556", point.getX());
@@ -19,13 +17,8 @@ public class PointTest extends TestCase
     }
 
     public void testIsWithin() {
-        Point point = new Point(45.55555, -122.44444);
+        Point point = new Point(45.493, -122.5733);
         assertTrue(point.isWithin(point, 0.00001f));
-
-        assertTrue(point.isWithin(new Point(45.55554, -122.44444), 0.00002f));
-        assertTrue(point.isWithin(new Point(45.55555, -122.44445), 0.00002f));
-        assertFalse(point.isWithin(new Point(45.55565, -122.44444), 0.00005f));
-        assertFalse(point.isWithin(new Point(45.55555, -122.44434), 0.00005f));
-
+        assertTrue(point.isWithin(new Point(45.4929, -122.5733), 0.0001f));
     }
 }

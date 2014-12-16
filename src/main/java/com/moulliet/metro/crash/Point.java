@@ -5,28 +5,14 @@ import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
 
-/**
- *
- */
 public class Point implements Comparable<Point> {
     private static final Logger logger = LoggerFactory.getLogger(Point.class);
 
     private String x;
     private String y;
 
-    /**
-     * 3 decimals - max 135 total 141
-     * 4 decimals - max 85, total 570
-     * 5 decimals - max 83 total 804
-     * 6 decimals - max 80 total 822
-     * 8 decimals - max 80 total 822
-     * <p/>
-     * Multnomah Data
-     * 3 decimals max 559, points 6541
-     * 4 decimals max 555, points 24049
-     */
-    public static DecimalFormat FORMAT = new DecimalFormat("####.#####");
-    private static DecimalFormat HASH = new DecimalFormat("####.###");
+    public static DecimalFormat FORMAT = new DecimalFormat("####.####");
+    private static DecimalFormat HASH = new DecimalFormat("###0.0000");
 
     public Point(String x, String y) {
         this.x = FORMAT.format(Float.parseFloat(x));
@@ -36,22 +22,6 @@ public class Point implements Comparable<Point> {
     public Point(Number x, Number y) {
         this.x = FORMAT.format(x);
         this.y = FORMAT.format(y);
-    }
-
-    public Point(Number x, Number y, DecimalFormat format) {
-        this.x = format.format(x);
-        this.y = format.format(y);
-
-    }
-
-    /**
-     * 45,28,25.4600000,-122,38,55.4200007
-     * Decimal value = Degrees + (Minutes/60) + (Seconds/3600)
-     */
-    public Point(String longDegrees, String longMinutes, String longSeconds,
-                 String latDegrees, String latMinutes, String latSeconds) {
-        y = FORMAT.format(Float.parseFloat(longDegrees) + Float.parseFloat(longMinutes) / 60 + Float.parseFloat(longSeconds) / 3600);
-        x = FORMAT.format(Float.parseFloat(latDegrees) - Float.parseFloat(latMinutes) / 60 - Float.parseFloat(latSeconds) / 3600);
     }
 
     public String toString() {
@@ -100,12 +70,17 @@ public class Point implements Comparable<Point> {
     }
 
     public boolean isWithin(Point other, float delta) {
-        if (Math.abs(getLatitude() - other.getLatitude()) > delta) {
+        float latDiff = getLatitude() - other.getLatitude();
+        if (Math.abs(latDiff) > delta) {
+            logger.trace("lat diff {}", latDiff);
             return false;
         }
-        if (Math.abs(getLongitude() - other.getLongitude()) > delta) {
+        float longDiff = getLongitude() - other.getLongitude();
+        if (Math.abs(longDiff) > delta) {
+            logger.trace("lng diff {}", longDiff);
             return false;
         }
+        logger.trace("within {} {}", longDiff, latDiff);
         return true;
     }
 

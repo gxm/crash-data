@@ -7,6 +7,8 @@
     </appender>
 
     <logger name="com.moulliet" level="DEBUG"/>
+    <!--<logger name="com.moulliet.metro.filter" level="TRACE"/>
+    <logger name="com.moulliet.metro.crash.Point" level="TRACE"/>-->
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>

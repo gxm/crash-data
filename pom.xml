@@ -28,6 +28,10 @@
                             <name>base.dir</name>
                             <value>${project.basedir}</value>
                         </property>
+                        <property>
+                            <name>config.properties</name>
+                            <value>${project.basedir}/config/test/crash-data.properties</value>
+                        </property>
                     </systemProperties>
                 </configuration>
             </plugin>
