@@ -42,3 +42,23 @@ sudo apt-get install ganglia-webfrontend
 cd /etc/apache2/sites-enabled
 sudo ln -s /etc/ganglia-webfrontend/apache.conf ganglia.conf
 sudo service apache2 restart
+
+# for using custom giscore
+sudo apt-get install gcc
+
+export LD_LIBRARY_PATH=/home/crash/FileGDB_API/lib
+
+sudo apt-get install git
+
+git clone git://github.com/gxm/giscore.git --branch coord-xform
+
+sudo apt-get install make build-essential g++
+
+# run make from correct dir
+cd /home/crash/giscore/filegdb/linux/filegdb
+make all
+# library is now in
+# /home/crash/giscore/filegdb/linux/filegdb/dist/Release/GNU-Linux-x86/libfilegdb.so
+# Use with
+# -Djava.library.path=/home/crash/giscore/filegdb/linux/filegdb/dist/Release/GNU-Linux-x86/
+
