@@ -19,11 +19,9 @@ public class SinkFilter {
     private static Map<String, Point> filterMap = new HashMap<>();
     private static final float SINK_DELTA = 0.0002f;
     private static final float SINK_RADIUS = 0.0001f;
-    private static JsonNode rootNode;
 
     public static void loadSinkPoints() throws IOException {
-        rootNode = mapper.readTree(new File(Config.getConfig().getString("sinks.file")));
-        Iterator<JsonNode> elements = rootNode.getElements();
+        Iterator<JsonNode> elements = getRootNode().getElements();
         while (elements.hasNext()) {
             JsonNode node = elements.next();
             String lng = node.get("lng").asText();
@@ -32,6 +30,10 @@ public class SinkFilter {
         }
         logger.trace("sinks {}", filterMap);
         logger.info("loaded {} sinks", filterMap.size());
+    }
+
+    private static JsonNode getRootNode() throws IOException {
+        return mapper.readTree(new File(Config.getConfig().getString("sinks.file")));
     }
 
     private static void addSinkPoints(String lng, String lat) {
@@ -60,8 +62,8 @@ public class SinkFilter {
         return within;
     }
 
-    public static JsonNode getSinks() {
-        return rootNode;
+    public static JsonNode getSinks() throws IOException {
+        return getRootNode();
     }
 
 
