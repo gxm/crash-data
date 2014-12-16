@@ -133,6 +133,13 @@ function CrashController($scope, $http, $location) {
                 var source = point.source || 'odot';
                 marker.bindPopup(point.lat + ', ' + point.lng + ' source:' + source);
                 markers.push(marker);
+                var circle = L.circle([point.lat, point.lng], 13, {
+                    color: 'red',
+                    weight: 2,
+                    fillOpacity: 0
+                });
+                markers.push(circle);
+
             });
 
             L.layerGroup(markers).addTo($scope.map);
