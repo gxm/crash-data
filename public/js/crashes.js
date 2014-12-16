@@ -129,7 +129,9 @@ function CrashController($scope, $http, $location) {
         if ($scope.settings.sinks) {
             var markers = [];
             sinkPoints.forEach(function (point) {
-                markers.push(L.marker([point.lat, point.lng]));
+                var marker = L.marker([point.lat, point.lng]);
+                marker.bindPopup(point.lat + ', ' + point.lng);
+                markers.push(marker);
             });
 
             L.layerGroup(markers).addTo($scope.map);
