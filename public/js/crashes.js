@@ -83,23 +83,23 @@ function CrashController($scope, $http, $location) {
     };
 
     function addSinks() {
+        $scope.sinks = L.layerGroup();
+
         $http.get($scope.host + 'sinks')
             .success(function (data, status, headers) {
-                var markers = [];
                 data.forEach(function (point) {
                     var marker = L.marker([point.lat, point.lng]);
                     var source = point.source || 'odot';
                     marker.bindPopup(point.lat + ', ' + point.lng + ' source:' + source);
-                    markers.push(marker);
                     var circle = L.circle([point.lat, point.lng], 13, {
                         color: 'red',
                         weight: 2,
                         fillOpacity: 0
                     });
-                    markers.push(circle);
+                    $scope.sinks.addLayer(marker);
+                    $scope.sinks.addLayer(circle);
                 });
 
-                L.layerGroup(markers).addTo($scope.map);
             }).error(function (data, status, headers) {
                 console.log('unable to load sinks', status);
             });
@@ -127,20 +127,6 @@ function CrashController($scope, $http, $location) {
         attribution: attribution
     });
 
-    $('#btnRoad').on('click', function () {
-        $scope.map.removeLayer(photo);
-        $scope.map.removeLayer(xtraphoto);
-        $scope.map.removeLayer(label);
-        $scope.map.addLayer(road);
-    });
-
-    $('#btnPhoto').on('click', function () {
-        $scope.map.removeLayer(road);
-        $scope.map.addLayer(photo);
-        $scope.map.addLayer(xtraphoto);
-        $scope.map.addLayer(label);
-    });
-
     function windowOnLoad() {
         var loadlat = Number($scope.search('lat', 45.52));
         var loadlng = Number($scope.search('lng', -122.67));
@@ -156,11 +142,23 @@ function CrashController($scope, $http, $location) {
             layers: layers
         });
 
-        if ($scope.settings.sinks) {
-            addSinks();
-        }
+        addSinks();
+
+        var photoGroup = L.layerGroup([photo, xtraphoto, label]);
+
+        var overlayMaps = {
+            "sinks": $scope.sinks
+        };
+
+        var baseMaps = {
+            "road ": road,
+            "air photo": photoGroup
+        };
+
 
         $scope.map.addControl( L.control.zoom({position: 'topright'}) );
+
+        L.control.layers(baseMaps, overlayMaps).addTo($scope.map);
 
         $scope.map.on('moveend', function (e) {
             $scope.loadData();
