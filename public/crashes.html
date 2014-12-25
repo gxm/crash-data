@@ -4,6 +4,7 @@
     <meta name="keywords" content="metro, crash, heatmap, leaflet, javascript, canvas, html5"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Greg Moulliet">
+    <link rel="icon" href="http://www.oregonmetro.gov/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <link href="css/crash-data.css" rel="stylesheet">
@@ -50,7 +51,7 @@
             <div id="settingsTable" class="collapse hide">
                     <table cellpadding="2" class="table table-condensed table-bordered sideTable">
                         <tr>
-                            <th>Vehicles:</th>
+                            <th>Mode:</th>
                             <td><div title="Show crashes involving only cars"><label for="Car"><input id="Car" type="checkbox" ng-model="settings.cars" ng-change="loadData()"> Cars Only</label> </div></td>
                             <td><div title="Show crashes involving a bicycle"> <label for="Bike"><input id="Bike" type="checkbox" ng-model='settings.bikes' ng-change="loadData()"> Bike(s)</label></div></td>
                             <td><div title="Show crashes involving a pedestrian"><label for="Ped"><input id="Ped" type="checkbox" ng-model='settings.peds' ng-change="loadData()"> Ped(s)</label> </div></td>
