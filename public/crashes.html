@@ -107,9 +107,13 @@
                             <td><label for="other"><input id="other" type="checkbox" ng-model='settings.other' ng-change="loadData()"> Other</label></td>
                         </tr>
                         <tr>
-                            <th>Scale:</th>
-                            <td><label for="viewport"><input id="viewport" type="radio" value="Viewport" ng-model='settings.scale' ng-change="loadData()"> Viewport</label></td>
-                            <td><label for="regional"><input id="regional" type="radio" value="Regional" ng-model='settings.scale' ng-change="loadData()"> Regional</label></td>
+                            <th>Scope:</th>
+                            <td><label for="viewport"><input id="viewport" type="radio" value="Viewport"
+                                                             ng-model='settings.scale' ng-change="loadData()">
+                                Window</label></td>
+                            <td><label for="regional"><input id="regional" type="radio" value="Regional"
+                                                             ng-model='settings.scale' ng-change="loadData()">
+                                Fixed</label></td>
                             <td></td>
                         </tr>
                     </table>
