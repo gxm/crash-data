@@ -8,11 +8,13 @@ Tools for visualizing and analyzing crash data
 ### Local Development
 
 install:
+* [java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [bower](http://bower.io/) - Manages javascript libraries for web pages
+    * run ```bower install```
 * [mongoDB](http://www.mongodb.org/) - Database for crashes
 * Run MongoDB locally with data directory
-    * Load Data into MongoDB with com.moulliet.metro.load.LoadShapeFile class
-    * This presumes data file has already pre-parsed to single crash JSON records per line
+    * ```mongod ```
+* Setup dependencies for [giscore](https://github.com/OpenSextant/giscore/wiki/FileGDB-Dependencies)
 * Run all tests
 * Run com.moulliet.metro.CrashServiceMain
 
