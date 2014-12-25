@@ -82,63 +82,56 @@ function CrashController($scope, $http, $location) {
         };
     };
 
-    function getLayer(type, index, opacity) {
-        opacity = opacity || 1;
-        var AGSURL = 'https://{s}.oregonmetro.gov/ArcGIS/rest/services/';
-        var subDomains = ['gistiles1','gistiles2', 'gistiles3', 'gistiles4'];
-        //todo - gfm - figure out proper token generation
-        var token = '7eXr3OCSVOChwnKR1_--HMhwvvtw9hRn9ymyFYCT4O-0-mQQpRre88v7nkfVNK16';
-        return L.tileLayer( AGSURL + 'metromap/' + type + '/MapServer/tile/{z}/{y}/{x}?token=' + token, {
-            maxZoom: 19,
-            attribution: 'Tiles: &copy; Metro RLIS',
-            opacity: opacity,
-            zIndex: index,
-            subdomains : subDomains
-        });
-    }
-
     function addSinks() {
+        $scope.sinks = L.layerGroup();
+
         $http.get($scope.host + 'sinks')
             .success(function (data, status, headers) {
-                var markers = [];
                 data.forEach(function (point) {
                     var marker = L.marker([point.lat, point.lng]);
                     var source = point.source || 'odot';
                     marker.bindPopup(point.lat + ', ' + point.lng + ' source:' + source);
-                    markers.push(marker);
                     var circle = L.circle([point.lat, point.lng], 13, {
                         color: 'red',
                         weight: 2,
                         fillOpacity: 0
                     });
-                    markers.push(circle);
+                    $scope.sinks.addLayer(marker);
+                    $scope.sinks.addLayer(circle);
                 });
 
-                L.layerGroup(markers).addTo($scope.map);
             }).error(function (data, status, headers) {
                 console.log('unable to load sinks', status);
             });
     }
 
+    var subDomains = ['gistiles1', 'gistiles2', 'gistiles3', 'gistiles4'];
+    var token = 'token=O95k2qhvXt3RArC0yQV5j4JinWb21wL0wLj2Ik-dLG0.';
+    var attribution = "<a href='//gis.oregonmetro.gov'>Metro RLIS</a>";
+    var road = L.tileLayer('http://{s}.oregonmetro.gov/arcgis/rest/services/metromap/baseAll/MapServer/tile/{z}/{y}/{x}?' + token, {
+        subdomains: subDomains,
+        attribution: attribution
+    });
+    var photo = L.tileLayer('http://{s}.oregonmetro.gov/arcgis/rest/services/photo/2013aerialphoto/MapServer/tile/{z}/{y}/{x}?' + token, {
+        subdomains: subDomains,
+        zIndex: 10,
+        attribution: attribution
+    });
+    var xtraphoto = L.tileLayer('//server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: "<a href='//www.esri.com'>ESRI</a>",
+        zIndex: 0
+    });
+    var label = L.tileLayer('http://{s}.oregonmetro.gov/arcgis/rest/services/metromap/baseAnno/MapServer/tile/{z}/{y}/{x}?' + token, {
+        subdomains: subDomains,
+        zIndex: 100,
+        attribution: attribution
+    });
+
     function windowOnLoad() {
         var loadlat = Number($scope.search('lat', 45.52));
         var loadlng = Number($scope.search('lng', -122.67));
         var layers = [];
-        if ($scope.settings.tiles === 'open') {
-            layers.push(L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-                maxZoom: 18,
-                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                id: 'examples.map-i875mjb7'
-            }));
-
-        } else {
-            layers.push(getLayer('base', 0, 0.6));
-            layers.push(getLayer('baseActive', 50, 0.5));
-            layers.push(getLayer('baseAnno', 91));
-        }
-
+        layers.push(road);
         $scope.heatMapOverlay = new HeatmapOverlay($scope.config());
         layers.push($scope.heatMapOverlay);
 
@@ -149,11 +142,23 @@ function CrashController($scope, $http, $location) {
             layers: layers
         });
 
-        if ($scope.settings.sinks) {
-            addSinks();
-        }
+        addSinks();
+
+        var photoGroup = L.layerGroup([photo, xtraphoto, label]);
+
+        var overlayMaps = {
+            "sinks": $scope.sinks
+        };
+
+        var baseMaps = {
+            "road ": road,
+            "air photo": photoGroup
+        };
+
 
         $scope.map.addControl( L.control.zoom({position: 'topright'}) );
+
+        L.control.layers(baseMaps, overlayMaps).addTo($scope.map);
 
         $scope.map.on('moveend', function (e) {
             $scope.loadData();
