@@ -30,7 +30,7 @@ function CrashSettings($scope) {
 	that.sideSwipe = $scope.search('sideSwipe', true);
 	that.turning = $scope.search('turning', true);
 	that.other = $scope.search('other', true);
-	that.scale = $scope.search('scale', 'Viewport');
+	that.scale = $scope.search('scale', 'Window');
 	that.sinks = $scope.search('sinks', false);
 }
 
