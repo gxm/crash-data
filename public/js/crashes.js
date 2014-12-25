@@ -82,21 +82,6 @@ function CrashController($scope, $http, $location) {
         };
     };
 
-    function getLayer(type, index, opacity) {
-        opacity = opacity || 1;
-        var AGSURL = 'https://{s}.oregonmetro.gov/ArcGIS/rest/services/';
-        var subDomains = ['gistiles1','gistiles2', 'gistiles3', 'gistiles4'];
-        //todo - gfm - figure out proper token generation
-        var token = '7eXr3OCSVOChwnKR1_--HMhwvvtw9hRn9ymyFYCT4O-0-mQQpRre88v7nkfVNK16';
-        return L.tileLayer( AGSURL + 'metromap/' + type + '/MapServer/tile/{z}/{y}/{x}?token=' + token, {
-            maxZoom: 19,
-            attribution: 'Tiles: &copy; Metro RLIS',
-            opacity: opacity,
-            zIndex: index,
-            subdomains : subDomains
-        });
-    }
-
     function addSinks() {
         $http.get($scope.host + 'sinks')
             .success(function (data, status, headers) {
@@ -120,25 +105,47 @@ function CrashController($scope, $http, $location) {
             });
     }
 
+    var subDomains = ['gistiles1', 'gistiles2', 'gistiles3', 'gistiles4'];
+    var token = 'token=O95k2qhvXt3RArC0yQV5j4JinWb21wL0wLj2Ik-dLG0.';
+    var attribution = "<a href='//gis.oregonmetro.gov'>Metro RLIS</a>";
+    var road = L.tileLayer('http://{s}.oregonmetro.gov/arcgis/rest/services/metromap/baseAll/MapServer/tile/{z}/{y}/{x}?' + token, {
+        subdomains: subDomains,
+        attribution: attribution
+    });
+    var photo = L.tileLayer('http://{s}.oregonmetro.gov/arcgis/rest/services/photo/2013aerialphoto/MapServer/tile/{z}/{y}/{x}?' + token, {
+        subdomains: subDomains,
+        zIndex: 10,
+        attribution: attribution
+    });
+    var xtraphoto = L.tileLayer('//server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: "<a href='//www.esri.com'>ESRI</a>",
+        zIndex: 0
+    });
+    var label = L.tileLayer('http://{s}.oregonmetro.gov/arcgis/rest/services/metromap/baseAnno/MapServer/tile/{z}/{y}/{x}?' + token, {
+        subdomains: subDomains,
+        zIndex: 100,
+        attribution: attribution
+    });
+
+    $('#btnRoad').on('click', function () {
+        $scope.map.removeLayer(photo);
+        $scope.map.removeLayer(xtraphoto);
+        $scope.map.removeLayer(label);
+        $scope.map.addLayer(road);
+    });
+
+    $('#btnPhoto').on('click', function () {
+        $scope.map.removeLayer(road);
+        $scope.map.addLayer(photo);
+        $scope.map.addLayer(xtraphoto);
+        $scope.map.addLayer(label);
+    });
+
     function windowOnLoad() {
         var loadlat = Number($scope.search('lat', 45.52));
         var loadlng = Number($scope.search('lng', -122.67));
         var layers = [];
-        if ($scope.settings.tiles === 'open') {
-            layers.push(L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-                maxZoom: 18,
-                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                id: 'examples.map-i875mjb7'
-            }));
-
-        } else {
-            layers.push(getLayer('base', 0, 0.6));
-            layers.push(getLayer('baseActive', 50, 0.5));
-            layers.push(getLayer('baseAnno', 91));
-        }
-
+        layers.push(road);
         $scope.heatMapOverlay = new HeatmapOverlay($scope.config());
         layers.push($scope.heatMapOverlay);
 
