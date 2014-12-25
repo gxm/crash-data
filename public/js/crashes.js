@@ -168,8 +168,6 @@ function CrashController($scope, $http, $location) {
         $('#summary').show();
         $('#settingsTable').show();
         $('#settingsTable').collapse('show');
-        $('#summaryTable').show();
-        $('#summaryTable').collapse('show');
         $scope.loadData();
     }
 

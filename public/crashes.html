@@ -51,35 +51,88 @@
             <div id="settingsTable" class="collapse hide">
                     <table cellpadding="2" class="table table-condensed table-bordered sideTable">
                         <tr>
+                            <td colspan="2">Total {{settings.scale}} Crashes</td>
+                            <td colspan="2">{{total}}</td>
+                        </tr>
+                        <tr>
                             <th>Mode:</th>
-                            <td><div title="Show crashes involving only cars"><label for="Car"><input id="Car" type="checkbox" ng-model="settings.cars" ng-change="loadData()"> Cars Only</label> </div></td>
-                            <td><div title="Show crashes involving a bicycle"> <label for="Bike"><input id="Bike" type="checkbox" ng-model='settings.bikes' ng-change="loadData()"> Bike(s)</label></div></td>
-                            <td><div title="Show crashes involving a pedestrian"><label for="Ped"><input id="Ped" type="checkbox" ng-model='settings.peds' ng-change="loadData()"> Ped(s)</label> </div></td>
+                            <td>
+                                <div title="Show crashes involving only cars"><label for="Car"><input id="Car"
+                                                                                                      type="checkbox"
+                                                                                                      ng-model="settings.cars"
+                                                                                                      ng-change="loadData()">
+                                    Cars Only: {{summary.cars}}</label></div>
+                            </td>
+                            <td>
+                                <div title="Show crashes involving a bicycle"><label for="Bike"><input id="Bike"
+                                                                                                       type="checkbox"
+                                                                                                       ng-model='settings.bikes'
+                                                                                                       ng-change="loadData()">
+                                    Bike(s): {{summary.bikes}}</label></div>
+                            </td>
+                            <td>
+                                <div title="Show crashes involving a pedestrian"><label for="Ped"><input id="Ped"
+                                                                                                         type="checkbox"
+                                                                                                         ng-model='settings.peds'
+                                                                                                         ng-change="loadData()">
+                                    Ped(s): {{summary.peds}}</label></div>
+                            </td>
                         </tr>
                         <tr>
                             <th>Severity:</th>
-                            <td><div title="Only show accidents with a fatality"><label for="Fatality"><input id="Fatality" type="checkbox" ng-model='settings.fatal' ng-change="loadData()"> Fatality</label></div>  </td>
-                            <td><div title="Only show crashes with a severe injury"><label for="InjuryA"><input id="InjuryA" type="checkbox" ng-model='settings.injuryA' ng-change="loadData()"> Injury A</label></div>  </td>
-                            <td><div title="Only show crashes with a moderate injury"><label for="InjuryB"><input id="InjuryB" type="checkbox" ng-model='settings.injuryB' ng-change="loadData()"> Injury B</label></div>  </td>
+                            <td>
+                                <div title="Only show accidents with a fatality"><label for="Fatality"><input
+                                        id="Fatality" type="checkbox" ng-model='settings.fatal' ng-change="loadData()">
+                                    Fatality: {{summary.fatal}}</label></div>
+                            </td>
+                            <td>
+                                <div title="Only show crashes with a severe injury"><label for="InjuryA"><input
+                                        id="InjuryA" type="checkbox" ng-model='settings.injuryA' ng-change="loadData()">
+                                    Injury A: {{summary.injuryA}}</label></div>
+                            </td>
+                            <td>
+                                <div title="Only show crashes with a moderate injury"><label for="InjuryB"><input
+                                        id="InjuryB" type="checkbox" ng-model='settings.injuryB' ng-change="loadData()">
+                                    Injury B: {{summary.injuryB}}</label></div>
+                            </td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td><div title="Only show crashes with a light injury"><label for="InjuryC"><input id="InjuryC" type="checkbox" ng-model='settings.injuryC' ng-change="loadData()"> Injury C</label></div>  </td>
-                            <td><div title="Show crashes with only property damage"><label for="Property"><input id="Property" type="checkbox" ng-model='settings.property' ng-change="loadData()"> Property</label></div>  </td>
-                            <td><div title="Only show crashes involving alcohol"><label for="Alcohol"><input id="Alcohol" type="checkbox" ng-model='settings.alcohol' ng-change="loadData()"> Alcohol</label></div></td>
-
+                            <td>
+                                <div title="Only show crashes with a light injury"><label for="InjuryC"><input
+                                        id="InjuryC" type="checkbox" ng-model='settings.injuryC' ng-change="loadData()">
+                                    Injury C: {{summary.injuryC}}</label></div>
+                            </td>
+                            <td>
+                                <div title="Show crashes with only property damage"><label for="Property"><input
+                                        id="Property" type="checkbox" ng-model='settings.property'
+                                        ng-change="loadData()"> Property: {{summary.property}}</label></div>
+                            </td>
+                            <td>
+                                <div title="Only show crashes involving alcohol"><label for="Alcohol"><input
+                                        id="Alcohol" type="checkbox" ng-model='settings.alcohol' ng-change="loadData()">
+                                    Alcohol: {{summary.alcohol}}</label></div>
+                            </td>
                         </tr>
                         <tr>
                             <th>Light:</th>
-                            <td><label for="Day"><input id="Day" type="checkbox" ng-model='settings.day' ng-change="loadData()"> Day</label>  </td>
-                            <td><label for="Night"><input id="Night" type="checkbox" ng-model='settings.night' ng-change="loadData()"> Night</label>  </td>
-                            <td><label for="Twilight"><input id="Twilight" type="checkbox" ng-model='settings.twilight' ng-change="loadData()"> Twilight</label>  </td>
+                            <td><label for="Day"><input id="Day" type="checkbox" ng-model='settings.day'
+                                                        ng-change="loadData()"> Day: {{summary.day}}</label></td>
+                            <td><label for="Night"><input id="Night" type="checkbox" ng-model='settings.night'
+                                                          ng-change="loadData()"> Night: {{summary.night}}</label></td>
+                            <td><label for="Twilight"><input id="Twilight" type="checkbox" ng-model='settings.twilight'
+                                                             ng-change="loadData()"> Twilight:
+                                {{summary.twilight}}</label></td>
                         </tr>
                         <tr>
                             <th>Surface:</th>
-                            <td><label for="Dry"><input id="Dry" type="checkbox" ng-model='settings.dry' ng-change="loadData()"> Dry</label>  </td>
-                            <td><label for="Wet"><input id="Wet" type="checkbox" ng-model='settings.wet' ng-change="loadData()"> Wet</label>  </td>
-                            <td><label for="Snow"><input id="Snow" type="checkbox" ng-model='settings.snowIce' ng-change="loadData()"> Snow/Ice</label>  </td>
+                            <td><label for="Dry"><input id="Dry" type="checkbox" ng-model='settings.dry'
+                                                        ng-change="loadData()"> Dry: {{summary.dry}}</label></td>
+                            <td><label for="Wet"><input id="Wet" type="checkbox" ng-model='settings.wet'
+                                                        ng-change="loadData()"> Wet: {{summary.wet}}</label></td>
+                            <td><label for="Snow"><input id="Snow" type="checkbox" ng-model='settings.snowIce'
+                                                         ng-change="loadData()"> Snow/Ice: {{summary.snowIce}}</label>
+                            </td>
                         </tr>
                         <tr>
                             <th>Years:</th>
@@ -96,15 +149,25 @@
                         </tr>
                         <tr>
                             <th>Collision</th>
-                            <td><label for="angle"><input id="angle" type="checkbox" ng-model='settings.angle' ng-change="loadData()"> Angle</label></td>
-                            <td><label for="headOn"><input id="headOn" type="checkbox" ng-model='settings.headOn' ng-change="loadData()"> Head On</label></td>
-                            <td><label for="rearEnd"><input id="rearEnd" type="checkbox" ng-model='settings.rearEnd' ng-change="loadData()"> Rear End</label></td>
+                            <td><label for="angle"><input id="angle" type="checkbox" ng-model='settings.angle'
+                                                          ng-change="loadData()"> Angle: {{summary.angle}}</label></td>
+                            <td><label for="headOn"><input id="headOn" type="checkbox" ng-model='settings.headOn'
+                                                           ng-change="loadData()"> Head On: {{summary.headOn}}</label>
+                            </td>
+                            <td><label for="rearEnd"><input id="rearEnd" type="checkbox" ng-model='settings.rearEnd'
+                                                            ng-change="loadData()"> Rear End:
+                                {{summary.rearEnd}}</label></td>
                         </tr>
                         <tr>
                             <th>Type:</th>
-                            <td><label for="sideSwipe"><input id="sideSwipe" type="checkbox" ng-model='settings.sideSwipe' ng-change="loadData()"> Side Swipe</label></td>
-                            <td><label for="turning"><input id="turning" type="checkbox" ng-model='settings.turning' ng-change="loadData()"> Turning</label></td>
-                            <td><label for="other"><input id="other" type="checkbox" ng-model='settings.other' ng-change="loadData()"> Other</label></td>
+                            <td><label for="sideSwipe"><input id="sideSwipe" type="checkbox"
+                                                              ng-model='settings.sideSwipe' ng-change="loadData()"> Side
+                                Swipe: {{summary.sideSwipe}}</label></td>
+                            <td><label for="turning"><input id="turning" type="checkbox" ng-model='settings.turning'
+                                                            ng-change="loadData()"> Turning: {{summary.turning}}</label>
+                            </td>
+                            <td><label for="other"><input id="other" type="checkbox" ng-model='settings.other'
+                                                          ng-change="loadData()"> Other: {{summary.other}}</label></td>
                         </tr>
                         <tr>
                             <th>Scope:</th>
@@ -117,54 +180,6 @@
                             <td></td>
                         </tr>
                     </table>
-            </div>
-            <div id="summaryButton">
-                <button id="summary" type="button" class="btn btn-info hide" data-toggle="collapse" data-target="#summaryTable">
-                    Summary <span class="caret"></span>
-                </button>
-            </div>
-            <div id="summaryTable" class="collapse hide settingsDiv">
-                <table class="table table-condensed table-bordered sideTable">
-                    <tr>
-                        <td colspan="3">Total {{settings.scale}} Crashes</td>
-                        <td colspan="3">{{total}}</td>
-                    </tr>
-                    <tr>
-                        <td>Cars</td><td>{{summary.cars}}</td>
-                        <td>Bikes</td><td>{{summary.bikes}}</td>
-                        <td>Peds</td><td>{{summary.peds}}</td>
-                    </tr>
-                    <tr>
-                        <td>Fatality</td><td>{{summary.fatal}}</td>
-                        <td>Injury A</td><td>{{summary.injuryA}}</td>
-                        <td>Injury B</td><td>{{summary.injuryB}}</td>
-                    </tr>
-                    <tr>
-                        <td>Injury C</td><td>{{summary.injuryC}}</td>
-                        <td>Property</td><td>{{summary.property}}</td>
-                        <td>Alcohol</td><td>{{summary.alcohol}}</td>
-                    </tr>
-                    <tr>
-                        <td>Day</td><td>{{summary.day}}</td>
-                        <td>Night</td><td>{{summary.night}}</td>
-                        <td>Twilight</td><td>{{summary.twilight}}</td>
-                    </tr>
-                    <tr>
-                        <td>Dry</td><td>{{summary.dry}}</td>
-                        <td>Wet</td><td>{{summary.wet}}</td>
-                        <td>Snow/Ice</td><td>{{summary.snowIce}}</td>
-                    </tr>
-                    <tr>
-                        <td>Angle</td><td>{{summary.angle}}</td>
-                        <td>Head On</td><td>{{summary.headOn}}</td>
-                        <td>Rear End</td><td>{{summary.rearEnd}}</td>
-                    </tr>
-                    <tr>
-                        <td>Side Swipe</td><td>{{summary.sideSwipe}}</td>
-                        <td>Turning</td><td>{{summary.turning}}</td>
-                        <td>Other</td><td>{{summary.other}}</td>
-                    </tr>
-                </table>
             </div>
         </div>
         <div id="refreshDiv" class="refreshDiv well hidden"></div>
