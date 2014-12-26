@@ -33,10 +33,17 @@ function CrashController($scope, $http, $location) {
         config.params.lng = $scope.latlng(center.lng);
         $http.jsonp(url, config)
             .success(function (data, status, headers) {
-                $scope.total = data.total;
+                $scope.windowTotal = '';
+                $scope.fixedTotal = '';
+                if ($scope.settings.scope === 'Window') {
+                    $scope.windowTotal = data.total;
+                } else {
+                    $scope.fixedTotal = data.total;
+                }
+
                 $scope.heatMapOverlay.setData(data);
                 for (var prop in data.summary) {
-                    $scope.summary[prop] = $scope.percents(data.summary[prop] / $scope.total);
+                    $scope.summary[prop] = $scope.percents(data.summary[prop] / data.total);
 
                 }
                 $('.refreshDiv').attr('class', 'refreshDiv well hidden');

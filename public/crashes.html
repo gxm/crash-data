@@ -51,10 +51,6 @@
             <div id="settingsTable" class="collapse hide">
                     <table cellpadding="2" class="table table-condensed table-bordered sideTable">
                         <tr>
-                            <td colspan="2">Total {{settings.scale}} Crashes</td>
-                            <td colspan="2">{{total}}</td>
-                        </tr>
-                        <tr>
                             <th><div title="Select which years to include">Years:</div></th>
                             <td><div title="Show crashes in 2007"><label for="2007"><input id="2007" type="checkbox" ng-model='settings.y2007' ng-change="loadData()"> 2007</label></div></td>
                             <td><div title="Show crashes in 2008"><label for="2008"><input id="2008" type="checkbox" ng-model='settings.y2008' ng-change="loadData()"> 2008</label></div></td>
@@ -110,9 +106,8 @@
                         </tr>
                         <tr>
                             <th><div title="How to limit the scope of the results">Scope:</div></th>
-                            <td><div title="Limit the scope of the results to the visible map boundaries"><label for="window"><input id="window" type="radio" value="Window" ng-model='settings.scope' ng-change="loadData()"> Window {{settings.scale}}</label></div></td>
-                            <td><div title="Include all available crashes in the results"><label for="regional"><input id="regional" type="radio" value="Regional" ng-model='settings.scope' ng-change="loadData()"> Fixed {{settings.scale}}</label></div></td>
-                            <td></td>
+                            <td><div title="Limit the scope of the results to the visible map boundaries"><label for="window"><input id="window" type="radio" value="Window" ng-model='settings.scope' ng-change="loadData()"> Window: {{windowTotal}}</label></div></td>
+                            <td colspan="2"><div title="Include all available crashes in the results"><label for="regional"><input id="regional" type="radio" value="Regional" ng-model='settings.scope' ng-change="loadData()"> All Crashes: {{fixedTotal}}</label></div></td>
                         </tr>
                     </table>
             </div>
