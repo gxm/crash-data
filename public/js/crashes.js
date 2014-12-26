@@ -163,10 +163,13 @@ function CrashController($scope, $http, $location) {
             "air photo": photoGroup
         };
 
-
         $scope.map.addControl( L.control.zoom({position: 'topright'}) );
 
         L.control.layers(baseMaps, overlayMaps).addTo($scope.map);
+
+        var opacitySlider = new L.Control.opacitySlider();
+        $scope.map.addControl(opacitySlider);
+        opacitySlider.setOpacityLayer(road);
 
         $scope.map.on('moveend', function (e) {
             $scope.loadData();
