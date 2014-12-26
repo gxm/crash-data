@@ -55,66 +55,63 @@
                             <td colspan="2">{{total}}</td>
                         </tr>
                         <tr>
-                            <th>Years:</th>
-                            <td><label for="2007"><input id="2007" type="checkbox" ng-model='settings.y2007' ng-change="loadData()"> 2007</label></td>
-                            <td><label for="2008"><input id="2008" type="checkbox" ng-model='settings.y2008' ng-change="loadData()"> 2008</label></td>
-                            <td><label for="2009"><input id="2009" type="checkbox" ng-model='settings.y2009' ng-change="loadData()"> 2009</label></td>
+                            <th><div title="Select which years to include">Years:</div></th>
+                            <td><div title="Show crashes in 2007"><label for="2007"><input id="2007" type="checkbox" ng-model='settings.y2007' ng-change="loadData()"> 2007</label></div></td>
+                            <td><div title="Show crashes in 2008"><label for="2008"><input id="2008" type="checkbox" ng-model='settings.y2008' ng-change="loadData()"> 2008</label></div></td>
+                            <td><div title="Show crashes in 2009"><label for="2009"><input id="2009" type="checkbox" ng-model='settings.y2009' ng-change="loadData()"> 2009</label></div></td>
                         </tr>
                         <tr>
-                            <td><label for="2010"><input id="2010" type="checkbox" ng-model='settings.y2010' ng-change="loadData()"> 2010</label></td>
-                            <td><label for="2011"><input id="2011" type="checkbox" ng-model='settings.y2011' ng-change="loadData()"> 2011</label></td>
-                            <td><label for="2012"><input id="2012" type="checkbox" ng-model='settings.y2012' ng-change="loadData()"> 2012</label></td>
-                            <td><label for="2013"><input id="2013" type="checkbox" ng-model='settings.y2013'
-                                                         ng-change="loadData()"> 2013</label></td>
+                            <td><div title="Show crashes in 2010"><label for="2010"><input id="2010" type="checkbox" ng-model='settings.y2010' ng-change="loadData()"> 2010</label></div></td>
+                            <td><div title="Show crashes in 2011"><label for="2011"><input id="2011" type="checkbox" ng-model='settings.y2011' ng-change="loadData()"> 2011</label></div></td>
+                            <td><div title="Show crashes in 2012"><label for="2012"><input id="2012" type="checkbox" ng-model='settings.y2012' ng-change="loadData()"> 2012</label></div></td>
+                            <td><div title="Show crashes in 2013"><label for="2013"><input id="2013" type="checkbox" ng-model='settings.y2013' ng-change="loadData()"> 2013</label></div></td>
                         </tr>
                         <tr>
-                            <th>Type:</th>
-                            <td><label for="angle"><input id="angle" type="checkbox" ng-model='settings.angle' ng-change="loadData()"> Angle: {{summary.angle}}</label></td>
-                            <td><label for="headOn"><input id="headOn" type="checkbox" ng-model='settings.headOn' ng-change="loadData()"> Head On: {{summary.headOn}}</label> </td>
-                            <td><label for="rearEnd"><input id="rearEnd" type="checkbox" ng-model='settings.rearEnd' ng-change="loadData()"> Rear End: {{summary.rearEnd}}</label></td>
+                            <th><div title="Collision Types to include">Type:</div></th>
+                            <td><div title="Show angle crashes"><label for="angle"><input id="angle" type="checkbox" ng-model='settings.angle' ng-change="loadData()"> Angle: {{summary.angle}}</label></div></td>
+                            <td><div title="Show head on crashes "><label for="headOn"><input id="headOn" type="checkbox" ng-model='settings.headOn' ng-change="loadData()"> Head On: {{summary.headOn}}</label></div> </td>
+                            <td><div title="Show rear end crashes"><label for="rearEnd"><input id="rearEnd" type="checkbox" ng-model='settings.rearEnd' ng-change="loadData()"> Rear End: {{summary.rearEnd}}</label></div></td>
                         </tr>
                         <tr>
                             <th></th>
-                            <td><label for="sideSwipe"><input id="sideSwipe" type="checkbox" ng-model='settings.sideSwipe' ng-change="loadData()"> Side Swipe: {{summary.sideSwipe}}</label></td>
-                            <td><label for="turning"><input id="turning" type="checkbox" ng-model='settings.turning' ng-change="loadData()"> Turning: {{summary.turning}}</label> </td>
-                            <td><label for="other"><input id="other" type="checkbox" ng-model='settings.other' ng-change="loadData()"> Other: {{summary.other}}</label></td>
+                            <td><div title="Show side swipe crashes"><label for="sideSwipe"><input id="sideSwipe" type="checkbox" ng-model='settings.sideSwipe' ng-change="loadData()"> Side Swipe: {{summary.sideSwipe}}</label></div></td>
+                            <td><div title="Show turning crashes"><label for="turning"><input id="turning" type="checkbox" ng-model='settings.turning' ng-change="loadData()"> Turning: {{summary.turning}}</label></div> </td>
+                            <td><div title="Show other crash types, including parking, fixed objects, etc"><label for="other"><input id="other" type="checkbox" ng-model='settings.other' ng-change="loadData()"> Other: {{summary.other}}</label></div></td>
                         </tr>
                         <tr>
-
                             <th>Mode:</th>
-                            <td> <div title="Show crashes involving only cars"><label for="Car"><input id="Car" type="checkbox" ng-model="settings.cars" ng-change="loadData()"> Cars Only: {{summary.cars}}</label></div> </td>
+                            <td> <div title="Show crashes involving only motor vehicles"><label for="Car"><input id="Car" type="checkbox" ng-model="settings.cars" ng-change="loadData()"> Cars Only: {{summary.cars}}</label></div> </td>
                             <td> <div title="Show crashes involving a bicycle"><label for="Bike"><input id="Bike" type="checkbox" ng-model='settings.bikes' ng-change="loadData()"> Bike(s): {{summary.bikes}}</label></div> </td>
                             <td> <div title="Show crashes involving a pedestrian"><label for="Ped"><input id="Ped" type="checkbox" ng-model='settings.peds' ng-change="loadData()"> Ped(s): {{summary.peds}}</label></div> </td>
                         </tr>
                         <tr>
                             <th>Severity:</th>
-                            <td> <div title="Only show accidents with a fatality"><label for="Fatality"><input id="Fatality" type="checkbox" ng-model='settings.fatal' ng-change="loadData()"> Fatality: {{summary.fatal}}</label></div> </td>
-                            <td> <div title="Only show crashes with a severe injury"><label for="InjuryA"><input id="InjuryA" type="checkbox" ng-model='settings.injuryA' ng-change="loadData()"> Injury A: {{summary.injuryA}}</label></div> </td>
-                            <td> <div title="Only show crashes with a moderate injury"><label for="InjuryB"><input id="InjuryB" type="checkbox" ng-model='settings.injuryB' ng-change="loadData()"> Injury B: {{summary.injuryB}}</label></div> </td>
+                            <td> <div title="Show crashes with a fatality"><label for="Fatality"><input id="Fatality" type="checkbox" ng-model='settings.fatal' ng-change="loadData()"> Fatality: {{summary.fatal}}</label></div> </td>
+                            <td> <div title="Show crashes with a severe injury"><label for="InjuryA"><input id="InjuryA" type="checkbox" ng-model='settings.injuryA' ng-change="loadData()"> Injury A: {{summary.injuryA}}</label></div> </td>
+                            <td> <div title="Show crashes with a moderate injury"><label for="InjuryB"><input id="InjuryB" type="checkbox" ng-model='settings.injuryB' ng-change="loadData()"> Injury B: {{summary.injuryB}}</label></div> </td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td> <div title="Only show crashes with a light injury"><label for="InjuryC"><input id="InjuryC" type="checkbox" ng-model='settings.injuryC' ng-change="loadData()"> Injury C: {{summary.injuryC}}</label></div> </td>
-                            <td> <div title="Show crashes with only property damage"><label for="Property"><input id="Property" type="checkbox" ng-model='settings.property' ng-change="loadData()"> Property: {{summary.property}}</label></div> </td>
-                            <td> <div title="Only show crashes involving alcohol"><label for="Alcohol"><input id="Alcohol" type="checkbox" ng-model='settings.alcohol' ng-change="loadData()"> Alcohol: {{summary.alcohol}}</label></div> </td>
+                            <td> <div title="Show crashes with a light injury"><label for="InjuryC"><input id="InjuryC" type="checkbox" ng-model='settings.injuryC' ng-change="loadData()"> Injury C: {{summary.injuryC}}</label></div> </td>
+                            <td> <div title="Show crashes with property damage only"><label for="Property"><input id="Property" type="checkbox" ng-model='settings.property' ng-change="loadData()"> Property: {{summary.property}}</label></div> </td>
+                            <td> <div title="Exclusively show crashes involving alcohol"><label for="Alcohol"><input id="Alcohol" type="checkbox" ng-model='settings.alcohol' ng-change="loadData()"> Alcohol: {{summary.alcohol}}</label></div> </td>
                         </tr>
                         <tr>
                             <th>Light:</th>
-                            <td><label for="Day"><input id="Day" type="checkbox" ng-model='settings.day' ng-change="loadData()"> Day: {{summary.day}}</label></td>
-                            <td><label for="Night"><input id="Night" type="checkbox" ng-model='settings.night' ng-change="loadData()"> Night: {{summary.night}}</label></td>
-                            <td><label for="Twilight"><input id="Twilight" type="checkbox" ng-model='settings.twilight' ng-change="loadData()"> Twilight: {{summary.twilight}}</label></td>
+                            <td><div title="Show crashes during the day"><label for="Day"><input id="Day" type="checkbox" ng-model='settings.day' ng-change="loadData()"> Day: {{summary.day}}</label></div></td>
+                            <td><div title="Shows crashes at night"><label for="Night"><input id="Night" type="checkbox" ng-model='settings.night' ng-change="loadData()"> Night: {{summary.night}}</label></div></td>
+                            <td><div title="Show crashes during twilight"><label for="Twilight"><input id="Twilight" type="checkbox" ng-model='settings.twilight' ng-change="loadData()"> Twilight: {{summary.twilight}}</label></div></td>
                         </tr>
                         <tr>
                             <th>Surface:</th>
-                            <td><label for="Dry"><input id="Dry" type="checkbox" ng-model='settings.dry' ng-change="loadData()"> Dry: {{summary.dry}}</label></td>
-                            <td><label for="Wet"><input id="Wet" type="checkbox" ng-model='settings.wet' ng-change="loadData()"> Wet: {{summary.wet}}</label></td>
-                            <td><label for="Snow"><input id="Snow" type="checkbox" ng-model='settings.snowIce' ng-change="loadData()"> Snow/Ice: {{summary.snowIce}}</label>
-                            </td>
+                            <td><div title="Show crashes on dry surfaces"><label for="Dry"><input id="Dry" type="checkbox" ng-model='settings.dry' ng-change="loadData()"> Dry: {{summary.dry}}</label></div></td>
+                            <td><div title="Show crashes on wet surfaces"><label for="Wet"><input id="Wet" type="checkbox" ng-model='settings.wet' ng-change="loadData()"> Wet: {{summary.wet}}</label></div></td>
+                            <td><div title="Show crashes on snow or ice"><label for="Snow"><input id="Snow" type="checkbox" ng-model='settings.snowIce' ng-change="loadData()"> Snow/Ice: {{summary.snowIce}}</label></div> </td>
                         </tr>
                         <tr>
                             <th>Scope:</th>
-                            <td><label for="window"><input id="window" type="radio" value="Window" ng-model='settings.scale' ng-change="loadData()"> Window</label></td>
-                            <td><label for="regional"><input id="regional" type="radio" value="Regional" ng-model='settings.scale' ng-change="loadData()"> Fixed</label></td>
+                            <td><div title="Limit the scope of the results to the visible map boundaries"><label for="window"><input id="window" type="radio" value="Window" ng-model='settings.scale' ng-change="loadData()"> Window</label></div></td>
+                            <td><div title="Include all available crashes in the results"><label for="regional"><input id="regional" type="radio" value="Regional" ng-model='settings.scale' ng-change="loadData()"> Fixed</label></div></td>
                             <td></td>
                         </tr>
                     </table>
