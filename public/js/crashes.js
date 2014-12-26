@@ -154,19 +154,14 @@ function CrashController($scope, $http, $location) {
 
         var photoGroup = L.layerGroup([photo, xtraphoto, label]);
 
-        var overlayMaps = {
-            "sinks": $scope.sinks
-        };
-
         var baseMaps = {
             "road ": road,
             "air photo": photoGroup
         };
 
-
         $scope.map.addControl( L.control.zoom({position: 'topright'}) );
 
-        L.control.layers(baseMaps, overlayMaps).addTo($scope.map);
+        L.control.layers(baseMaps).addTo($scope.map);
 
         $scope.map.on('moveend', function (e) {
             $scope.loadData();
@@ -177,7 +172,16 @@ function CrashController($scope, $http, $location) {
         $('#settingsTable').collapse('show');
 
         $scope.loadData();
+        $scope.showSinks();
     }
+
+    $scope.showSinks = function showSinks() {
+        if ($scope.settings.sinks) {
+            $scope.map.addLayer($scope.sinks);
+        } else {
+            $scope.map.removeLayer($scope.sinks);
+        }
+    };
 
     windowOnLoad();
 

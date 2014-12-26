@@ -121,9 +121,11 @@
                                         <td><div title="Limit the scope of the results to the visible map boundaries"><label for="window"><input id="window" type="radio" value="Window" ng-model='settings.scope' ng-change="loadData()"> Window: {{windowTotal}}</label></div></td>
                                         <td colspan="2"><div title="Include all available crashes in the results"><label for="regional"><input id="regional" type="radio" value="Regional" ng-model='settings.scope' ng-change="loadData()"> All Crashes: {{fixedTotal}}</label></div></td>
                                     </tr>
-
+                                    <tr>
+                                        <th><div title="Show geographic locations where ODOT puts crashes without a precisely known location">Sinks:</div></th>
+                                        <td><div title="Show geographic locations where ODOT puts crashes without a precisely known location"><label for="sinks"><input id="sinks" type="checkbox" value="false" ng-model="settings.sinks" ng-change="showSinks()"> Sinks</label></div></td>
+                                    </tr>
                                 </table>
-
                             </div>
                         </td>
                     </tr>
