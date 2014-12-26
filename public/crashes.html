@@ -110,8 +110,8 @@
                         </tr>
                         <tr>
                             <th><div title="How to limit the scope of the results">Scope:</div></th>
-                            <td><div title="Limit the scope of the results to the visible map boundaries"><label for="window"><input id="window" type="radio" value="Window" ng-model='settings.scale' ng-change="loadData()"> Window</label></div></td>
-                            <td><div title="Include all available crashes in the results"><label for="regional"><input id="regional" type="radio" value="Regional" ng-model='settings.scale' ng-change="loadData()"> Fixed</label></div></td>
+                            <td><div title="Limit the scope of the results to the visible map boundaries"><label for="window"><input id="window" type="radio" value="Window" ng-model='settings.scope' ng-change="loadData()"> Window {{settings.scale}}</label></div></td>
+                            <td><div title="Include all available crashes in the results"><label for="regional"><input id="regional" type="radio" value="Regional" ng-model='settings.scope' ng-change="loadData()"> Fixed {{settings.scale}}</label></div></td>
                             <td></td>
                         </tr>
                     </table>
