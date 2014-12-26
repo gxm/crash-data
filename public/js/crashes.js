@@ -33,10 +33,17 @@ function CrashController($scope, $http, $location) {
         config.params.lng = $scope.latlng(center.lng);
         $http.jsonp(url, config)
             .success(function (data, status, headers) {
-                $scope.total = data.total;
+                $scope.windowTotal = '';
+                $scope.fixedTotal = '';
+                if ($scope.settings.scope === 'Window') {
+                    $scope.windowTotal = data.total;
+                } else {
+                    $scope.fixedTotal = data.total;
+                }
+
                 $scope.heatMapOverlay.setData(data);
                 for (var prop in data.summary) {
-                    $scope.summary[prop] = $scope.percents(data.summary[prop] / $scope.total);
+                    $scope.summary[prop] = $scope.percents(data.summary[prop] / data.total);
 
                 }
                 $('.refreshDiv').attr('class', 'refreshDiv well hidden');
@@ -128,8 +135,8 @@ function CrashController($scope, $http, $location) {
     });
 
     function windowOnLoad() {
-        var loadlat = Number($scope.search('lat', 45.52));
-        var loadlng = Number($scope.search('lng', -122.67));
+        var loadlat = Number($scope.search('lat', 45.48));
+        var loadlng = Number($scope.search('lng', -122.74));
         var layers = [];
         layers.push(road);
         $scope.heatMapOverlay = new HeatmapOverlay($scope.config());
@@ -137,6 +144,7 @@ function CrashController($scope, $http, $location) {
 
         $scope.map = new L.map('heatmapArea', {
             center: new L.LatLng(loadlat, loadlng),
+            maxZoom: 19,
             zoom: $scope.settings.zoom,
             zoomControl: false,
             layers: layers
@@ -146,32 +154,34 @@ function CrashController($scope, $http, $location) {
 
         var photoGroup = L.layerGroup([photo, xtraphoto, label]);
 
-        var overlayMaps = {
-            "sinks": $scope.sinks
-        };
-
         var baseMaps = {
             "road ": road,
             "air photo": photoGroup
         };
 
-
         $scope.map.addControl( L.control.zoom({position: 'topright'}) );
 
-        L.control.layers(baseMaps, overlayMaps).addTo($scope.map);
+        L.control.layers(baseMaps).addTo($scope.map);
 
         $scope.map.on('moveend', function (e) {
             $scope.loadData();
         });
 
         $('#changeSettings').show();
-        $('#summary').show();
         $('#settingsTable').show();
         $('#settingsTable').collapse('show');
-        $('#summaryTable').show();
-        $('#summaryTable').collapse('show');
+
         $scope.loadData();
+        $scope.showSinks();
     }
+
+    $scope.showSinks = function showSinks() {
+        if ($scope.settings.sinks) {
+            $scope.map.addLayer($scope.sinks);
+        } else {
+            $scope.map.removeLayer($scope.sinks);
+        }
+    };
 
     windowOnLoad();
 

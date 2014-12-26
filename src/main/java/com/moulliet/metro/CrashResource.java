@@ -59,13 +59,13 @@ public class CrashResource {
                            @DefaultValue("true") @QueryParam("injuryB") boolean injuryB,
                            @DefaultValue("true") @QueryParam("injuryC") boolean injuryC,
                            @DefaultValue("true") @QueryParam("property") boolean property,
-                           @DefaultValue("Viewport") @QueryParam("scale") String scale
+                           @DefaultValue("Window") @QueryParam("scope") String scope
     ) throws Exception {
         try {
             final Timer timer = new Timer();
 
             Filters filters = new Filters();
-            if (scale.equals("Viewport")) {
+            if (scope.equals("Window")) {
                 filters.location(north, south, east, west);
             }
             filters.vehicle(cars, bikes, peds);
