@@ -84,48 +84,52 @@
                         <td><div title="Show crashes in 2012"><label for="2012"><input id="2012" type="checkbox" ng-model='settings.y2012' ng-change="loadData()"> 2012</label></div></td>
                         <td><div title="Show crashes in 2013"><label for="2013"><input id="2013" type="checkbox" ng-model='settings.y2013' ng-change="loadData()"> 2013</label></div></td>
                     </tr>
+                    <tr>
+                        <td colspan="4">
+                            <button id="advancedSettings" type="button" class="btn btn-info" data-toggle="collapse" data-target="#advancedTable">
+                                Advanced <span class="caret"></span>
+                            </button>
+                            <div id="advancedTable" class="collapse">
+                                <table cellpadding="2" class="table table-condensed table-bordered sideTable">
+                                    <tr>
+                                        <th><div title="Collision Type is the physical relationship of the vehicle(s) at the time of collision based on their intended path of travel">Type:</div></th>
+                                        <td><div title="Show angle crashes"><label for="angle"><input id="angle" type="checkbox" ng-model='settings.angle' ng-change="loadData()"> Angle: {{summary.angle}}</label></div></td>
+                                        <td><div title="Show head on crashes "><label for="headOn"><input id="headOn" type="checkbox" ng-model='settings.headOn' ng-change="loadData()"> Head On: {{summary.headOn}}</label></div> </td>
+                                        <td><div title="Show rear end crashes"><label for="rearEnd"><input id="rearEnd" type="checkbox" ng-model='settings.rearEnd' ng-change="loadData()"> Rear End: {{summary.rearEnd}}</label></div></td>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <td><div title="Show side swipe crashes"><label for="sideSwipe"><input id="sideSwipe" type="checkbox" ng-model='settings.sideSwipe' ng-change="loadData()"> Side Swipe: {{summary.sideSwipe}}</label></div></td>
+                                        <td><div title="Show turning crashes"><label for="turning"><input id="turning" type="checkbox" ng-model='settings.turning' ng-change="loadData()"> Turning: {{summary.turning}}</label></div> </td>
+                                        <td><div title="Show other crash types, including parking, fixed objects, etc"><label for="other"><input id="other" type="checkbox" ng-model='settings.other' ng-change="loadData()"> Other: {{summary.other}}</label></div></td>
+                                    </tr>
+
+                                    <tr>
+                                        <th><div title="The amount of light available at the time of the crash">Light:</div></th>
+                                        <td><div title="Show crashes during the day"><label for="Day"><input id="Day" type="checkbox" ng-model='settings.day' ng-change="loadData()"> Day: {{summary.day}}</label></div></td>
+                                        <td><div title="Shows crashes at night"><label for="Night"><input id="Night" type="checkbox" ng-model='settings.night' ng-change="loadData()"> Night: {{summary.night}}</label></div></td>
+                                        <td><div title="Show crashes during twilight"><label for="Twilight"><input id="Twilight" type="checkbox" ng-model='settings.twilight' ng-change="loadData()"> Twilight: {{summary.twilight}}</label></div></td>
+                                    </tr>
+                                    <tr>
+                                        <th><div title="The condition of the road surface at the time of the crash">Surface:</div></th>
+                                        <td><div title="Show crashes on dry surfaces"><label for="Dry"><input id="Dry" type="checkbox" ng-model='settings.dry' ng-change="loadData()"> Dry: {{summary.dry}}</label></div></td>
+                                        <td><div title="Show crashes on wet surfaces"><label for="Wet"><input id="Wet" type="checkbox" ng-model='settings.wet' ng-change="loadData()"> Wet: {{summary.wet}}</label></div></td>
+                                        <td><div title="Show crashes on snow or ice"><label for="Snow"><input id="Snow" type="checkbox" ng-model='settings.snowIce' ng-change="loadData()"> Snow/Ice: {{summary.snowIce}}</label></div> </td>
+                                    </tr>
+                                    <tr>
+                                        <th><div title="How to limit the scope of the results">Scope:</div></th>
+                                        <td><div title="Limit the scope of the results to the visible map boundaries"><label for="window"><input id="window" type="radio" value="Window" ng-model='settings.scope' ng-change="loadData()"> Window: {{windowTotal}}</label></div></td>
+                                        <td colspan="2"><div title="Include all available crashes in the results"><label for="regional"><input id="regional" type="radio" value="Regional" ng-model='settings.scope' ng-change="loadData()"> All Crashes: {{fixedTotal}}</label></div></td>
+                                    </tr>
+
+                                </table>
+
+                            </div>
+                        </td>
+                    </tr>
                 </table>
             </div>
-            <button id="advancedSettings" type="button" class="btn btn-info" data-toggle="collapse" data-target="#advancedTable">
-                <!-- <button id="advancedSettings" type="button" class="btn btn-info hide" data-toggle="collapse" data-target="#settingsTable">-->
-                Advanced <span class="caret"></span>
-            </button>
-            <div id="advancedTable" class="collapse">
-                <table cellpadding="2" class="table table-condensed table-bordered sideTable">
-                    <tr>
-                        <th><div title="Collision Type is the physical relationship of the vehicle(s) at the time of collision based on their intended path of travel">Type:</div></th>
-                        <td><div title="Show angle crashes"><label for="angle"><input id="angle" type="checkbox" ng-model='settings.angle' ng-change="loadData()"> Angle: {{summary.angle}}</label></div></td>
-                        <td><div title="Show head on crashes "><label for="headOn"><input id="headOn" type="checkbox" ng-model='settings.headOn' ng-change="loadData()"> Head On: {{summary.headOn}}</label></div> </td>
-                        <td><div title="Show rear end crashes"><label for="rearEnd"><input id="rearEnd" type="checkbox" ng-model='settings.rearEnd' ng-change="loadData()"> Rear End: {{summary.rearEnd}}</label></div></td>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <td><div title="Show side swipe crashes"><label for="sideSwipe"><input id="sideSwipe" type="checkbox" ng-model='settings.sideSwipe' ng-change="loadData()"> Side Swipe: {{summary.sideSwipe}}</label></div></td>
-                        <td><div title="Show turning crashes"><label for="turning"><input id="turning" type="checkbox" ng-model='settings.turning' ng-change="loadData()"> Turning: {{summary.turning}}</label></div> </td>
-                        <td><div title="Show other crash types, including parking, fixed objects, etc"><label for="other"><input id="other" type="checkbox" ng-model='settings.other' ng-change="loadData()"> Other: {{summary.other}}</label></div></td>
-                    </tr>
 
-                    <tr>
-                        <th><div title="The amount of light available at the time of the crash">Light:</div></th>
-                        <td><div title="Show crashes during the day"><label for="Day"><input id="Day" type="checkbox" ng-model='settings.day' ng-change="loadData()"> Day: {{summary.day}}</label></div></td>
-                        <td><div title="Shows crashes at night"><label for="Night"><input id="Night" type="checkbox" ng-model='settings.night' ng-change="loadData()"> Night: {{summary.night}}</label></div></td>
-                        <td><div title="Show crashes during twilight"><label for="Twilight"><input id="Twilight" type="checkbox" ng-model='settings.twilight' ng-change="loadData()"> Twilight: {{summary.twilight}}</label></div></td>
-                    </tr>
-                    <tr>
-                        <th><div title="The condition of the road surface at the time of the crash">Surface:</div></th>
-                        <td><div title="Show crashes on dry surfaces"><label for="Dry"><input id="Dry" type="checkbox" ng-model='settings.dry' ng-change="loadData()"> Dry: {{summary.dry}}</label></div></td>
-                        <td><div title="Show crashes on wet surfaces"><label for="Wet"><input id="Wet" type="checkbox" ng-model='settings.wet' ng-change="loadData()"> Wet: {{summary.wet}}</label></div></td>
-                        <td><div title="Show crashes on snow or ice"><label for="Snow"><input id="Snow" type="checkbox" ng-model='settings.snowIce' ng-change="loadData()"> Snow/Ice: {{summary.snowIce}}</label></div> </td>
-                    </tr>
-                    <tr>
-                        <th><div title="How to limit the scope of the results">Scope:</div></th>
-                        <td><div title="Limit the scope of the results to the visible map boundaries"><label for="window"><input id="window" type="radio" value="Window" ng-model='settings.scope' ng-change="loadData()"> Window: {{windowTotal}}</label></div></td>
-                        <td colspan="2"><div title="Include all available crashes in the results"><label for="regional"><input id="regional" type="radio" value="Regional" ng-model='settings.scope' ng-change="loadData()"> All Crashes: {{fixedTotal}}</label></div></td>
-                    </tr>
-
-                </table>
-
-            </div>
         </div>
         <div id="refreshDiv" class="refreshDiv well hidden"></div>
         <div id ='legend' class="legend legend-area">
