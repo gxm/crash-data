@@ -8,6 +8,7 @@ import com.sun.jersey.multipart.FormDataBodyPart;
 import com.sun.jersey.multipart.FormDataMultiPart;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
@@ -23,17 +24,18 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Full end to end integration test of server, through the Http interface and using Mongo
  */
 public class IntegrationTest {
-    public static final String URL = "http://localhost:7070/metro/47/44/-121/-124?callback=stuff";
     private static final Logger logger = LoggerFactory.getLogger(IntegrationTest.class);
     private final ObjectMapper mapper = new ObjectMapper();
     private Client client = ClientCreator.cached();
     public static final String ROOT_URL = "http://localhost:7070/";
     public static final String DATASETS_URL = ROOT_URL + "datasets";
+    public static final String CRASH_URL = ROOT_URL + "metro/47/44/-121/-124?callback=stuff";
 
     @BeforeClass
     public static void beforeClass() throws Exception {
@@ -50,6 +52,19 @@ public class IntegrationTest {
     public void testUpload() throws IOException {
         deleteExisting();
         loadFile();
+        setActive();
+
+        ClientResponse response = client.resource(CRASH_URL).get(ClientResponse.class);
+        assertEquals(200, response.getStatus());
+        String entity = trimEntity(response.getEntity(String.class));
+        System.out.println(entity);
+        JsonNode rootNode = mapper.readTree(entity);
+        assertEquals(30, rootNode.get("max").asInt());
+        assertEquals(953, rootNode.get("total").asInt());
+        assertTrue(entity.contains("{\"lat\":\"45.5591\",\"lng\":\"-122.6615\",\"count\":30,\"radius\":24}"));
+    }
+
+    private void setActive() throws IOException {
         ObjectNode dataset = (ObjectNode) getDatasets().get(0);
         dataset.put("active", true);
         logger.info("dataset active {}", dataset);
@@ -60,8 +75,6 @@ public class IntegrationTest {
                 .put(ClientResponse.class);
         logger.info("response {}", put);
         assertEquals(200, put.getStatus());
-
-        //todo - gfm - 12/26/14 - query crash endpoint
     }
 
     private void deleteExisting() throws IOException {
@@ -93,19 +106,6 @@ public class IntegrationTest {
     }
 
     /*
-
-    @Test
-    public void testAll() throws IOException {
-        ClientResponse response = client.resource(URL).get(ClientResponse.class);
-        assertEquals(200, response.getStatus());
-        String entity = trimEntity(response.getEntity(String.class));
-        System.out.println(entity);
-        JsonNode rootNode = mapper.readTree(entity);
-        assertEquals(3, rootNode.get("max").asInt());
-        assertEquals(5, rootNode.get("total").asInt());
-        assertTrue(entity.contains("{\"data\":[{\"lat\":\"45.5496\",\"lng\":\"-122.9256\",\"count\":3,\"radius\":24}," +
-                "{\"lat\":\"45.5922\",\"lng\":\"-123.2204\",\"count\":2,\"radius\":24}]"));
-    }
 
     @Test
     public void testAlcohol() throws IOException {
@@ -284,5 +284,10 @@ public class IntegrationTest {
     private String trimEntity(String entity) {
         return StringUtils.removeEnd(StringUtils.removeStart(entity, "stuff("), ")");
     }*/
+
+    private String trimEntity(String entity) {
+        return StringUtils.removeEnd(StringUtils.removeStart(entity, "stuff("), ")");
+    }
+
 
 }
