@@ -137,6 +137,7 @@ function CrashController($scope, $http, $location) {
 
         $scope.map = new L.map('heatmapArea', {
             center: new L.LatLng(loadlat, loadlng),
+            maxZoom: 19,
             zoom: $scope.settings.zoom,
             zoomControl: false,
             layers: layers
