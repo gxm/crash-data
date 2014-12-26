@@ -5,11 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Greg Moulliet">
     <link rel="icon" href="http://www.oregonmetro.gov/favicon.ico" type="image/x-icon">
+    <link href="css/crash-data.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-    <link href="css/crash-data.css" rel="stylesheet">
     <link href="lib/bootstrap-css/css/bootstrap.min.css" rel="stylesheet">
     <link href="lib/bootstrap-css/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <style>
+        .navbar .nav>li>a:focus, .navbar .nav>li>a:hover{
+            text-shadow: 0 1px 0 #333;
+            color:#fff;
+        }
+        .navbar .nav>li>a {
+            text-shadow: 0 1px 0 #333;
+            color:#fff;
+        }
+
+        .navbar-inner{
+            background-image:none !important;
+        }
+
+        .navbar-inverse .nav .active>a, .navbar-inverse .nav .active>a:hover, .navbar-inverse .nav .active>a:focus {
+            background-color: #4d5e66 !important;
+        }
+
+        .navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
+            background-color: #4d5e66 !important;
+        }
+
+        .navbar .nav li.dropdown.open > .dropdown-toggle{
+            background-color:#4d5e66 !important;
+            color:#fff;
+        }
+
+        .nav .dropdown-toggle .caret {
+            border-top-color: #889DA1;
+            border-bottom-color: #889DA1;
+        }
+
+        .navbar .nav li.dropdown > a:hover .caret, .navbar .nav li.dropdown > a:focus .caret {
+            border-top-color: #FFF;
+            border-bottom-color: #FFF;
+        }
+    </style>
 
     <script type="text/javascript">
         var testCanvas = document.createElement("canvas");
@@ -22,7 +60,7 @@
 </head>
 <body>
 <div ng-controller="CrashController">
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top metro">
         <div class="navbar-inner">
             <div class="container">
                 <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">

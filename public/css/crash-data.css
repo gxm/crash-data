@@ -136,6 +136,14 @@ body {
 
 }
 
+.navbar-inner {
+    background-color: red;
+    /* remove the gradient */
+    background-image: none;
+    /* set font color to white */
+    color: white;
+}
+
 input[type="file"] {
     width: 500px;
 }
