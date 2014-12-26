@@ -176,9 +176,6 @@ function CrashController($scope, $http, $location) {
         $('#settingsTable').show();
         $('#settingsTable').collapse('show');
 
-        $('#advancedSettings').show();
-        $('#advancedTable').show();
-        $('#advancedTable').collapse('show');
         $scope.loadData();
     }
 
