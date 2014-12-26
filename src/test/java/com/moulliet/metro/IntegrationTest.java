@@ -2,10 +2,27 @@ package com.moulliet.metro;
 
 import com.moulliet.common.ClientCreator;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataBodyPart;
+import com.sun.jersey.multipart.FormDataMultiPart;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.core.MediaType;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Full end to end integration test of server, through the Http interface and using Mongo
@@ -15,13 +32,10 @@ public class IntegrationTest {
     private static final Logger logger = LoggerFactory.getLogger(IntegrationTest.class);
     private final ObjectMapper mapper = new ObjectMapper();
     private Client client = ClientCreator.cached();
+    public static final String ROOT_URL = "http://localhost:7070/";
+    public static final String DATASETS_URL = ROOT_URL + "datasets";
 
-    @Test
-    public void testEmpty() {
-        //todo - gfm - get these working again
-    }
-
-    /*@BeforeClass
+    @BeforeClass
     public static void beforeClass() throws Exception {
         System.setProperty("config.properties", "/Users/greg/code/crash-data/config/test/crash-data.properties");
         CrashServiceMain.startResources(7070);
@@ -31,6 +45,54 @@ public class IntegrationTest {
     public static void tearDown() throws Exception {
         CrashServiceMain.stop();
     }
+
+    @Test
+    public void testUpload() throws IOException {
+        deleteExisting();
+        loadFile();
+        ObjectNode dataset = (ObjectNode) getDatasets().get(0);
+        dataset.put("active", true);
+        logger.info("dataset active {}", dataset);
+
+        ClientResponse put = client.resource(DATASETS_URL)
+                .accept(MediaType.APPLICATION_JSON)
+                .entity(dataset.toString(), MediaType.APPLICATION_JSON)
+                .put(ClientResponse.class);
+        logger.info("response {}", put);
+        assertEquals(200, put.getStatus());
+
+        //todo - gfm - 12/26/14 - query crash endpoint
+    }
+
+    private void deleteExisting() throws IOException {
+        for (JsonNode node : getDatasets()) {
+            client.resource(DATASETS_URL + "/" + node.get("name").asText()).delete();
+        }
+    }
+
+    private JsonNode getDatasets() throws IOException {
+        return mapper.readTree(client.resource(DATASETS_URL).get(String.class));
+    }
+
+    private String loadFile() throws IOException {
+        String name = "test-" + RandomStringUtils.randomAlphabetic(6);
+        FormDataMultiPart multiPart = new FormDataMultiPart();
+        FormDataContentDisposition contentDisposition = FormDataContentDisposition
+                .name("file")
+                .fileName("TestCrash.gdb.zip")
+                .build();
+        File file = new File(Config.getConfig().getString("test.data", "define..."));
+        byte[] bytes = IOUtils.toByteArray(new FileInputStream(file));
+        FormDataBodyPart bodyPart = new FormDataBodyPart(contentDisposition, bytes, MediaType.WILDCARD_TYPE);
+        multiPart.bodyPart(bodyPart);
+        multiPart.field("datasetName", name);
+        client.resource(DATASETS_URL).type(MediaType.MULTIPART_FORM_DATA)
+                .accept(MediaType.APPLICATION_JSON)
+                .post(multiPart);
+        return name;
+    }
+
+    /*
 
     @Test
     public void testAll() throws IOException {

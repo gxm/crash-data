@@ -29,10 +29,6 @@ import java.util.zip.ZipFile;
 public class GdbService {
     private static final Logger logger = LoggerFactory.getLogger(GdbService.class);
 
-    public static void main(String[] args) throws IOException {
-        unzip(new File("/Users/greg/code/import/TestCrash.gdb.zip"));
-    }
-
     public static int load(String datasetName, File file) throws IOException {
         File unzipTempDir = unzip(file);
         File[] files = unzipTempDir.listFiles();
@@ -57,7 +53,7 @@ public class GdbService {
             if (zipEntry.isDirectory()) {
                 logger.info("created dir " + temp + " " + temp.mkdirs());
             } else {
-                logger.debug("writing file " + temp + " " + temp.createNewFile());
+                logger.trace("writing file " + temp + " " + temp.createNewFile());
                 IOUtils.copy(zipFile.getInputStream(zipEntry), new FileOutputStream(temp));
             }
         }
