@@ -8,19 +8,19 @@
     <link href="css/crash-data.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-    <link href="lib/bootstrap-css/css/bootstrap.min.css" rel="stylesheet">
-    <link href="lib/bootstrap-css/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="lib/bootstrap-css/css/bootstrap.css" rel="stylesheet">
+    <link href="lib/bootstrap-css/css/bootstrap-responsive.css" rel="stylesheet">
 
     <style>
-        .navbar .nav>li>a:focus, .navbar .nav>li>a:hover{
-            text-shadow: 0 1px 0 #333;
-            color:#fff;
-        }
-        .navbar .nav>li>a {
-            text-shadow: 0 1px 0 #333;
-            color:#fff;
-        }
 
+        .navbar .nav > .active > a,
+        .navbar .nav > .active > a:hover,
+        .navbar .nav > .active > a:focus {
+            text-decoration: none;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+        }
         .navbar-inner{
             background-image:none !important;
         }
