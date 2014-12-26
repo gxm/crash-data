@@ -1,6 +1,6 @@
 function CrashSettings($scope) {
 	var that = this;
-	that.zoom = Number($scope.search('zoom', 14));
+	that.zoom = Number($scope.search('zoom', 11));
 
 	that.cars = $scope.search('cars', true);
 	that.peds = $scope.search('peds', true);

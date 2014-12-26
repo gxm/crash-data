@@ -128,8 +128,9 @@ function CrashController($scope, $http, $location) {
     });
 
     function windowOnLoad() {
-        var loadlat = Number($scope.search('lat', 45.52));
-        var loadlng = Number($scope.search('lng', -122.67));
+        //lat=45.4810771&lng=-122.740974
+        var loadlat = Number($scope.search('lat', 45.48));
+        var loadlng = Number($scope.search('lng', -122.74));
         var layers = [];
         layers.push(road);
         $scope.heatMapOverlay = new HeatmapOverlay($scope.config());
