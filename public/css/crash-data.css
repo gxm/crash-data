@@ -171,6 +171,12 @@ body {
     border-bottom-color: #FFF;
 }
 
+.table {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+
 input[type="file"] {
     width: 500px;
 }
