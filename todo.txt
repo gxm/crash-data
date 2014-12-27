@@ -7,6 +7,7 @@ Done:
 13.   Please add aerial image option.   Ben already provided a link.
 15.   Need to add (mouse-over event) definitions to each of the setting fields (e.g. injury type, basemap, scale, mode, etc), in addition to setting options (e.g. sinks, side swipe, etc)
 16.   Site kept loading, waiting in one session  – please address.
+17.   In scale bar, 0 should be 1.
 19.   Change title to Metro Crash Map
 22.   Add a JS basemap-switcher-widget. Ben will provide.
 23.   Please change “vehicle” to “mode”.
@@ -23,7 +24,6 @@ reduce opacity?
 To Do:
 
 9.    Hide “data sets” tab from public, make available only to Metro with password
-17.   In scale bar, 0 should be 1.
 18.   Please add a background to scale bar so it’s more readable over map and add interval numbers and tic marks, e.g. 20, 40, 60 etc.
 
 Blocked:

@@ -80,7 +80,7 @@ function CrashController($scope, $http, $location) {
             lngField: 'lng',
             valueField: 'count',
             onExtremaChange: function updateLegend(data) {
-                min.innerHTML = data.min;
+                min.innerHTML = 1;
                 max.innerHTML = data.max;
                 if (data.gradient != gradientCfg) {
                     gradientCfg = data.gradient;
