@@ -131,8 +131,17 @@ function CrashController($scope, $http, $location) {
             tooltip.style.OTransform = transform; /* Opera */
             tooltip.style.WebkitTransform = transform; /* Safari and Chrome */
             tooltip.style.transform = transform; /* One day, my pretty */
+            if (value < 10) {
+                tooltip.style.width = '9px';
+            } else if (value < 100) {
+                tooltip.style.width = '17px';
+            } else if (value < 1000) {
+                tooltip.style.width = '26px';
+            } else if (value < 10000) {
+                tooltip.style.width = '36px';
+            }
             tooltip.innerHTML = value;
-            //tooltip.innerHTML = '<h4>' + value + '</h4>';
+
         }
 
         var wrapper = document.querySelector('.map-wrapper');

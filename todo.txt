@@ -26,6 +26,8 @@ To Do:
 
 9.    Hide “data sets” tab from public, make available only to Metro with password
 
+reload page when viewport is changed - only way to get heatmap.js to properly track screen
+
 Blocked:
 
 7.    Readability of settings that use multiple lines – make it more graphically apparent that it is a group (colors? borders?)
