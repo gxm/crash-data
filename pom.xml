@@ -22,6 +22,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.18</version>
+
                 <configuration>
                     <systemProperties>
                         <property>
@@ -33,6 +34,7 @@
                             <value>${project.basedir}/config/test/crash-data.properties</value>
                         </property>
                     </systemProperties>
+                    <argLine>-Djava.library.path=${project.basedir}/filegdb/osx/build/Debug/</argLine>
                 </configuration>
             </plugin>
             <plugin>

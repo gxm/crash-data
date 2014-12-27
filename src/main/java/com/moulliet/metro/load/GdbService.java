@@ -31,6 +31,7 @@ public class GdbService {
     private static final Logger logger = LoggerFactory.getLogger(GdbService.class);
 
     public static int load(String datasetName, File file) throws IOException {
+        logger.info("java.library.path {}", System.getProperty("java.library.path"));
         File unzipTempDir = unzip(file);
         File[] files = unzipTempDir.listFiles();
         logger.info("found " + Arrays.toString(files));
@@ -43,7 +44,7 @@ public class GdbService {
         return records;
     }
 
-    static File unzip(File file) throws IOException {
+    private static File unzip(File file) throws IOException {
         File tempDir = Files.createTempDir();
         logger.info("using temp dir " + tempDir);
         ZipFile zipFile = new ZipFile(file);
@@ -61,7 +62,7 @@ public class GdbService {
         return tempDir;
     }
 
-    static int importData(String datasetName, File file) {
+    private static int importData(String datasetName, File file) {
         logger.info("starting import {} {}", datasetName, file);
         MongoDao mongoDao = Statics.mongoDao;
         IGISInputStream stream = null;

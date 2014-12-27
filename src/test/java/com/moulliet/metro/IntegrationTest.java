@@ -97,7 +97,7 @@ public class IntegrationTest {
         ClientResponse response = client.resource(CRASH_URL + params).get(ClientResponse.class);
         assertEquals(200, response.getStatus());
         String entity = trimEntity(response.getEntity(String.class));
-        System.out.println(trimEntity(entity));
+        //System.out.println(trimEntity(entity));
         return mapper.readTree(entity);
     }
 
