@@ -12,33 +12,9 @@
     border: 0;
     height: 100%;
     width: 100%;
+    cursor: crosshair;
 }
 
-.heatmapAreaHalf {
-    width: 49.8%;
-    height: 100%;
-}
-
-.heatmapAreaHalfHeight {
-    width: 99%;
-    height: 49%;
-}
-
-.spacer {
-    position: relative;
-    float: left;
-    width: 0px;
-}
-
-/*todo phase this out*/
-.totalDiv {
-    position: relative;
-    float: left;
-    height: 20px;
-    width: 49%;
-}
-
-/*todo phase this out*/
 .settingsTable {
     background: #fff;
 }
@@ -185,4 +161,33 @@ input,
 textarea,
 .uneditable-input {
     width: 500px;
+}
+
+.legend-area {
+    position: absolute;
+    bottom: 20px;
+    right: 0;
+    padding: 10px;
+    background: white;
+    outline: 1px solid black;
+    line-height: 1em;
+}
+
+h4 {
+    margin: 0;
+    padding: 0;
+}
+
+.tooltip-area {
+    position: absolute;
+    top: 41px;
+    left: 0;
+    width: 30px;
+    height: 15px;
+    padding: 2px;
+    background: white;
+    line-height: 1em;
+    display:none;
+    font-size: 14px;
+    font-weight: bold;
 }

@@ -119,6 +119,47 @@ function CrashController($scope, $http, $location) {
             });
     }
 
+    function tooltip() {
+
+        var tooltip = document.querySelector('.tooltip-area');
+
+        function updateTooltip(x, y, value) {
+            // + 15 for distance to cursor
+            var transform = 'translate(' + (x + 15) + 'px, ' + (y + 15) + 'px)';
+            tooltip.style.MozTransform = transform; /* Firefox */
+            tooltip.style.msTransform = transform; /* IE (9+) - note ms is lowercase */
+            tooltip.style.OTransform = transform; /* Opera */
+            tooltip.style.WebkitTransform = transform; /* Safari and Chrome */
+            tooltip.style.transform = transform; /* One day, my pretty */
+            if (value < 10) {
+                tooltip.style.width = '9px';
+            } else if (value < 100) {
+                tooltip.style.width = '17px';
+            } else if (value < 1000) {
+                tooltip.style.width = '26px';
+            } else if (value < 10000) {
+                tooltip.style.width = '36px';
+            }
+            tooltip.innerHTML = value;
+
+        }
+
+        var wrapper = document.querySelector('.map-wrapper');
+
+        wrapper.onmousemove = function(ev) {
+            var x = ev.layerX;
+            var y = ev.layerY;
+
+            var value = $scope.heatMapOverlay._heatmap.getValueAt({ x: x, y: y});
+            tooltip.style.display = 'block';
+
+            updateTooltip(x, y, value);
+        };
+        wrapper.onmouseout = function() {
+            tooltip.style.display = 'none';
+        };
+    }
+
     var subDomains = ['gistiles1', 'gistiles2', 'gistiles3', 'gistiles4'];
     var token = 'token=O95k2qhvXt3RArC0yQV5j4JinWb21wL0wLj2Ik-dLG0.';
     var attribution = "<a href='//gis.oregonmetro.gov'>Metro RLIS</a>";
@@ -180,6 +221,7 @@ function CrashController($scope, $http, $location) {
 
         $scope.loadData();
         $scope.showSinks();
+        tooltip();
     }
 
     $scope.showSinks = function showSinks() {
