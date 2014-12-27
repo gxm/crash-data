@@ -2,6 +2,8 @@ package com.moulliet.metro.crash;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class represents a crash as displayed by the heatmap.
@@ -19,6 +21,7 @@ import com.mongodb.DBObject;
  * "year" : 2012 , "month" : 10 , "day" : 30}
  */
 public class Crash  {
+    private static final Logger logger = LoggerFactory.getLogger(Crash.class);
     private final Point point;
 
     private boolean alcohol;
@@ -32,7 +35,7 @@ public class Crash  {
     private int crashId;
     private BasicDBList coordinates;
 
-    public static final String[] fieldNamesLong = {
+    private static final String[] fieldNamesLong = {
             "ALCHL_INVLV_FLG",
             "TOT_PED_CNT",
             "TOT_PEDCYCL_CNT",
@@ -47,7 +50,7 @@ public class Crash  {
             "CRASH_ID"
     };
 
-    public static final String[] fieldNamesShort = {
+    private static final String[] fieldNamesShort = {
             "ALCHL_INVL",
             "TOT_PED_CN",
             "TOT_PEDCYC",
@@ -62,32 +65,40 @@ public class Crash  {
             "CRASH_ID"
     };
 
-    public Crash(DBObject dbObject) {
-        alcohol = (int) dbObject.get(fieldNamesLong[0]) > 0;
-        ped = (int) dbObject.get(fieldNamesLong[1]);
-        bike = (int) dbObject.get(fieldNamesLong[2]);
-        surface = Integer.parseInt((String) dbObject.get(fieldNamesLong[3]));
-        light = Integer.parseInt((String) dbObject.get(fieldNamesLong[4]));
-        type = (String) dbObject.get(fieldNamesLong[5]);
-        year = Integer.parseInt((String) dbObject.get(fieldNamesLong[6]));
+    public static Crash create(DBObject dbObject) {
+        if (dbObject.get(fieldNamesLong[0]) != null) {
+            return new Crash(dbObject, fieldNamesLong);
+        } else if (dbObject.get(fieldNamesShort[0]) != null) {
+            return new Crash(dbObject, fieldNamesShort);
+        } else {
+            logger.info("unable to load {}", dbObject);
+            return null;
+        }
+    }
 
-        if ((int) dbObject.get(fieldNamesLong[7]) > 0) {
+    private Crash(DBObject dbObject, String [] fields) {
+        alcohol = (int) dbObject.get(fields[0]) > 0;
+        ped = (int) dbObject.get(fields[1]);
+        bike = (int) dbObject.get(fields[2]);
+        surface = Integer.parseInt((String) dbObject.get(fields[3]));
+        light = Integer.parseInt((String) dbObject.get(fields[4]));
+        type = (String) dbObject.get(fields[5]);
+        year = Integer.parseInt((String) dbObject.get(fields[6]));
+
+        if ((int) dbObject.get(fields[7]) > 0) {
             severity = 4;
-        } else if ((int) dbObject.get(fieldNamesLong[8]) > 0) {
+        } else if ((int) dbObject.get(fields[8]) > 0) {
             severity = 3;
-        } else if ((int) dbObject.get(fieldNamesLong[9]) > 0) {
+        } else if ((int) dbObject.get(fields[9]) > 0) {
             severity = 2;
-        } else if ((int) dbObject.get(fieldNamesLong[10]) > 0) {
+        } else if ((int) dbObject.get(fields[10]) > 0) {
             severity = 1;
         } else {
             severity = 0;
         }
-        crashId = (int) dbObject.get(fieldNamesLong[11]);
-
+        crashId = (int) dbObject.get(fields[11]);
         DBObject loc = (DBObject) dbObject.get("loc");
         coordinates = (BasicDBList) loc.get("coordinates");
-
-
         point = new Point(getLng(), getLat());
     }
 

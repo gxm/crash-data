@@ -25,8 +25,15 @@ function CrashController($scope, $http, $location) {
     $scope.loadData = function loadData() {
         $scope.refreshDiv();
         var config = {params: $scope.settings};
-        var corners = $scope.settings.corners($scope);
-        var url = $scope.createUrl(corners) + '?callback=JSON_CALLBACK';
+        var bounds = $scope.map.getBounds();
+        var corners = {
+            north: $scope.latlng(bounds.getNorthEast().lat),
+            south: $scope.latlng(bounds.getSouthWest().lat),
+            east: $scope.latlng(bounds.getNorthEast().lng),
+            west: $scope.latlng(bounds.getSouthWest().lng)
+        };
+        var url = $scope.host + 'crashes/' + corners.north + '/' + corners.south + '/'
+            + corners.east + '/' + corners.west + '?callback=JSON_CALLBACK';
         config.params.zoom = $scope.map.getZoom();
         var center = $scope.map.getCenter();
         config.params.lat = $scope.latlng(center.lat);

@@ -34,13 +34,4 @@ function CrashSettings($scope) {
 	that.sinks = $scope.search('sinks', false);
 }
 
-CrashSettings.prototype.corners = function ($scope) {
-	var bounds = $scope.map.getBounds();
-	return {
-		north: $scope.latlng(bounds.getNorthEast().lat),
-		south: $scope.latlng(bounds.getSouthWest().lat),
-		east: $scope.latlng(bounds.getNorthEast().lng),
-		west: $scope.latlng(bounds.getSouthWest().lng)
-	};
-};
 

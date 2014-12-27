@@ -36,12 +36,6 @@ function Common($scope, $http, $location) {
         return plusSign + number + '%';
     };
 
-    //todo - gfm - rename this
-    $scope.createUrl = function createUrl(corners) {
-        return $scope.host + 'metro/' + corners.north +
-            '/' + corners.south + '/' + corners.east + '/' + corners.west;
-    };
-
     $scope.latlng = function latlng(number) {
         return number.toPrecision(9).toString();
     }
