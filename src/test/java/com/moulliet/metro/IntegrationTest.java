@@ -11,6 +11,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -24,6 +25,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Full end to end integration test of server, through the Http interface and using Mongo
@@ -49,8 +51,6 @@ public class IntegrationTest {
     public static void tearDown() throws Exception {
         CrashServiceMain.stop();
     }
-
-
 
     private static void setActive() throws IOException {
         ObjectNode dataset = (ObjectNode) getDatasets().get(0);
@@ -106,7 +106,18 @@ public class IntegrationTest {
         JsonNode rootNode = getJsonNode("");
         assertEquals(30, rootNode.get("max").asInt());
         assertEquals(953, rootNode.get("total").asInt());
-        //assertTrue(entity.contains("{\"lat\":\"45.5591\",\"lng\":\"-122.6615\",\"count\":30,\"radius\":24}"));
+        assertTrue(checkDataPoint("45.5591", "-122.6615", 30, rootNode));
+    }
+
+    private boolean checkDataPoint(String lat, String lng, int count, JsonNode rootNode) {
+        ArrayNode data = (ArrayNode) rootNode.get("data");
+        for (JsonNode node : data) {
+            if (lat.equals(node.get("lat").asText()) && lng.equals(node.get("lng").asText())) {
+                assertEquals("point " + lat + " " + lng, count, node.get("count").asInt());
+                return true;
+            }
+        }
+        return false;
     }
 
     @Test
@@ -115,7 +126,7 @@ public class IntegrationTest {
         assertEquals(2, rootNode.get("max").asInt());
         assertEquals(52, rootNode.get("total").asInt());
         assertEquals(52, rootNode.get("summary").get("alcohol").asInt());
-        //assertTrue(entity.contains("{\"lat\":\"45.5591\",\"lng\":\"-122.6615\",\"count\":30,\"radius\":24}"));
+        assertTrue(checkDataPoint("45.5627", "-122.658", 2, rootNode));
     }
 
     @Test
