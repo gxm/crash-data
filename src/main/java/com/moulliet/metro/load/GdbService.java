@@ -4,7 +4,6 @@ import com.google.common.io.Files;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.moulliet.metro.Statics;
-import com.moulliet.metro.crash.Crash;
 import com.moulliet.metro.mongo.MongoDao;
 import org.apache.commons.io.IOUtils;
 import org.opensextant.geodesy.Geodetic2DPoint;
@@ -22,7 +21,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.GregorianCalendar;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -76,11 +77,10 @@ public class GdbService {
                 } else if (read instanceof Feature) {
                     Feature feature = (Feature) read;
                     BasicDBObject dbObject = new BasicDBObject();
-                    if (findFields(dbObject, feature)) {
-                        dbObject.put("loc", parseLoc(feature));
-                        mongoDao.insert(dbObject, datasetName);
-                        inserted++;
-                    }
+                    putFields(dbObject, feature);
+                    dbObject.put("loc", parseLoc(feature));
+                    mongoDao.insert(dbObject, datasetName);
+                    inserted++;
                 }
                 if (objects % 1000 == 0) {
                     logger.debug("objects " + objects + " inserted " + inserted);
@@ -99,25 +99,19 @@ public class GdbService {
         return 0;
     }
 
-    private static boolean findFields(BasicDBObject dbObject, Feature feature) {
-        if (putFields(dbObject, feature, Crash.fieldNamesLong)) {
-            return true;
-        }
-        if (putFields(dbObject, feature, Crash.fieldNamesShort)) {
-            return true;
-        }
-        logger.info("can't parse: " + feature);
-        return false;
-    }
-
-    private static boolean putFields(BasicDBObject dbObject, Feature feature, String[] fieldNames) {
-        if (feature.getData(new SimpleField(fieldNames[0])) != null) {
-            for (int i = 0; i < fieldNames.length; i++) {
-                dbObject.put(Crash.fieldNamesLong[i], feature.getData(new SimpleField(fieldNames[i])));
+    private static void putFields(BasicDBObject dbObject, Feature feature) {
+        Collection<SimpleField> fields = feature.getFields();
+        for (SimpleField field : fields) {
+            Object data = feature.getData(field);
+            Class<?> clazz = data == null ? null : data.getClass();
+            logger.trace("field {} {} {}", field, data, clazz);
+            if (data != null && field.getType().equals(SimpleField.Type.DATE)) {
+                GregorianCalendar date = (GregorianCalendar) data;
+                dbObject.put(field.getName(), date.getTimeInMillis());
+            } else {
+                dbObject.put(field.getName(), data);
             }
-            return true;
         }
-        return false;
     }
 
     private static BasicDBObject parseLoc(Feature feature) {

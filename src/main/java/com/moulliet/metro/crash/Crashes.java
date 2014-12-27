@@ -68,8 +68,8 @@ public class Crashes {
                 @Override
                 public void callback(Iterator<DBObject> iterator) {
                     while (iterator.hasNext()) {
-                        Crash crash = new Crash(iterator.next());
-                        if (!SinkFilter.isSink(crash.getPoint())) {
+                        Crash crash = Crash.create(iterator.next());
+                        if (crash != null && !SinkFilter.isSink(crash.getPoint())) {
                             crashes.add(crash);
                         }
 
