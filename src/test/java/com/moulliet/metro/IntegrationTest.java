@@ -122,7 +122,7 @@ public class IntegrationTest {
         checkDataPoint("45.5591", "-122.6615", 30, rootNode);
     }
 
-    //todo - gfm - 12/27/14 - add test for viewport & fixed
+    //todo - gfm - 12/27/14 - add test for scope window & regional
 
     @Test
     public void testAlcohol() throws IOException {
