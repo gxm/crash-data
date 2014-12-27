@@ -186,3 +186,18 @@ textarea,
 .uneditable-input {
     width: 500px;
 }
+
+.legend-area {
+    position: absolute;
+    bottom: 20px;
+    right: 0;
+    padding: 10px;
+    background: white;
+    outline: 1px solid black;
+    line-height: 1em;
+}
+
+h4 {
+    margin: 0;
+    padding: 0;
+}
