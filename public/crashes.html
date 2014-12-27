@@ -69,8 +69,10 @@
                         <td> <div title="Show crashes with property damage only"><label for="Property"><input id="Property" type="checkbox" ng-model='settings.property' ng-change="loadData()"> Property: {{summary.property}}</label></div> </td>
                     </tr>
                     <tr>
-                        <th><div title="Exclusively show crashes involving alcohol">Alcohol:</div></th>
-                        <td> <div title="Exclusively show crashes involving alcohol"><label for="Alcohol"><input id="Alcohol" type="checkbox" ng-model='settings.alcohol' ng-change="loadData()"> Alcohol: {{summary.alcohol}}</label></div> </td>
+                        <th><div title="Driving Under the Influence of Intoxicants (total may exceed 100%)">DUII:</div></th>
+                        <td> <div title="Show crashes where all active participants are sober"><label for="Sober"><input id="Sober" type="checkbox" ng-model='settings.sober' ng-change="loadData()"> Sober: {{summary.sober}}</label></div> </td>
+                        <td> <div title="Show crashes involving alcohol (may also include crashes with drug use)"><label for="Alcohol"><input id="Alcohol" type="checkbox" ng-model='settings.alcohol' ng-change="loadData()"> Alcohol: {{summary.alcohol}}</label></div> </td>
+                        <td> <div title="Show crashes involving drugs (may also include crashes with alcohol use)"><label for="Drug"><input id="Drug" type="checkbox" ng-model='settings.drug' ng-change="loadData()"> Drugs: {{summary.drug}}</label></div> </td>
                     </tr>
                     <tr>
                         <th><div title="Select which years to include">Years:</div></th>
@@ -123,7 +125,7 @@
                                     </tr>
                                     <tr>
                                         <th><div title="Show geographic locations where ODOT puts crashes without a precisely known location">Sinks:</div></th>
-                                        <td><div title="Show geographic locations where ODOT puts crashes without a precisely known location"><label for="sinks"><input id="sinks" type="checkbox" value="false" ng-model="settings.sinks" ng-change="showSinks()"> Sinks</label></div></td>
+                                        <td><div title="Show geographic locations where ODOT puts crashes without a precisely known location"><label for="sinks"><input id="sinks" type="checkbox" value="false" ng-model="settings.sinks" ng-change="showSinks()"> Sinks Locations</label></div></td>
                                     </tr>
                                 </table>
                             </div>
