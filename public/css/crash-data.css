@@ -12,33 +12,9 @@
     border: 0;
     height: 100%;
     width: 100%;
+    cursor: crosshair;
 }
 
-.heatmapAreaHalf {
-    width: 49.8%;
-    height: 100%;
-}
-
-.heatmapAreaHalfHeight {
-    width: 99%;
-    height: 49%;
-}
-
-.spacer {
-    position: relative;
-    float: left;
-    width: 0px;
-}
-
-/*todo phase this out*/
-.totalDiv {
-    position: relative;
-    float: left;
-    height: 20px;
-    width: 49%;
-}
-
-/*todo phase this out*/
 .settingsTable {
     background: #fff;
 }
@@ -200,4 +176,17 @@ textarea,
 h4 {
     margin: 0;
     padding: 0;
+}
+
+.tooltip-area {
+    position: absolute;
+    top: 41px;
+    left: 0;
+    width: 30px;
+    height: 15px;
+    padding: 5px;
+    background: white;
+    outline: 1px solid black;
+    line-height: 1em;
+    display:none;
 }
