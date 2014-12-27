@@ -38,7 +38,7 @@ function Common($scope, $http, $location) {
 
     //todo - gfm - rename this
     $scope.createUrl = function createUrl(corners) {
-        return $scope.host + 'metro/' + corners.north +
+        return $scope.host + 'crashes/' + corners.north +
             '/' + corners.south + '/' + corners.east + '/' + corners.west;
     };
 

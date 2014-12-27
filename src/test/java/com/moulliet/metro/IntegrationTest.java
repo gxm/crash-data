@@ -25,7 +25,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Full end to end integration test of server, through the Http interface and using Mongo
@@ -36,7 +36,7 @@ public class IntegrationTest {
     private static Client client = ClientCreator.cached();
     public static final String ROOT_URL = "http://localhost:7070/";
     public static final String DATASETS_URL = ROOT_URL + "datasets";
-    public static final String CRASH_URL = ROOT_URL + "metro/47/44/-121/-124?callback=stuff";
+    public static final String CRASH_URL = ROOT_URL + "crashes/47/44/-121/-124?callback=stuff";
 
     @BeforeClass
     public static void beforeClass() throws Exception {
@@ -101,24 +101,28 @@ public class IntegrationTest {
         return mapper.readTree(entity);
     }
 
+    private void checkDataPoint(String lat, String lng, int count, JsonNode rootNode) {
+        ArrayNode data = (ArrayNode) rootNode.get("data");
+        for (JsonNode node : data) {
+            if (lat.equals(node.get("lat").asText()) && lng.equals(node.get("lng").asText())) {
+                assertEquals("point " + lat + " " + lng, count, node.get("count").asInt());
+                return;
+            }
+        }
+        fail("missing point " + lat + " " + lng);
+    }
+
     @Test
     public void testAll() throws IOException {
         JsonNode rootNode = getJsonNode("");
         assertEquals(30, rootNode.get("max").asInt());
         assertEquals(953, rootNode.get("total").asInt());
-        assertTrue(checkDataPoint("45.5591", "-122.6615", 30, rootNode));
+        checkDataPoint("45.56", "-122.6615", 2, rootNode);
+        checkDataPoint("45.5552", "-122.6297", 9, rootNode);
+        checkDataPoint("45.5591", "-122.6615", 30, rootNode);
     }
 
-    private boolean checkDataPoint(String lat, String lng, int count, JsonNode rootNode) {
-        ArrayNode data = (ArrayNode) rootNode.get("data");
-        for (JsonNode node : data) {
-            if (lat.equals(node.get("lat").asText()) && lng.equals(node.get("lng").asText())) {
-                assertEquals("point " + lat + " " + lng, count, node.get("count").asInt());
-                return true;
-            }
-        }
-        return false;
-    }
+    //todo - gfm - 12/27/14 - add test for viewport & fixed
 
     @Test
     public void testAlcohol() throws IOException {
@@ -126,7 +130,7 @@ public class IntegrationTest {
         assertEquals(2, rootNode.get("max").asInt());
         assertEquals(52, rootNode.get("total").asInt());
         assertEquals(52, rootNode.get("summary").get("alcohol").asInt());
-        assertTrue(checkDataPoint("45.5627", "-122.658", 2, rootNode));
+        checkDataPoint("45.5627", "-122.658", 2, rootNode);
     }
 
     @Test

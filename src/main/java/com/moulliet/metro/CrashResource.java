@@ -12,8 +12,7 @@ import javax.ws.rs.core.StreamingOutput;
 import java.io.IOException;
 import java.io.OutputStream;
 
-//todo - gfm - rename this
-@Path("/metro")
+@Path("/crashes")
 public class CrashResource {
 
     private static final Logger logger = LoggerFactory.getLogger(CrashResource.class);
