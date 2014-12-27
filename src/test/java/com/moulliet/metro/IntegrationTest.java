@@ -97,7 +97,7 @@ public class IntegrationTest {
         ClientResponse response = client.resource(CRASH_URL + params).get(ClientResponse.class);
         assertEquals(200, response.getStatus());
         String entity = trimEntity(response.getEntity(String.class));
-        //System.out.println(trimEntity(entity));
+        System.out.println(trimEntity(entity));
         return mapper.readTree(entity);
     }
 
@@ -126,11 +126,33 @@ public class IntegrationTest {
 
     @Test
     public void testAlcohol() throws IOException {
-        JsonNode rootNode = getJsonNode("&alcohol=true");
+        JsonNode rootNode = getJsonNode("&alcohol=true&sober=false&drug=false");
         assertEquals(2, rootNode.get("max").asInt());
         assertEquals(52, rootNode.get("total").asInt());
         assertEquals(52, rootNode.get("summary").get("alcohol").asInt());
+        assertEquals(0, rootNode.get("summary").get("sober").asInt());
+        assertEquals(7, rootNode.get("summary").get("drug").asInt());
         checkDataPoint("45.5627", "-122.658", 2, rootNode);
+    }
+
+    @Test
+    public void testDrug() throws IOException {
+        JsonNode rootNode = getJsonNode("&alcohol=false&sober=false&drug=true");
+        assertEquals(1, rootNode.get("max").asInt());
+        assertEquals(8, rootNode.get("total").asInt());
+        assertEquals(0, rootNode.get("summary").get("sober").asInt());
+        assertEquals(7, rootNode.get("summary").get("alcohol").asInt());
+        assertEquals(8, rootNode.get("summary").get("drug").asInt());
+    }
+
+    @Test
+    public void testSober() throws IOException {
+        JsonNode rootNode = getJsonNode("&alcohol=false&sober=true&drug=false");
+        assertEquals(30, rootNode.get("max").asInt());
+        assertEquals(900, rootNode.get("total").asInt());
+        assertEquals(900, rootNode.get("summary").get("sober").asInt());
+        assertEquals(0, rootNode.get("summary").get("alcohol").asInt());
+        assertEquals(0, rootNode.get("summary").get("drug").asInt());
     }
 
     @Test

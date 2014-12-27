@@ -45,12 +45,23 @@ public class Filters implements Filter {
         });
     }
 
-    public void alcohol(boolean alcohol) {
-        if (alcohol) {
+    public void sobriety(boolean alcohol, boolean drug, boolean sober) {
+        if (alcohol && drug && sober) {
+            return;
+        } else if (!alcohol && !drug && !sober) {
+            returnFalse = true;
+        } else {
             add(new Filter() {
                 @Override
                 public boolean include(Crash crash) {
-                    return crash.isAlcohol();
+                    if (crash.isAlcohol() && alcohol) {
+                        return true;
+                    } else if (crash.isDrug() && drug) {
+                        return true;
+                    } else if (sober) {
+                        return !crash.isDrug() && !crash.isAlcohol();
+                    }
+                    return false;
                 }
             });
         }

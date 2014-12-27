@@ -25,6 +25,7 @@ public class Crash  {
     private final Point point;
 
     private boolean alcohol;
+    private boolean drug;
     private int ped;
     private int bike;
     private int surface;
@@ -47,7 +48,8 @@ public class Crash  {
             "TOT_INJ_LVL_A_CNT",
             "TOT_INJ_LVL_B_CNT",
             "TOT_INJ_LVL_C_CNT",
-            "CRASH_ID"
+            "CRASH_ID",
+            "DRUG_INVLV_FLG"
     };
 
     private static final String[] fieldNamesShort = {
@@ -62,10 +64,12 @@ public class Crash  {
             "TOT_INJ_LV",
             "TOT_INJ__1",
             "TOT_INJ__2",
-            "CRASH_ID"
+            "CRASH_ID",
+            "DRUG_INVLV"
     };
 
     public static Crash create(DBObject dbObject) {
+        logger.trace("dbObject {}", dbObject);
         if (dbObject.get(fieldNamesLong[0]) != null) {
             return new Crash(dbObject, fieldNamesLong);
         } else if (dbObject.get(fieldNamesShort[0]) != null) {
@@ -97,6 +101,7 @@ public class Crash  {
             severity = 0;
         }
         crashId = (int) dbObject.get(fields[11]);
+        drug = (int) dbObject.get(fields[12]) > 0;
         DBObject loc = (DBObject) dbObject.get("loc");
         coordinates = (BasicDBList) loc.get("coordinates");
         point = new Point(getLng(), getLat());
@@ -120,6 +125,9 @@ public class Crash  {
 
     public boolean isAlcohol() {
         return alcohol;
+    }
+    public boolean isDrug() {
+        return drug;
     }
 
     public int getSeverity() {
