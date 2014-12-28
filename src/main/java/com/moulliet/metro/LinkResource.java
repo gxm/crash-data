@@ -19,8 +19,10 @@ public class LinkResource {
     @GET
     @Produces("application/json")
     public Response rootRedirect(@QueryParam("callback") final String callback) throws IOException {
+        //todo - gfm - 12/28/14 - if valid user, return datasets, otherwise return login.html
         ArrayNode root = mapper.createArrayNode();
         addLink("Crash Map", "crashes.html", root);
+        addLink("Login", "login.html", root);
         addLink("Data Sets", "datasets.html", root);
         String entity = callback + "(" + root.toString() + ");";
         return Response.ok(entity).build();
