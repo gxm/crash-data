@@ -1,5 +1,6 @@
 Done:
 3.    Please explore whether there can be a monochrome option, so that users can change the heat map scale to black&white for color-blind users.
+    Also added opacity slider to demonstrate what how various opacity levels interact with the color schemes.
 4.    Please “nest” items in the Settings, i.e. hide certain advanced features other than mode, severity, alcohol, and year, as discussed
 5.    Please consolidate data (summary) and settings in same box like example provided. Start with Year, then Type.
 6.    Please include both alcohol and drugs options (separate fields in the table).
@@ -20,8 +21,6 @@ Done:
 Doing
 
 26.   Suggest adding freeway/arterial/collector/local option (advanced option).  The field is in the crash table as “FC_TXT”.   You can probably figure out the values pretty easily – there are 12 options that collapse into freeway/arterial/collector/local. Data isn’t 100% accurate but still useful.
-
-reduce opacity?
 
 To Do:
 
