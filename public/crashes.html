@@ -87,6 +87,12 @@
                         <td><div title="Show crashes in 2013"><label for="2013"><input id="2013" type="checkbox" ng-model='settings.y2013' ng-change="loadData()"> 2013</label></div></td>
                     </tr>
                     <tr>
+                        <th><div title="Select Color Scheme">Colors:</div></th>
+                        <td> <div title="Default Color Scheme: Blue, Green, Yellow, Red"><label for="default"><input id="default" value="default" type="radio" ng-model='settings.colors' ng-change="reloadPage()"> Default</label></div></td>
+                        <td> <div title="Yellow, Orange, Red"><label for="ylord"><input id="ylord" value="ylord" type="radio" ng-model='settings.colors' ng-change="reloadPage()"> YlOrRd</label></div></td>
+                        <td> <div title="Yellow, Green, Blue"><label for="ylgnbu"><input id="ylgnbu" value="ylgnbu" type="radio" ng-model='settings.colors' ng-change="reloadPage()"> YlGnBu</label></div></td>
+                    </tr>
+                    <tr>
                         <td colspan="4">
                             <button id="advancedSettings" type="button" class="btn btn-info" data-toggle="collapse" data-target="#advancedTable">
                                 Advanced <span class="caret"></span>
