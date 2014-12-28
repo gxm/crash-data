@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app>
 <head>
     <meta charset="utf-8">
     <title>Metro Crash Map - Home</title>
@@ -20,20 +19,23 @@
 </head>
 
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="brand" href="#">Metro Crash Map - Home</a>
-            <div class="nav-collapse collapse">
-                <ul class="nav">
-                    <li><a href="crashes.html">Crash Map</a></li>
-                    <li><a href="datasets.html">Data Sets</a></li>
-                </ul>
+<div ng-controller="UserController">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="brand" href="#">Metro Crash Map - Home</a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        <li ng-repeat="item in data">
+                            <a href="{{ item.href }}">{{ item.name }}</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -50,8 +52,11 @@
     </p>
 
 </div>
+<script type="text/javascript" src="lib/angular/angular.min.js"></script>
 <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap-css/js/bootstrap.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/user.js"></script>
 </body>
 
 </html>
