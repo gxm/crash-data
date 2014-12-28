@@ -72,6 +72,14 @@ function CrashController($scope, $http, $location) {
         var gradientImg = document.querySelector('#gradient');
         var legendCtx = legendCanvas.getContext('2d');
         var gradientCfg = {};
+        var gradient = { 0.05: "rgb(0,0,255)", 0.35: "rgb(0,255,0)", 0.65: "yellow", .95: "rgb(255,0,0)"};
+        if ($scope.settings.colors === 'ylord') {
+            //http://colorbrewer2.org/?type=sequential&scheme=YlOrRd&n=4
+            var gradient ={ '.05': '#ffffb2', '.35': '#fecc5c', '.65': '#fd8d3c', '.95': "#e31a1c"};
+        } else if ($scope.settings.colors === 'ylgnbu') {
+            //http://colorbrewer2.org/?type=sequential&scheme=YlGnBu&n=4
+            var gradient ={ '.05': '#ffffcc', '.35': '#a1dab4', '.65': '#41b6c4', '.95': "#225ea8"};
+        }
         return {
             "radius": 35,
             "maxOpacity": 1,
@@ -79,6 +87,7 @@ function CrashController($scope, $http, $location) {
             latField: 'lat',
             lngField: 'lng',
             valueField: 'count',
+            gradient: gradient,
             onExtremaChange: function updateLegend(data) {
                 min.innerHTML = 1;
                 max.innerHTML = data.max;
@@ -165,19 +174,23 @@ function CrashController($scope, $http, $location) {
     var attribution = "<a href='//gis.oregonmetro.gov'>Metro RLIS</a>";
     var road = L.tileLayer('http://{s}.oregonmetro.gov/arcgis/rest/services/metromap/baseAll/MapServer/tile/{z}/{y}/{x}?' + token, {
         subdomains: subDomains,
-        attribution: attribution
+        attribution: attribution,
+        opacity: 0.5
     });
     var photo = L.tileLayer('http://{s}.oregonmetro.gov/arcgis/rest/services/photo/2013aerialphoto/MapServer/tile/{z}/{y}/{x}?' + token, {
         subdomains: subDomains,
         zIndex: 10,
+        opacity: 0.5,
         attribution: attribution
     });
     var xtraphoto = L.tileLayer('//server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: "<a href='//www.esri.com'>ESRI</a>",
+        opacity: 0.5,
         zIndex: 0
     });
     var label = L.tileLayer('http://{s}.oregonmetro.gov/arcgis/rest/services/metromap/baseAnno/MapServer/tile/{z}/{y}/{x}?' + token, {
         subdomains: subDomains,
+        opacity: 0.5,
         zIndex: 100,
         attribution: attribution
     });
@@ -234,4 +247,8 @@ function CrashController($scope, $http, $location) {
 
     windowOnLoad();
 
+    $scope.reloadPage = function(){
+        $location.search($scope.settings);
+        window.location.reload();
+    }
 }
