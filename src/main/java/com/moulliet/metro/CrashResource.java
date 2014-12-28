@@ -12,8 +12,7 @@ import javax.ws.rs.core.StreamingOutput;
 import java.io.IOException;
 import java.io.OutputStream;
 
-//todo - gfm - rename this
-@Path("/metro")
+@Path("/crashes")
 public class CrashResource {
 
     private static final Logger logger = LoggerFactory.getLogger(CrashResource.class);
@@ -33,7 +32,9 @@ public class CrashResource {
                            @DefaultValue("true") @QueryParam("cars") boolean cars,
                            @DefaultValue("true") @QueryParam("peds") boolean peds,
                            @DefaultValue("true") @QueryParam("bikes") boolean bikes,
-                           @DefaultValue("false") @QueryParam("alcohol") boolean alcohol,
+                           @DefaultValue("true") @QueryParam("alcohol") boolean alcohol,
+                           @DefaultValue("true") @QueryParam("drug") boolean drug,
+                           @DefaultValue("true") @QueryParam("sober") boolean sober,
                            @DefaultValue("true") @QueryParam("day") boolean day,
                            @DefaultValue("true") @QueryParam("night") boolean night,
                            @DefaultValue("true") @QueryParam("twilight") boolean twilight,
@@ -69,7 +70,7 @@ public class CrashResource {
                 filters.location(north, south, east, west);
             }
             filters.vehicle(cars, bikes, peds);
-            filters.alcohol(alcohol);
+            filters.sobriety(alcohol, drug, sober);
             filters.light(day, night, twilight);
             filters.surface(dry, wet, snowIce);
             filters.years(y2007, y2008, y2009, y2010, y2011, y2012, y2013);

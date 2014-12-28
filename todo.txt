@@ -1,0 +1,51 @@
+Done:
+3.    Please explore whether there can be a monochrome option, so that users can change the heat map scale to black&white for color-blind users.
+4.    Please “nest” items in the Settings, i.e. hide certain advanced features other than mode, severity, alcohol, and year, as discussed
+5.    Please consolidate data (summary) and settings in same box like example provided. Start with Year, then Type.
+6.    Please include both alcohol and drugs options (separate fields in the table).
+8.    Please increase maximum zoom to “19”.
+12.   Please address issue of scrollbars appearing.
+13.   Please add aerial image option.   Ben already provided a link.
+15.   Need to add (mouse-over event) definitions to each of the setting fields (e.g. injury type, basemap, scale, mode, etc), in addition to setting options (e.g. sinks, side swipe, etc)
+16.   Site kept loading, waiting in one session  – please address.
+17.   In scale bar, 0 should be 1.
+18.   Please add a background to scale bar so it’s more readable over map
+19.   Change title to Metro Crash Map
+22.   Add a JS basemap-switcher-widget. Ben will provide.
+23.   Please change “vehicle” to “mode”.
+24.   Please change “Regional” (under scale settings) to “Fixed”
+25.   Please separate “sink” option from scale setting
+28.   Please initiate map at regional scale as discussed, and with only Fatal and Severe Injury crashes selected.
+
+Doing
+
+26.   Suggest adding freeway/arterial/collector/local option (advanced option).  The field is in the crash table as “FC_TXT”.   You can probably figure out the values pretty easily – there are 12 options that collapse into freeway/arterial/collector/local. Data isn’t 100% accurate but still useful.
+
+reduce opacity?
+
+To Do:
+
+9.    Hide “data sets” tab from public, make available only to Metro with password
+
+reload page when viewport is changed - only way to get heatmap.js to properly track screen
+
+Blocked:
+
+7.    Readability of settings that use multiple lines – make it more graphically apparent that it is a group (colors? borders?)
+10.   Please replace mode text with icons (cars, peds, bikes, motorcycles, trucks).  Matthew will provide icons.  Please see comment 26 about trucks/motorcycles
+11.   Please convert checkboxes to buttons, including for years.  Buttons may have pressed/unpressed appearance, or use some other differentiation. Matthew will provide direction and/or images.
+14.   Please add note indicating that descriptions appear when the user hovers over an item.
+19.   Need to replace header with Metro header.  Ben will provide.
+20.   Need to add intro text to “Welcome Page” – incl. how to use the crash map, purpose, data source, info on how the site was developed. Lake and Anthony will coordinate.
+21.   Please include an information link (about this map) in the header.  This could refer back to the intro page or perhaps a separate popup.
+
+TBD:
+1.       Please explore whether the ‘regional’ feature can have a fixed search radius and scale.
+
+2.       Please explore whether we can fix the zoom and scale once the user reaches zoom 16, so that colors don’t change when the user zooms in closer than this (for the ‘viewport’ setting).
+
+18.  scale bar add interval numbers and tic marks, e.g. 20, 40, 60 etc.
+
+27.   Motorcycle/truck fields are in the vehicle table.  The attached decoder manual describes on page 78: the proposal would be to use 02/04/05 as truck, 06/09 as motorcycle, and everything else as car.
+
+29.  When summary table is collapsed (hidden), please include text that summarizes filters so that if the user prints the screenshot, there is info on what was selected.

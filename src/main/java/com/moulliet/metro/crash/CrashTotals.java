@@ -14,6 +14,8 @@ public class CrashTotals {
     private int bikes = 0;
     private int peds = 0;
     private int alcohol = 0;
+    private int drug = 0;
+    private int sober = 0;
     private int injuryA = 0;
     private int injuryB = 0;
     private int injuryC = 0;
@@ -39,7 +41,15 @@ public class CrashTotals {
         if ((crash.getBike() + crash.getPed()) == 0) {
             cars++;
         }
-        if (crash.isAlcohol()) alcohol++;
+        if (crash.isAlcohol()) {
+            alcohol++;
+        }
+        if (crash.isDrug()) {
+            drug++;
+        }
+        if (!crash.isDrug() && !crash.isAlcohol()) {
+            sober++;
+        }
         severity(crash);
         surface(crash);
         light(crash);
@@ -53,6 +63,8 @@ public class CrashTotals {
         json.writeNumberField("bikes", bikes);
         json.writeNumberField("peds", peds);
         json.writeNumberField("alcohol", alcohol);
+        json.writeNumberField("drug", drug);
+        json.writeNumberField("sober", sober);
         json.writeNumberField("injuryA", injuryA);
         json.writeNumberField("injuryB", injuryB);
         json.writeNumberField("injuryC", injuryC);

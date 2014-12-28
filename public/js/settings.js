@@ -5,7 +5,9 @@ function CrashSettings($scope) {
 	that.cars = $scope.search('cars', true);
 	that.peds = $scope.search('peds', true);
 	that.bikes = $scope.search('bikes', true);
-	that.alcohol = $scope.search('alcohol', false);
+	that.alcohol = $scope.search('alcohol', true);
+	that.drug = $scope.search('drug', true);
+	that.sober = $scope.search('sober', true);
 	that.fatal = $scope.search('fatal', true);
 	that.injuryA = $scope.search('injuryA', true);
 	that.injuryB = $scope.search('injuryB', false);
@@ -32,15 +34,7 @@ function CrashSettings($scope) {
 	that.other = $scope.search('other', true);
 	that.scope = $scope.search('scope', 'Window');
 	that.sinks = $scope.search('sinks', false);
+	that.colors = $scope.search('colors', 'default');
 }
 
-CrashSettings.prototype.corners = function ($scope) {
-	var bounds = $scope.map.getBounds();
-	return {
-		north: $scope.latlng(bounds.getNorthEast().lat),
-		south: $scope.latlng(bounds.getSouthWest().lat),
-		east: $scope.latlng(bounds.getNorthEast().lng),
-		west: $scope.latlng(bounds.getSouthWest().lng)
-	};
-};
 

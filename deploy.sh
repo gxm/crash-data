@@ -11,7 +11,8 @@ fi
 SCRIPTS="crash-data/scripts"
 
 build() {
-    # this requires JAVA_HOME to be set for maven
+    # this requires JAVA_HOME & DYLD_LIBRARY_PATH to be set for maven
+    export DYLD_LIBRARY_PATH="$DYLD_LIBRARY_PATH:../FileGDB_API/lib"
     mvn package assembly:single
     STATUS=$?
     if [ ${STATUS} -eq 0 ]; then

@@ -25,8 +25,15 @@ function CrashController($scope, $http, $location) {
     $scope.loadData = function loadData() {
         $scope.refreshDiv();
         var config = {params: $scope.settings};
-        var corners = $scope.settings.corners($scope);
-        var url = $scope.createUrl(corners) + '?callback=JSON_CALLBACK';
+        var bounds = $scope.map.getBounds();
+        var corners = {
+            north: $scope.latlng(bounds.getNorthEast().lat),
+            south: $scope.latlng(bounds.getSouthWest().lat),
+            east: $scope.latlng(bounds.getNorthEast().lng),
+            west: $scope.latlng(bounds.getSouthWest().lng)
+        };
+        var url = $scope.host + 'crashes/' + corners.north + '/' + corners.south + '/'
+            + corners.east + '/' + corners.west + '?callback=JSON_CALLBACK';
         config.params.zoom = $scope.map.getZoom();
         var center = $scope.map.getCenter();
         config.params.lat = $scope.latlng(center.lat);
@@ -65,6 +72,14 @@ function CrashController($scope, $http, $location) {
         var gradientImg = document.querySelector('#gradient');
         var legendCtx = legendCanvas.getContext('2d');
         var gradientCfg = {};
+        var gradient = { 0.05: "rgb(0,0,255)", 0.35: "rgb(0,255,0)", 0.65: "yellow", .95: "rgb(255,0,0)"};
+        if ($scope.settings.colors === 'ylord') {
+            //http://colorbrewer2.org/?type=sequential&scheme=YlOrRd&n=4
+            var gradient ={ '.05': '#ffffb2', '.35': '#fecc5c', '.65': '#fd8d3c', '.95': "#e31a1c"};
+        } else if ($scope.settings.colors === 'ylgnbu') {
+            //http://colorbrewer2.org/?type=sequential&scheme=YlGnBu&n=4
+            var gradient ={ '.05': '#ffffcc', '.35': '#a1dab4', '.65': '#41b6c4', '.95': "#225ea8"};
+        }
         return {
             "radius": 35,
             "maxOpacity": 1,
@@ -72,8 +87,9 @@ function CrashController($scope, $http, $location) {
             latField: 'lat',
             lngField: 'lng',
             valueField: 'count',
+            gradient: gradient,
             onExtremaChange: function updateLegend(data) {
-                min.innerHTML = data.min;
+                min.innerHTML = 1;
                 max.innerHTML = data.max;
                 if (data.gradient != gradientCfg) {
                     gradientCfg = data.gradient;
@@ -112,24 +128,69 @@ function CrashController($scope, $http, $location) {
             });
     }
 
+    function tooltip() {
+
+        var tooltip = document.querySelector('.tooltip-area');
+
+        function updateTooltip(x, y, value) {
+            // + 15 for distance to cursor
+            var transform = 'translate(' + (x + 15) + 'px, ' + (y + 15) + 'px)';
+            tooltip.style.MozTransform = transform; /* Firefox */
+            tooltip.style.msTransform = transform; /* IE (9+) - note ms is lowercase */
+            tooltip.style.OTransform = transform; /* Opera */
+            tooltip.style.WebkitTransform = transform; /* Safari and Chrome */
+            tooltip.style.transform = transform; /* One day, my pretty */
+            if (value < 10) {
+                tooltip.style.width = '9px';
+            } else if (value < 100) {
+                tooltip.style.width = '17px';
+            } else if (value < 1000) {
+                tooltip.style.width = '26px';
+            } else if (value < 10000) {
+                tooltip.style.width = '36px';
+            }
+            tooltip.innerHTML = value;
+
+        }
+
+        var wrapper = document.querySelector('.map-wrapper');
+
+        wrapper.onmousemove = function(ev) {
+            var x = ev.layerX;
+            var y = ev.layerY;
+
+            var value = $scope.heatMapOverlay._heatmap.getValueAt({ x: x, y: y});
+            tooltip.style.display = 'block';
+
+            updateTooltip(x, y, value);
+        };
+        wrapper.onmouseout = function() {
+            tooltip.style.display = 'none';
+        };
+    }
+
     var subDomains = ['gistiles1', 'gistiles2', 'gistiles3', 'gistiles4'];
     var token = 'token=O95k2qhvXt3RArC0yQV5j4JinWb21wL0wLj2Ik-dLG0.';
     var attribution = "<a href='//gis.oregonmetro.gov'>Metro RLIS</a>";
     var road = L.tileLayer('http://{s}.oregonmetro.gov/arcgis/rest/services/metromap/baseAll/MapServer/tile/{z}/{y}/{x}?' + token, {
         subdomains: subDomains,
-        attribution: attribution
+        attribution: attribution,
+        opacity: 0.5
     });
     var photo = L.tileLayer('http://{s}.oregonmetro.gov/arcgis/rest/services/photo/2013aerialphoto/MapServer/tile/{z}/{y}/{x}?' + token, {
         subdomains: subDomains,
         zIndex: 10,
+        opacity: 0.5,
         attribution: attribution
     });
     var xtraphoto = L.tileLayer('//server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: "<a href='//www.esri.com'>ESRI</a>",
+        opacity: 0.5,
         zIndex: 0
     });
     var label = L.tileLayer('http://{s}.oregonmetro.gov/arcgis/rest/services/metromap/baseAnno/MapServer/tile/{z}/{y}/{x}?' + token, {
         subdomains: subDomains,
+        opacity: 0.5,
         zIndex: 100,
         attribution: attribution
     });
@@ -154,10 +215,6 @@ function CrashController($scope, $http, $location) {
 
         var photoGroup = L.layerGroup([photo, xtraphoto, label]);
 
-        var overlayMaps = {
-            "sinks": $scope.sinks
-        };
-
         var baseMaps = {
             "road ": road,
             "air photo": photoGroup
@@ -165,7 +222,7 @@ function CrashController($scope, $http, $location) {
 
         $scope.map.addControl( L.control.zoom({position: 'topright'}) );
 
-        L.control.layers(baseMaps, overlayMaps).addTo($scope.map);
+        L.control.layers(baseMaps).addTo($scope.map);
 
         var opacitySlider = new L.Control.opacitySlider();
         $scope.map.addControl(opacitySlider);
@@ -176,12 +233,26 @@ function CrashController($scope, $http, $location) {
         });
 
         $('#changeSettings').show();
-        $('#summary').show();
         $('#settingsTable').show();
         $('#settingsTable').collapse('show');
+
         $scope.loadData();
+        $scope.showSinks();
+        tooltip();
     }
+
+    $scope.showSinks = function showSinks() {
+        if ($scope.settings.sinks) {
+            $scope.map.addLayer($scope.sinks);
+        } else {
+            $scope.map.removeLayer($scope.sinks);
+        }
+    };
 
     windowOnLoad();
 
+    $scope.reloadPage = function(){
+        $location.search($scope.settings);
+        window.location.reload();
+    }
 }
