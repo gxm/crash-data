@@ -10,6 +10,9 @@
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <link href="lib/bootstrap-css/css/bootstrap.css" rel="stylesheet">
     <link href="lib/bootstrap-css/css/bootstrap-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="lib/Leaflet.OpacityControls/lib/opacity/Control.Opacity.css" />
+    <link rel="stylesheet" href="lib/Leaflet.OpacityControls/lib/jquery/jquery-ui-1.10.3.custom.min.css" />
+
     <link href="css/crash-data.css" rel="stylesheet">
 
     <script type="text/javascript">
@@ -89,8 +92,8 @@
                     <tr>
                         <th><div title="Select Color Scheme">Colors:</div></th>
                         <td> <div title="Default Color Scheme: Blue, Green, Yellow, Red"><label for="default"><input id="default" value="default" type="radio" ng-model='settings.colors' ng-change="reloadPage()"> Default</label></div></td>
-                        <td> <div title="Yellow, Orange, Red"><label for="ylord"><input id="ylord" value="ylord" type="radio" ng-model='settings.colors' ng-change="reloadPage()"> YlOrRd</label></div></td>
-                        <td> <div title="Yellow, Green, Blue"><label for="ylgnbu"><input id="ylgnbu" value="ylgnbu" type="radio" ng-model='settings.colors' ng-change="reloadPage()"> YlGnBu</label></div></td>
+                        <td> <div title="Orange, Red"><label for="orrd"><input id="orrd" value="orrd" type="radio" ng-model='settings.colors' ng-change="reloadPage()"> Orange Red</label></div></td>
+                        <td> <div title="Yellow, Green, Blue"><label for="ylgnbu"><input id="ylgnbu" value="ylgnbu" type="radio" ng-model='settings.colors' ng-change="reloadPage()"> Yellow Green Blue</label></div></td>
                     </tr>
                     <tr>
                         <td colspan="4">
@@ -165,6 +168,9 @@
 <script type="text/javascript" src="lib/heatmap.js/plugins/leaflet-heatmap.js"></script>
 <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap-css/js/bootstrap.js"></script>
+<script src="lib/Leaflet.OpacityControls/lib/opacity/Control.Opacity.js"></script>
+<script src="lib/Leaflet.OpacityControls/lib/jquery/jquery-ui-1.10.3.custom.min.js"></script>
+
 <script type="text/javascript" src="js/settings.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript" src="js/crashes.js"></script>
