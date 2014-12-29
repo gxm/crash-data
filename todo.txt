@@ -6,6 +6,7 @@ Done:
 5.    Please consolidate data (summary) and settings in same box like example provided. Start with Year, then Type.
 6.    Please include both alcohol and drugs options (separate fields in the table).
 8.    Please increase maximum zoom to “19”.
+9.    Hide “data sets” tab from public, make available only to Metro with password
 12.   Please address issue of scrollbars appearing.
 13.   Please add aerial image option.   Ben already provided a link.
 15.   Need to add (mouse-over event) definitions to each of the setting fields (e.g. injury type, basemap, scale, mode, etc), in addition to setting options (e.g. sinks, side swipe, etc)
@@ -21,12 +22,10 @@ Done:
 
 Doing
 
-9.    Hide “data sets” tab from public, make available only to Metro with password
+
 
 To Do:
 
-
-reload page when viewport is changed - only way to get heatmap.js to properly track screen
 
 Blocked:
 
