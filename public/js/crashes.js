@@ -22,6 +22,22 @@ function CrashController($scope, $http, $location) {
     $scope.settings = new CrashSettings($scope);
     $scope.summary = {};
 
+    $scope.settingsText = function () {
+        var val = '';
+        $.each($scope.settings, function (key, value) {
+            if (key === 'sinks') {
+
+            } else if (key === 'injuryB' || key === 'injuryC' || key === 'property') {
+                if (value) {
+                    val += key + ' ';
+                }
+            } else if (!value) {
+                val += key + ' ';
+            }
+        });
+        return val;
+    };
+
     $scope.loadData = function loadData() {
         $scope.refreshDiv();
         var config = {params: $scope.settings};
