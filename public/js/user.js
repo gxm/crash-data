@@ -9,8 +9,6 @@ function UserController($scope, $http, $location, $cookieStore) {
         {name:'Login', href:'login.html'}
     ];
 
-    //todo - gfm - 12/28/14 - get this to return user type
-
     $scope.user = '';
     $scope.password = '';
     $scope.message = '';

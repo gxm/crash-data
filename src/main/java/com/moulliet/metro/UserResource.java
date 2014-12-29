@@ -30,11 +30,7 @@ public class UserResource {
         String user = node.get("user").asText();
         String password = node.get("password").asText();
         logger.info("got post! {} {}", user, password);
-        ObjectNode root = mapper.createObjectNode();
-        root.put("type", user);
-        if ("admin".equals(user)) {
-            root.put("key", "ABC");
-        }
-        return Response.ok(root.toString()).build();
+        ObjectNode login = Statics.userService.login(user, password);
+        return Response.ok(login.toString()).build();
     }
 }
