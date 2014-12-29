@@ -5,7 +5,7 @@ import org.codehaus.jackson.node.ObjectNode;
 
 public class UserService {
     private static final ObjectMapper mapper = new ObjectMapper();
-    private static final String uuid = "57f92412-4839-4de7-a2bb-61ec9fb01cf5";
+    public static final String uuid = "57f92412-4839-4de7-a2bb-61ec9fb01cf5";
 
     public ObjectNode login(String user, String password) {
         ObjectNode node = mapper.createObjectNode();
