@@ -255,6 +255,14 @@ function CrashController($scope, $http, $location) {
         $('#settingsTable').show();
         $('#settingsTable').collapse('show');
 
+        $('#settingsTable').on('hidden', function () {
+            $('#settingsText').show();
+        });
+
+        $('#settingsTable').on('show', function () {
+            $('#settingsText').hide();
+        });
+
         $scope.loadData();
         $scope.showSinks();
         tooltip();
