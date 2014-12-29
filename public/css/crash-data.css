@@ -34,6 +34,10 @@ table, td {
     border-top: none;
 }
 
+.table th, .table td {
+    border-top: none;
+}
+
 .heatmapArea label {
     font-size: 14px;
 }

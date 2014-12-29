@@ -59,7 +59,7 @@
                 </button>
             </div>
             <div id="settingsTable" class="collapse hide">
-                <table cellpadding="2" class="sideTable ">
+                <table cellpadding="2" class="sideTable table table-condensed ">
                     <tr>
                         <th><div title="The general type of vehicle involved in a crash">Mode:</div></th>
                         <td colspan="2"> <div title="Show crashes involving only motor vehicles"><label for="Car"><input id="Car" type="checkbox" ng-model="settings.cars" ng-change="loadData()"> Cars Only: {{summary.cars}}</label></div> </td>
@@ -105,7 +105,7 @@
                                 Advanced <span class="caret"></span>
                             </button>
                             <div id="advancedTable" class="collapse">
-                                <table cellpadding="2" class="sideTable">
+                                <table cellpadding="2" class="sideTable table table-condensed">
                                     <tr>
                                         <th><div title="Collision Type is the physical relationship of the vehicle(s) at the time of collision based on their intended path of travel">Type:</div></th>
                                         <td><div title="Show angle crashes"><label for="angle"><input id="angle" type="checkbox" ng-model='settings.angle' ng-change="loadData()"> Angle: {{summary.angle}}</label></div></td>
