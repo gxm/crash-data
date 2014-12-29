@@ -23,6 +23,19 @@
     background: #fff;
     opacity: 0.85;
     font-size: 14px;
+    border: none;
+}
+
+.offset-row {
+    background: #E2E2E2;
+}
+
+table, td {
+    border-top: none;
+}
+
+.table th, .table td {
+    border-top: none;
 }
 
 .heatmapArea label {
@@ -96,15 +109,6 @@ body {
 .legend {
     fill: black;
     background: RGBA(0,0,0,0);
-}
-
-.areaSelectionBox {
-    border: 2px solid red;
-    position: absolute;
-}
-
-.areaSelectionBoxHidden {
-    display: block;
 }
 
 .navbar .nav {
@@ -190,4 +194,15 @@ h4 {
     display:none;
     font-size: 14px;
     font-weight: bold;
+}
+
+#settingsText {
+    z-index: 4;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: white;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 2px;
 }
