@@ -79,6 +79,15 @@ function CrashController($scope, $http, $location) {
         } else if ($scope.settings.colors === 'ylgnbu') {
             //http://colorbrewer2.org/?type=sequential&scheme=YlGnBu&n=4
             var gradient ={ '.05': '#ffffcc', '.35': '#a1dab4', '.65': '#41b6c4', '.95': "#225ea8"};
+        } else if  ($scope.settings.colors === 'puor') {
+            //http://colorbrewer2.org/?type=diverging&scheme=PuOr&n=4
+            /*
+             #e66101
+             #fdb863
+             #b2abd2
+             #5e3c99
+             */
+            var gradient ={ '.05': '#5e3c99', '.35': '#b2abd2', '.65': '#fdb863', '.95': "#e66101"};
         }
         return {
             "radius": 35,
