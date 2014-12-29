@@ -26,11 +26,7 @@ function CrashController($scope, $http, $location) {
         var val = '';
         $.each($scope.settings, function (key, value) {
             if (key === 'sinks') {
-
-            } else if (key === 'injuryB' || key === 'injuryC' || key === 'property') {
-                if (value) {
-                    val += key + ' ';
-                }
+                //do nothing
             } else if (!value) {
                 val += key + ' ';
             }
