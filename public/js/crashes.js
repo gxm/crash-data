@@ -23,7 +23,7 @@ function CrashController($scope, $http, $location) {
     $scope.summary = {};
 
     $scope.settingsText = function () {
-        var val = 'off ';
+        var val = 'off: ';
         $.each($scope.settings, function (key, value) {
             if (key === 'sinks') {
                 //do nothing
