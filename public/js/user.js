@@ -4,10 +4,7 @@ function UserController($scope, $http, $location, $cookieStore) {
 
     new Common($scope, $http, $location);
 
-    $scope.links = [
-        {name:'Crash Map', href:'crashes.html'},
-        {name:'Login', href:'login.html'}
-    ];
+    $scope.links = [];
 
     $scope.user = '';
     $scope.password = '';
@@ -19,7 +16,6 @@ function UserController($scope, $http, $location, $cookieStore) {
         if (user) {
             if (user.type === 'admin') {
                 $scope.links = [
-                    {name:'Crash Map', href:'crashes.html'},
                     {name:'Data Sets', href:'datasets.html'},
                     {name:'Logout', href:'logout.html'}
                 ];
