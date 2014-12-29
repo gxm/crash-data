@@ -1,23 +1,18 @@
 <html lang="en" ng-app="crash">
 <head>
     <meta charset="utf-8">
-    <title>Metro Crash Map - Home</title>
+    <title>Metro Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Metro Crash Map">
+    <meta name="description" content="Metro Crash Map Login">
     <meta name="author" content="Greg Moulliet">
     <link rel="icon" href="http://www.oregonmetro.gov/favicon.ico" type="image/x-icon">
-
     <link href="lib/bootstrap-css/css/bootstrap.min.css" rel="stylesheet">
     <link href="lib/bootstrap-css/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="css/crash-data.css" rel="stylesheet">
-<style>
-    body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-    }
-</style>
-
+    <style>
+        body { padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */ }
+    </style>
 </head>
-
 <body>
 <div ng-controller="UserController">
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -28,11 +23,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="brand" href="#">Metro Crash Map - Home</a>
+                <a class="brand" href="index.html">Metro Crash Map - Home</a>
                 <div class="nav-collapse collapse">
                     <ul class="nav">
                         <li><a href="crashes.html">Crash Map</a></li>
-                        <li><a href="login.html">Login</a></li>
                         <li ng-repeat="link in links">
                             <a href="{{ link.href }}">{{ link.name }}</a>
                         </li>
@@ -41,19 +35,12 @@
             </div>
         </div>
     </div>
+    <div class="container">
+        <h3>Click to logout:</h3>
+        <input type="submit" value="Submit" ng-click="logout()">
+    </div>
 </div>
-<div class="container">
-    What would you like this page to be?
-    <h3>Maps</h3>
-    <ul>
-        <li><a href="crashes.html">Metro Crash Map* <br><img src="img/metro.png"/></a></li>
-    </ul>
-    <p>
-    If you can't see the data on the heatmap or have other issues, you may need to upgrade your browser.<br>
-    I recommend using <a href="https://www.google.com/intl/en/chrome/browser/" target="_blank">Chrome</a>.  It should also work with recent versions of FireFox, Safari and Internet Explorer 9+.<br>
-    </p>
 
-</div>
 <script type="text/javascript" src="lib/angular/angular.min.js"></script>
 <script type="text/javascript" src="lib/angular-cookies/angular-cookies.min.js"></script>
 <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
@@ -61,5 +48,4 @@
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript" src="js/user.js"></script>
 </body>
-
 </html>

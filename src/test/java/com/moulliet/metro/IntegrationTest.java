@@ -1,6 +1,7 @@
 package com.moulliet.metro;
 
 import com.moulliet.common.ClientCreator;
+import com.moulliet.metro.user.UserService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.header.FormDataContentDisposition;
@@ -60,6 +61,7 @@ public class IntegrationTest {
         ClientResponse put = client.resource(DATASETS_URL)
                 .accept(MediaType.APPLICATION_JSON)
                 .entity(dataset.toString(), MediaType.APPLICATION_JSON)
+                .header("key", UserService.uuid)
                 .put(ClientResponse.class);
         logger.info("response {}", put);
         assertEquals(200, put.getStatus());
@@ -67,7 +69,9 @@ public class IntegrationTest {
 
     private static void deleteExisting() throws IOException {
         for (JsonNode node : getDatasets()) {
-            client.resource(DATASETS_URL + "/" + node.get("name").asText()).delete();
+            client.resource(DATASETS_URL + "/" + node.get("name").asText())
+                    .header("key", UserService.uuid)
+                    .delete();
         }
     }
 
@@ -89,6 +93,7 @@ public class IntegrationTest {
         multiPart.field("datasetName", name);
         client.resource(DATASETS_URL).type(MediaType.MULTIPART_FORM_DATA)
                 .accept(MediaType.APPLICATION_JSON)
+                .header("key", UserService.uuid)
                 .post(multiPart);
         return name;
     }

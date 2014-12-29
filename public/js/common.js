@@ -1,3 +1,5 @@
+angular.module('crash', ['ngCookies']);
+
 function Common($scope, $http, $location) {
     'use strict';
 

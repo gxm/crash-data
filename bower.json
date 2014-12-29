@@ -11,7 +11,8 @@
     "bootstrap-css": "2.3.2",
     "jquery": "2.0.1",
     "heatmap.js": "https://github.com/pa7/heatmap.js/archive/v2.0.tar.gz",
-    "Leaflet.OpacityControls": "https://github.com/lizardtechblog/Leaflet.OpacityControls.git"
+    "Leaflet.OpacityControls": "https://github.com/lizardtechblog/Leaflet.OpacityControls.git",
+    "angular-cookies": "1.0.7"
   },
   "devDependencies": {}
 }

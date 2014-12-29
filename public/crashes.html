@@ -1,4 +1,4 @@
-<html lang="en" ng-app>
+<html lang="en" ng-app="crash">
 <head>
     <title>Metro Crash Map</title>
     <meta name="keywords" content="metro, crash, heatmap, leaflet, javascript, canvas, html5"/>
@@ -25,7 +25,7 @@
     </script>
 </head>
 <body>
-<div ng-controller="CrashController">
+<div ng-controller="UserController">
     <div class="navbar navbar-inverse navbar-fixed-top metro">
         <div class="navbar-inner">
             <div class="container">
@@ -38,13 +38,20 @@
 
                 <div class="nav-collapse collapse">
                     <ul class="nav">
-                        <li class="active"><a href="#">Crash Map</a></li>
-                        <li><a href="datasets.html">Data Sets</a></li>
+                        <ul class="nav">
+                            <li class="active"><a href="crashes.html">Crash Map</a></li>
+                            <li><a href="login.html">Login</a></li>
+                            <li ng-repeat="link in links">
+                                <a href="{{ link.href }}">{{ link.name }}</a>
+                            </li>
+                        </ul>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div ng-controller="CrashController">
     <div class="container" id="containerDiv" >
         <div id="sideSettingsDiv" class="sideSettings oregonSideSettings">
             <div id="settingsButton">
@@ -164,6 +171,7 @@
 
 </div>
 <script type="text/javascript" src="lib/angular/angular.min.js"></script>
+<script type="text/javascript" src="lib/angular-cookies/angular-cookies.min.js"></script>
 <script type="text/javascript" src="lib/heatmap.js/build/heatmap.js"></script>
 <script type="text/javascript" src="lib/heatmap.js/plugins/leaflet-heatmap.js"></script>
 <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
@@ -173,6 +181,7 @@
 
 <script type="text/javascript" src="js/settings.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/user.js"></script>
 <script type="text/javascript" src="js/crashes.js"></script>
 
 </body>
