@@ -1,4 +1,4 @@
-function DatasetsController($scope, $http, $location) {
+function DatasetsController($scope, $http, $location, $cookieStore) {
 
     'use strict';
 
@@ -18,13 +18,23 @@ function DatasetsController($scope, $http, $location) {
         $location.search($scope.settings);
     };
 
+    function getConfig() {
+        var user = $cookieStore.get('user');
+        var config = {};
+        if (user && user.type === 'admin') {
+            config['headers'] = {key: user.key};
+        }
+        return config;
+    }
+
     $scope.updateData = function updateData(index) {
-        $http.put($scope.host + 'datasets', $scope.datasets[index])
+        $http.put($scope.host + 'datasets', $scope.datasets[index], getConfig() )
             .success(function (data, status, headers) {
                 $scope.datasets = data;
                 $scope.message = 'updated ' + new Date();
             }).error(function (data, status, headers) {
                 console.log('error', data, status);
+                $scope.message = 'error ' + status + ' ' + new Date();
             });
         $location.search($scope.settings);
     };
@@ -32,12 +42,13 @@ function DatasetsController($scope, $http, $location) {
     $scope.deleteDataset = function deleteDataset(index) {
         var url = $scope.host + 'datasets/' + $scope.datasets[index].name;
         console.log('calling', url);
-        $http.delete(url)
+        $http.delete(url, config)
             .success(function (data, status, headers) {
                 $scope.datasets = data;
                 $scope.message = 'deleted ' + new Date();
             }).error(function (data, status, headers) {
                 console.log('error', data, status);
+                $scope.message = 'error ' + status + ' ' + new Date();
             });
         $location.search($scope.settings);
     };
@@ -62,6 +73,8 @@ function DatasetsController($scope, $http, $location) {
         xhr.addEventListener("error", uploadFailed, false);
         xhr.addEventListener("abort", uploadCanceled, false);
         xhr.open("POST", "/datasets");
+        var user = $cookieStore.get('user');
+        xhr.setRequestHeader('key', user.key);
         xhr.send(fd)
     };
 

@@ -17,4 +17,8 @@ public class UserService {
         }
         return node;
     }
+
+    public boolean isValidKey(String key) {
+        return uuid.equals(key);
+    }
 }
