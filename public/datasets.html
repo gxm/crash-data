@@ -1,4 +1,4 @@
-<html lang="en" ng-app>
+<html lang="en" ng-app="crash">
 <head>
     <meta charset="utf-8">
     <title>Metro Data Set Management</title>
@@ -21,8 +21,7 @@
 </head>
 
 <body>
-<div ng-controller="DatasetsController">
-
+<div ng-controller="UserController">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
@@ -34,13 +33,18 @@
                 <a class="brand" href="index.html">Metro Crash Map - Home</a>
                 <div class="nav-collapse collapse">
                     <ul class="nav">
-                        <li><a href="crashes.html">Crash Map</a></li>
-                        <li class="active"><a href="datasets.html">Data Sets</a></li>
+                        <ul class="nav">
+                            <li ng-repeat="link in links">
+                                <a href="{{ link.href }}">{{ link.name }}</a>
+                            </li>
+                        </ul>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div ng-controller="DatasetsController">
     <div class="container">
         <div id="dataSelection">
             <h3>Available Data Sets</h3>
@@ -76,9 +80,11 @@
     </div>
 </div>
 <script type="text/javascript" src="lib/angular/angular.min.js"></script>
+<script type="text/javascript" src="lib/angular-cookies/angular-cookies.min.js"></script>
 <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap-css/js/bootstrap.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/user.js"></script>
 <script type="text/javascript" src="js/datasets.js"></script>
 
 </body>
