@@ -58,6 +58,9 @@
             <div id="settingsTable" class="collapse hide">
                 <table cellpadding="2" class="sideTable table table-condensed ">
                     <tr>
+                        <td colspan="7">Hold cursor over a setting for more info</td>
+                    </tr>
+                    <tr>
                         <th><div title="The general type of vehicle involved in a crash">Mode:</div></th>
                         <td colspan="2"> <div title="Show crashes involving only motor vehicles"><label for="Car"><input id="Car" type="checkbox" ng-model="settings.cars" ng-change="loadData()"> Cars Only: {{summary.cars}}</label></div> </td>
                         <td colspan="2"> <div title="Show crashes involving a bicycle"><label for="Bike"><input id="Bike" type="checkbox" ng-model='settings.bikes' ng-change="loadData()"> Bike(s): {{summary.bikes}}</label></div> </td>
