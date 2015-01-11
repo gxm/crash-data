@@ -60,31 +60,31 @@
                     <tr>
                         <td colspan="7">Hold cursor over a setting for more info</td>
                     </tr>
-                    <tr>
+                    <tr class="offset-row">
                         <th><div title="The general type of vehicle involved in a crash">Mode:</div></th>
                         <td colspan="2"> <div title="Show crashes involving only motor vehicles"><label for="Car"><input id="Car" type="checkbox" ng-model="settings.cars" ng-change="loadData()"> Cars Only: {{summary.cars}}</label></div> </td>
                         <td colspan="2"> <div title="Show crashes involving a bicycle"><label for="Bike"><input id="Bike" type="checkbox" ng-model='settings.bikes' ng-change="loadData()"> Bike(s): {{summary.bikes}}</label></div> </td>
                         <td colspan="2"> <div title="Show crashes involving a pedestrian"><label for="Ped"><input id="Ped" type="checkbox" ng-model='settings.peds' ng-change="loadData()"> Ped(s): {{summary.peds}}</label></div> </td>
                     </tr>
-                    <tr class="offset-row">
+                    <tr>
                         <th><div title="Severity indicates the most severe injury that occurred in the crash">Severity:</div></th>
                         <td colspan="2"> <div title="Show crashes with a fatality"><label for="Fatality"><input id="Fatality" type="checkbox" ng-model='settings.fatal' ng-change="loadData()"> Fatality: {{summary.fatal}}</label></div> </td>
                         <td colspan="2"> <div title="Show crashes with a severe injury"><label for="InjuryA"><input id="InjuryA" type="checkbox" ng-model='settings.injuryA' ng-change="loadData()"> Injury A: {{summary.injuryA}}</label></div> </td>
                         <td colspan="2"> <div title="Show crashes with a moderate injury"><label for="InjuryB"><input id="InjuryB" type="checkbox" ng-model='settings.injuryB' ng-change="loadData()"> Injury B: {{summary.injuryB}}</label></div> </td>
                     </tr>
-                    <tr class="offset-row">
+                    <tr>
                         <td></td>
                         <td colspan="2"> <div title="Show crashes with a light injury"><label for="InjuryC"><input id="InjuryC" type="checkbox" ng-model='settings.injuryC' ng-change="loadData()"> Injury C: {{summary.injuryC}}</label></div> </td>
                         <td colspan="2"> <div title="Show crashes with property damage only"><label for="Property"><input id="Property" type="checkbox" ng-model='settings.property' ng-change="loadData()"> Property: {{summary.property}}</label></div> </td>
                         <td colspan="2"></td>
                     </tr>
-                    <tr>
+                    <tr class="offset-row">
                         <th><div title="Driving Under the Influence of Intoxicants (total may exceed 100%)">DUII:</div></th>
                         <td colspan="2"> <div title="Show crashes where all active participants are sober"><label for="Sober"><input id="Sober" type="checkbox" ng-model='settings.sober' ng-change="loadData()"> Sober: {{summary.sober}}</label></div> </td>
                         <td colspan="2"> <div title="Show crashes involving alcohol (may also include crashes with drug use)"><label for="Alcohol"><input id="Alcohol" type="checkbox" ng-model='settings.alcohol' ng-change="loadData()"> Alcohol: {{summary.alcohol}}</label></div> </td>
                         <td colspan="2"> <div title="Show crashes involving drugs (may also include crashes with alcohol use)"><label for="Drug"><input id="Drug" type="checkbox" ng-model='settings.drug' ng-change="loadData()"> Drugs: {{summary.drug}}</label></div> </td>
                     </tr>
-                    <tr class="offset-row">
+                    <tr>
                         <td><div title="Show crashes in 2007"><label for="2007"><input id="2007" type="checkbox" ng-model='settings.y2007' ng-change="loadData()"> 2007</label></div></td>
                         <td><div title="Show crashes in 2008"><label for="2008"><input id="2008" type="checkbox" ng-model='settings.y2008' ng-change="loadData()"> 2008</label></div></td>
                         <td><div title="Show crashes in 2009"><label for="2009"><input id="2009" type="checkbox" ng-model='settings.y2009' ng-change="loadData()"> 2009</label></div></td>
@@ -93,10 +93,10 @@
                         <td><div title="Show crashes in 2012"><label for="2012"><input id="2012" type="checkbox" ng-model='settings.y2012' ng-change="loadData()"> 2012</label></div></td>
                         <td><div title="Show crashes in 2013"><label for="2013"><input id="2013" type="checkbox" ng-model='settings.y2013' ng-change="loadData()"> 2013</label></div></td>
                     </tr>
-                    <tr>
+                    <tr class="offset-row">
                         <th><div title="Select Color Scheme">Colors:</div></th>
                         <td colspan="2"> <div title="Default Color Scheme: Blue, Green, Yellow, Red"><label for="default"><input id="default" value="default" type="radio" ng-model='settings.colors' ng-change="reloadPage()"> Default</label></div></td>
-                        <td colspan="2"> <div title="Orange, Red"><label for="orrd"><input id="orrd" value="orrd" type="radio" ng-model='settings.colors' ng-change="reloadPage()"> Orange Red</label></div></td>
+                        <td colspan="4"> <div title="Orange, Red"><label for="orrd"><input id="orrd" value="orrd" type="radio" ng-model='settings.colors' ng-change="reloadPage()"> Orange Red</label></div></td>
                     </tr>
                     <tr>
                         <td colspan="7">
