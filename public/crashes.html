@@ -97,7 +97,6 @@
                         <th><div title="Select Color Scheme">Colors:</div></th>
                         <td colspan="2"> <div title="Default Color Scheme: Blue, Green, Yellow, Red"><label for="default"><input id="default" value="default" type="radio" ng-model='settings.colors' ng-change="reloadPage()"> Default</label></div></td>
                         <td colspan="2"> <div title="Orange, Red"><label for="orrd"><input id="orrd" value="orrd" type="radio" ng-model='settings.colors' ng-change="reloadPage()"> Orange Red</label></div></td>
-                        <td colspan="2"> <div title="Red, Blue"><label for="rdbu"><input id="rdbu" value="rdbu" type="radio" ng-model='settings.colors' ng-change="reloadPage()"> Red Blue</label></div></td>
                     </tr>
                     <tr>
                         <td colspan="7">
@@ -109,12 +108,12 @@
                                     <tr>
                                         <th><div title="Collision Type is the physical relationship of the vehicle(s) at the time of collision based on their intended path of travel">Type:</div></th>
                                         <td><div title="Show angle crashes"><label for="angle"><input id="angle" type="checkbox" ng-model='settings.angle' ng-change="loadData()"> Angle: {{summary.angle}}</label></div></td>
-                                        <td><div title="Show head on crashes "><label for="headOn"><input id="headOn" type="checkbox" ng-model='settings.headOn' ng-change="loadData()"> Head On: {{summary.headOn}}</label></div> </td>
+                                        <td><div title="Show head-on crashes "><label for="headOn"><input id="headOn" type="checkbox" ng-model='settings.headOn' ng-change="loadData()"> Head-On: {{summary.headOn}}</label></div> </td>
                                         <td><div title="Show rear end crashes"><label for="rearEnd"><input id="rearEnd" type="checkbox" ng-model='settings.rearEnd' ng-change="loadData()"> Rear End: {{summary.rearEnd}}</label></div></td>
                                     </tr>
                                     <tr>
                                         <th></th>
-                                        <td><div title="Show side swipe crashes"><label for="sideSwipe"><input id="sideSwipe" type="checkbox" ng-model='settings.sideSwipe' ng-change="loadData()"> Side Swipe: {{summary.sideSwipe}}</label></div></td>
+                                        <td><div title="Show sideswipe crashes"><label for="sideSwipe"><input id="sideSwipe" type="checkbox" ng-model='settings.sideSwipe' ng-change="loadData()"> Sideswipe: {{summary.sideSwipe}}</label></div></td>
                                         <td><div title="Show turning crashes"><label for="turning"><input id="turning" type="checkbox" ng-model='settings.turning' ng-change="loadData()"> Turning: {{summary.turning}}</label></div> </td>
                                         <td><div title="Show other crash types, including parking, fixed objects, etc"><label for="other"><input id="other" type="checkbox" ng-model='settings.other' ng-change="loadData()"> Other: {{summary.other}}</label></div></td>
                                     </tr>

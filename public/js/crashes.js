@@ -87,13 +87,7 @@ function CrashController($scope, $http, $location) {
         var gradient = { 0.05: "rgb(0,0,255)", 0.35: "rgb(0,255,0)", 0.65: "yellow", .95: "rgb(255,0,0)"};
         if ($scope.settings.colors === 'orrd') {
             //http://colorbrewer2.org/?type=sequential&scheme=OrRd&n=4
-            var gradient ={ '.05': '#fef0d9', '.35': '#fdcc8a', '.65': '#fc8d59', '.95': "#d7301f"};
-        } else if ($scope.settings.colors === 'ylgnbu') {
-            //http://colorbrewer2.org/?type=sequential&scheme=YlGnBu&n=4
-            var gradient ={ '.05': '#ffffcc', '.35': '#a1dab4', '.65': '#41b6c4', '.95': "#225ea8"};
-        } else if  ($scope.settings.colors === 'rdbu') {
-            //http://colorbrewer2.org/?type=diverging&scheme=RdBu&n=4
-            var gradient ={ '.05': '#0571b0', '.35': '#92c5de', '.65': '#f4a582', '.95': "#ca0020"};
+            gradient = { '.05': '#fef0d9', '.35': '#fdcc8a', '.65': '#fc8d59', '.95': "#d7301f"};
         }
         return {
             "radius": 35,
