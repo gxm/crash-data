@@ -59,7 +59,11 @@ function CrashController($scope, $http, $location) {
                 } else {
                     $scope.fixedTotal = data.total;
                 }
-
+                if (data.data.length == 0) {
+                    //this is to get around a bug in heatmap.js with no data
+                    data.data.push({count: 1, lat: "-45.468", lng: "122.436"});
+                    data.max = 1;
+                }
                 $scope.heatMapOverlay.setData(data);
                 for (var prop in data.summary) {
                     $scope.summary[prop] = $scope.percents(data.summary[prop] / data.total);
