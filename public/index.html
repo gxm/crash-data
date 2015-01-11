@@ -42,15 +42,66 @@
     </div>
 </div>
 <div class="container">
-    What would you like this page to be?
-    <h3>Maps</h3>
+    <h3>About</h3>
+    The <a href="crashes.html">Metro Crash Map</a> is a mapping tool that compiles and displays information about motor-vehicle related crashes in the Portland metropolitan region.
+    <h3>Data source</h3>
+    Crash information is collected statewide by the Oregon Department of Motor Vehicles and aggregated and geocoded (mapped) by the Oregon Department of Transportation’s Crash Analysis and Reporting Unit.  Metro processes this data for the Portland metropolitan region and supports this map for public access to the information.
+    <h3>User options</h3>
+    The Metro Crash Map visualizes the relative number of crashes across the region and allows you to customize the types of crashes shown. Crashes can be classified according to mode of travel (motor vehicle only, bicycle, or pedestrian), crash severity, the influence of alcohol and drugs, and crash year.
+    Placing the cursor over a Settings option will show a brief description of the option.  These are described in more detail in the Definitions section, below.
+    Advanced users can further classify crashes according to crash type, light conditions, and weather/surface conditions.
+    There are two heat map color schemes (“Colors”).  Options for a street map or aerial photo background can be selected in the upper-right corner of the window.
+    <h3>Map Display</h3>
+    A heat map reflects the number of crashes of the user-specified setting(s) occurring at a given location, relative to the overall map.
+    The Settings box displays the relative percentage of crashes in the map represented by a given setting, which changes dynamically as you select settings or change the map zoom level.
+    As you zoom in or out, the heat map updates dynamically, as crashes become grouped together based on the zoom level and the relative scale changes with the new viewing area.
+    Placing the cursor over a group of crashes will display the number of crashes in that location based on the setting(s) you have specified.  The number is based on a pre-defined search “radius” that includes nearby crashes.
+    <h3>Definitions</h3>
     <ul>
-        <li><a href="crashes.html">Metro Crash Map* <br><img src="img/metro.png"/></a></li>
+        <li><b>Mode:</b> The mode(s) of travel of the parties involved in the crash:</li>
+        <ul>
+            <li>Cars only: shows crashes involving only motor vehicles (includes trucks, buses, and motorcycles).</li>
+            <li>Bike(s): shows crashes involving a person bicycling and a motor vehicle.</li>
+            <li>Ped(s): shows crashes involving a person walking or in a wheelchair and a motor vehicle.</li>
+        </ul>
+        <li><b>Severity:</b> The most severe injury resulting from a crash:</li>
+        <ul>
+            <li>Fatality: Occurrence of death as a result of the crash.</li>
+            <li>Injury A: Severe, incapacitating injuries that prevent a person from walking, driving or continuing normally.</li>
+            <li>Injury B: Moderate, non-incapacitating injuries where it is evident to observers that an injury has occurred (i.e., bruises, minor bleeding).</li>
+            <li>Injury C: Minor injuries that may not be evident to observers that an injury has occurred, but the injured person may complain of pain.</li>
+            <li>Property: Property damage only, such as vehicle or bicycle damage.</li>
+        </ul>
+        <li><b>DUII:</b> Driving under the influence of intoxicants. Crashes involving reported use of drugs or alcohol.</li>
+        <li><b>Colors:</b> Heat map color scale.</li>
+        <li><b>Type:</b> Crash type is determined by the travel direction of the crash participants when the crash occurred:</li>
+        <ul>
+            <li>Angle: An angle collision results when vehicles collide while traveling on crossing - typically perpendicular - paths.</li>
+            <li>Head-On: A head-on type of collision results when drivers of two vehicles traveling in opposite directions on parallel paths attempt to occupy the same position.</li>
+            <li>Rear End: A rear end collision results when a vehicle traveling in the same direction or parallel on the same path as another vehicle, collides with the rear end or a second vehicle.</li>
+            <li>Sideswipe: A sideswipe meeting collision results when vehicles traveling in the same or opposite directions on parallel paths collide, involving the side of at least one of the vehicles.</li>
+            <li>Turning: A turning movement collision results when one or more vehicles in the act of a turning maneuver is involved in a collision with another vehicle.</li>
+            <li>Other: Not one of the types listed above. This could include backing, fixed object, rollover, parking, pedestrian, animal, or another rare crash type.</li>
+        </ul>
+        <li><b>Light:</b> Time of day when the crash occurred based on daylight.</li>
+        <li><b>Surface:</b> Weather conditions on the roadway surface at the time of the crash.</li>
+        <li><b>Scope:</b> Relative scale that the heat map color scale is based on:</li>
+        <ul>
+            <li>Window: Heat map scale is relative to the user’s view in the open map window (number reflects the number of viewable crashes).</li>
+            <li>All crashes: Heat map scale is relative to the entire Portland Metro region (number reflects the number of crashes in the region).</li>
+        </ul>
+
     </ul>
-    <p>
-    If you can't see the data on the heatmap or have other issues, you may need to upgrade your browser.<br>
-    I recommend using <a href="https://www.google.com/intl/en/chrome/browser/" target="_blank">Chrome</a>.  It should also work with recent versions of FireFox, Safari and Internet Explorer 9+.<br>
-    </p>
+    <h3>Map Software Development</h3>
+    Moulliet Software...TBD
+
+    <h3>Questions?</h3>
+    Metro regional transportation planning<br>
+    503-797-1750<br>
+    trans@oregonmetro.gov<br>
+    <p></p>
+    <p></p>
+
 
 </div>
 <script type="text/javascript" src="lib/angular/angular.min.js"></script>
