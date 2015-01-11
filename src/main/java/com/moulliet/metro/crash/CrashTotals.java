@@ -3,6 +3,9 @@ package com.moulliet.metro.crash;
 import org.codehaus.jackson.JsonGenerator;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -33,6 +36,13 @@ public class CrashTotals {
     private int sideSwipe = 0;
     private int turning = 0;
     private int other = 0;
+    private Map<Integer, AtomicInteger> yearMap = new HashMap<>();
+
+    public CrashTotals() {
+        for (int year = 2007; year <= 2013; year++) {
+            yearMap.put(year, new AtomicInteger());
+        }
+    }
 
     public void addCrash(Crash crash) {
         total++;
@@ -54,6 +64,7 @@ public class CrashTotals {
         surface(crash);
         light(crash);
         type(crash);
+        year(crash);
     }
 
     public void write(JsonGenerator json) throws IOException {
@@ -82,8 +93,10 @@ public class CrashTotals {
         json.writeNumberField("sideSwipe", sideSwipe);
         json.writeNumberField("turning", turning);
         json.writeNumberField("other", other);
+        for (Map.Entry<Integer, AtomicInteger> entry : yearMap.entrySet()) {
+            json.writeNumberField("" + entry.getKey(), entry.getValue().intValue());
+        }
         json.writeEndObject();
-
     }
 
     private void surface(Crash crash) {
@@ -162,6 +175,10 @@ public class CrashTotals {
         } else {
             other++;
         }
+    }
+
+    private void year(Crash crash) {
+        yearMap.get(crash.getYear()).incrementAndGet();
     }
 
     public int getTotal() {

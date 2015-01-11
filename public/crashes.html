@@ -85,13 +85,16 @@
                         <td colspan="2"> <div title="Show crashes involving drugs (may also include crashes with alcohol use)"><label for="Drug"><input id="Drug" type="checkbox" ng-model='settings.drug' ng-change="loadData()"> Drugs: {{summary.drug}}</label></div> </td>
                     </tr>
                     <tr>
-                        <td><div title="Show crashes in 2007"><label for="2007"><input id="2007" type="checkbox" ng-model='settings.y2007' ng-change="loadData()"> 2007</label></div></td>
-                        <td><div title="Show crashes in 2008"><label for="2008"><input id="2008" type="checkbox" ng-model='settings.y2008' ng-change="loadData()"> 2008</label></div></td>
-                        <td><div title="Show crashes in 2009"><label for="2009"><input id="2009" type="checkbox" ng-model='settings.y2009' ng-change="loadData()"> 2009</label></div></td>
-                        <td><div title="Show crashes in 2010"><label for="2010"><input id="2010" type="checkbox" ng-model='settings.y2010' ng-change="loadData()"> 2010</label></div></td>
-                        <td><div title="Show crashes in 2011"><label for="2011"><input id="2011" type="checkbox" ng-model='settings.y2011' ng-change="loadData()"> 2011</label></div></td>
-                        <td><div title="Show crashes in 2012"><label for="2012"><input id="2012" type="checkbox" ng-model='settings.y2012' ng-change="loadData()"> 2012</label></div></td>
-                        <td><div title="Show crashes in 2013"><label for="2013"><input id="2013" type="checkbox" ng-model='settings.y2013' ng-change="loadData()"> 2013</label></div></td>
+                        <th>Years:</th>
+                        <td colspan="2"><div title="Show crashes in 2007"><label for="2007"><input id="2007" type="checkbox" ng-model='settings.y2007' ng-change="loadData()"> 2007:{{ summary.2007 }}</label></div></td>
+                        <td colspan="2"><div title="Show crashes in 2008"><label for="2008"><input id="2008" type="checkbox" ng-model='settings.y2008' ng-change="loadData()"> 2008: {{ summary.2008 }}</label></div></td>
+                        <td colspan="2"> <div title="Show crashes in 2009"><label for="2009"><input id="2009" type="checkbox" ng-model='settings.y2009' ng-change="loadData()"> 2009: {{ summary.2009 }}</label></div></td>
+                    </tr>
+                    <tr>
+                        <td colspan="1"><div title="Show crashes in 2010"><label for="2010"><input id="2010" type="checkbox" ng-model='settings.y2010' ng-change="loadData()"> 2010: {{ summary.2010 }}</label></div></td>
+                        <td colspan="2"><div title="Show crashes in 2011"><label for="2011"><input id="2011" type="checkbox" ng-model='settings.y2011' ng-change="loadData()"> 2011: {{ summary.2011 }}</label></div></td>
+                        <td colspan="2"><div title="Show crashes in 2012"><label for="2012"><input id="2012" type="checkbox" ng-model='settings.y2012' ng-change="loadData()"> 2012: {{ summary.2012 }}</label></div></td>
+                        <td colspan="2"><div title="Show crashes in 2013"><label for="2013"><input id="2013" type="checkbox" ng-model='settings.y2013' ng-change="loadData()"> 2013: {{ summary.2013 }}</label></div></td>
                     </tr>
                     <tr class="offset-row">
                         <th><div title="Colors: Heat map color scale.">Colors:</div></th>
