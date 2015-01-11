@@ -233,10 +233,6 @@ function CrashController($scope, $http, $location) {
 
         L.control.layers(baseMaps).addTo($scope.map);
 
-        var opacitySlider = new L.Control.opacitySlider();
-        $scope.map.addControl(opacitySlider);
-        opacitySlider.setOpacityLayer(road);
-
         $scope.map.on('moveend', function (e) {
             $scope.loadData();
         });
