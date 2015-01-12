@@ -59,7 +59,11 @@ function CrashController($scope, $http, $location) {
                 } else {
                     $scope.fixedTotal = data.total;
                 }
-
+                if (data.data.length == 0) {
+                    //this is to get around a bug in heatmap.js with no data
+                    data.data.push({count: 1, lat: "-45.468", lng: "122.436"});
+                    data.max = 1;
+                }
                 $scope.heatMapOverlay.setData(data);
                 for (var prop in data.summary) {
                     $scope.summary[prop] = $scope.percents(data.summary[prop] / data.total);
@@ -87,13 +91,7 @@ function CrashController($scope, $http, $location) {
         var gradient = { 0.05: "rgb(0,0,255)", 0.35: "rgb(0,255,0)", 0.65: "yellow", .95: "rgb(255,0,0)"};
         if ($scope.settings.colors === 'orrd') {
             //http://colorbrewer2.org/?type=sequential&scheme=OrRd&n=4
-            var gradient ={ '.05': '#fef0d9', '.35': '#fdcc8a', '.65': '#fc8d59', '.95': "#d7301f"};
-        } else if ($scope.settings.colors === 'ylgnbu') {
-            //http://colorbrewer2.org/?type=sequential&scheme=YlGnBu&n=4
-            var gradient ={ '.05': '#ffffcc', '.35': '#a1dab4', '.65': '#41b6c4', '.95': "#225ea8"};
-        } else if  ($scope.settings.colors === 'rdbu') {
-            //http://colorbrewer2.org/?type=diverging&scheme=RdBu&n=4
-            var gradient ={ '.05': '#0571b0', '.35': '#92c5de', '.65': '#f4a582', '.95': "#ca0020"};
+            gradient = { '.05': '#fef0d9', '.35': '#fdcc8a', '.65': '#fc8d59', '.95': "#d7301f"};
         }
         return {
             "radius": 35,
@@ -238,10 +236,6 @@ function CrashController($scope, $http, $location) {
         $scope.map.addControl( L.control.zoom({position: 'topright'}) );
 
         L.control.layers(baseMaps).addTo($scope.map);
-
-        var opacitySlider = new L.Control.opacitySlider();
-        $scope.map.addControl(opacitySlider);
-        opacitySlider.setOpacityLayer(road);
 
         $scope.map.on('moveend', function (e) {
             $scope.loadData();
