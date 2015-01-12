@@ -208,6 +208,19 @@ function CrashController($scope, $http, $location) {
         attribution: attribution
     });
 
+    var x= new RLIS.Autosuggest("autosuggest", {"mode":'locate','entries':7} ,function (result, error){
+        if (error) {
+            alert(error);
+            return;
+        }
+        L.marker([result[0].lat, result[0].lng]).addTo($scope.map);
+        $scope.map.setView([result[0].lat, result[0].lng], 16);
+    }, 'lat,lng,fullAddress');
+
+    $('#clearForm').on('click', function(){
+        $('#autosuggest').val('');
+    });
+
     function windowOnLoad() {
         var loadlat = Number($scope.search('lat', 45.48));
         var loadlng = Number($scope.search('lng', -122.74));
@@ -224,6 +237,20 @@ function CrashController($scope, $http, $location) {
             layers: layers
         });
 
+        var legend = L.Control.extend({
+            options: {
+                position: 'topright'
+            },
+
+            onAdd: function (map) {
+                // create the control container with a particular class name
+                var layoutcontainer = L.DomUtil.get('searchControl');
+                L.DomEvent.disableClickPropagation(layoutcontainer);
+                $("#searchControl").show(10);
+                return layoutcontainer;
+            }
+        });
+
         addSinks();
 
         var photoGroup = L.layerGroup([photo, xtraphoto, label]);
@@ -233,6 +260,7 @@ function CrashController($scope, $http, $location) {
             "air photo": photoGroup
         };
 
+        $scope.map.addControl(new legend());
         $scope.map.addControl( L.control.zoom({position: 'topright'}) );
 
         L.control.layers(baseMaps).addTo($scope.map);

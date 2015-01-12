@@ -158,22 +158,28 @@
             <img id="gradient" src="" style="width:100%" />
         </div>
         <div id='settingsText' class="hide">{{ settingsText() }}</div>
+        <div class="input-group" style='display:none;' id='searchControl'>
+            <span class="btn btn-small input-group-addon"><i class="icon-search"></i></span>
+            <input id="autosuggest" class="form-control" placeholder="Enter an address or place" type="text">
+            <span class="btn btn-small input-group-addon" id='clearForm'><i class="icon-remove" style='color:#999;'></i></span>
+        </div>
     </div>
     </div>
-</div>
 
+</div>
 <div id="main" class="map-wrapper">
     <div id="heatmapArea" class="heatmapArea"></div>
 
 
 </div>
+
 <script type="text/javascript" src="lib/angular/angular.min.js"></script>
 <script type="text/javascript" src="lib/angular-cookies/angular-cookies.min.js"></script>
 <script type="text/javascript" src="lib/heatmap.js/build/heatmap.js"></script>
 <script type="text/javascript" src="lib/heatmap.js/plugins/leaflet-heatmap.js"></script>
 <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap-css/js/bootstrap.js"></script>
-
+<script type="text/javascript" src="http://gis.oregonmetro.gov/rlisapi2/js/?token=GYJZSQrfbb8YrZ_RIn-64Kc1SpybpK4LpW4TenvGQmk."></script>
 <script type="text/javascript" src="js/settings.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript" src="js/user.js"></script>
