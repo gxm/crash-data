@@ -207,7 +207,8 @@ h4 {
     padding: 2px;
 }
 
-.autosuggest-body tr
-{
+.input-group{width:300px;}
+
+.autosuggest-body tr {
     font-family: inherit !important;
 }
