@@ -206,3 +206,9 @@ h4 {
     font-weight: bold;
     padding: 2px;
 }
+
+.input-group{width:300px;}
+
+.autosuggest-body tr {
+    font-family: inherit !important;
+}
