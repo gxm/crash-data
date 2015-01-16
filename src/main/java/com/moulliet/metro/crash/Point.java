@@ -66,7 +66,11 @@ public class Point implements Comparable<Point> {
     }
 
     public int compareTo(Point point) {
-        return hashCode() - point.hashCode();
+        int diff = (int) (getLatitude() * 10000 - point.getLatitude() * 10000);
+        if (diff == 0) {
+            diff = (int) (getLongitude() * 10000 - point.getLongitude() * 10000);
+        }
+        return diff;
     }
 
     public boolean isWithin(Point other, float delta) {
