@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
 
 public class Point implements Comparable<Point> {
     private static final Logger logger = LoggerFactory.getLogger(Point.class);
+    private static final int FACTOR = 10000;
 
     private float x;
     private float y;
@@ -47,15 +48,13 @@ public class Point implements Comparable<Point> {
     }
 
     public int hashCode() {
-        int result = (int) (x * 10000);
-        result = (int) (10000 * result + y * 10000);
-        return result;
+        return (int) (FACTOR * (31 * y + x));
     }
 
     public int compareTo(Point point) {
-        int diff = (int) (y * 10000 - point.y * 10000);
+        int diff = (int) (FACTOR * (y - point.y));
         if (diff == 0) {
-            diff = (int) (x * 10000 - point.x * 10000);
+            diff = (int) (FACTOR * ( x - point.x));
         }
         return diff;
     }
