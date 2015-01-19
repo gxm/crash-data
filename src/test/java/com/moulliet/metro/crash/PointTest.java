@@ -13,13 +13,10 @@ import static org.junit.Assert.assertNotEquals;
  */
 public class PointTest extends TestCase
 {
-    public void testFormat()
-    {
-        Point point = new Point(45.55555, -122.44444);
-        assertEquals("45.5555", point.getX());
-        //todo - gfm - this seems wrong
-        //assertEquals("45.5556", point.getX());
-        assertEquals("-122.4444", point.getY());
+    public void testFormat() {
+        Point point = new Point(-122.44444, 45.55555);
+        assertEquals(45.5555, point.getLatitude(), 0.00001);
+        assertEquals(-122.4444, point.getLongitude(), 0.00001);
     }
 
     public void testIsWithin() {

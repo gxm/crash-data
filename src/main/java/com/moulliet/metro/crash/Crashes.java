@@ -19,7 +19,7 @@ public class Crashes {
     private static final Logger logger = LoggerFactory.getLogger(Crashes.class);
     private static List<Crash> allCrashes;
 
-    private final Map<Point, AtomicInteger> pointMap = new TreeMap<>();
+    private Map<Point, AtomicInteger> pointMap = new HashMap<>();
     private CrashTotals crashTotals = new CrashTotals();
 
     public int aggregatedCrashes(Filter filter, OutputStream stream, int radius) throws IOException {
@@ -34,8 +34,8 @@ public class Crashes {
             int value = entry.getValue().get();
             max = Math.max(max, value);
             json.writeStartObject();
-            json.writeStringField("lat", key.getY());
-            json.writeStringField("lng", key.getX());
+            json.writeNumberField("lat", key.getLatitude());
+            json.writeNumberField("lng", key.getLongitude());
             json.writeNumberField("count", value);
             json.writeNumberField("radius", radius);
             json.writeEndObject();
@@ -54,7 +54,6 @@ public class Crashes {
         SinkFilter.loadSinkPoints();
         logger.info("loading crashes");
         Set<Crash> crashes = new HashSet<>();
-
         for (String dataset : Statics.datasetService.getActiveNames()) {
             logger.info("loading dataset: {}", dataset);
             Statics.mongoDao.query(dataset, null, new MongoQueryCallback() {
@@ -65,13 +64,11 @@ public class Crashes {
                         if (crash != null && !SinkFilter.isSink(crash.getPoint())) {
                             crashes.add(crash);
                         }
-
                     }
                 }
             });
             logger.info("loaded dataset: {}, total items: {}", dataset, crashes.size());
         }
-
         allCrashes = Collections.unmodifiableList(new ArrayList<>(crashes));
         logger.info("loaded {} crashes", allCrashes.size());
     }
