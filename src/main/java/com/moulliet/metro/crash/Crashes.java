@@ -34,8 +34,8 @@ public class Crashes {
             int value = entry.getValue().get();
             max = Math.max(max, value);
             json.writeStartObject();
-            json.writeStringField("lat", key.getY());
-            json.writeStringField("lng", key.getX());
+            json.writeNumberField("lat", key.getLatitude());
+            json.writeNumberField("lng", key.getLongitude());
             json.writeNumberField("count", value);
             json.writeNumberField("radius", radius);
             json.writeEndObject();
