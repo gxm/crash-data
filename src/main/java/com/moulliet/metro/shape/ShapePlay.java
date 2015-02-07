@@ -5,18 +5,27 @@ import com.esri.core.geometry.Point;
 import com.esri.core.geometry.Polygon;
 import com.esri.dbf.DBFReader;
 import com.esri.shp.ShpReader;
+import org.apache.commons.io.FileUtils;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ShapePlay {
 
+    private static final Logger logger = LoggerFactory.getLogger(ShapePlay.class);
+
+    public static final String SHAPE_FILES = "/Users/greg/code/rlis/Feb2015/arterial/";
+    private static MathTransform transform;
 
     public static void main(String[] args) throws IOException {
-
+        parseWellKnownText();
         List<Polygon> polygons = loadShapes();
         List<Map<String, Object>> descriptions = loadDescriptions();
         for (int i = 0; i < polygons.size(); i++) {
@@ -27,22 +36,35 @@ public class ShapePlay {
             Double length = (Double) desc.get("LENGTH");
             //Short type = (Short) desc.get("TYPE");
             if (streetname.startsWith("MORRISON BRG") && length > 334 && length < 335) {
-                System.out.println(polygon.toString() + " " + desc);
+                logger.info(polygon.toString() + " " + desc);
                 int pointCount = polygon.getPointCount();
                 for (int j  = 0; j < pointCount; j++) {
                     Point point = polygon.getPoint(j);
-                    System.out.println("point" + point);
+                    double[] transformed = transform(point.getX(), point.getY());
+                    System.out.println(point.getX() + "," + point.getY() + "," + transformed[0] + "," + transformed[1]);
                 }
-                //todo - gfm - 2/7/15 - convert into WSG84
-                //todo - gfm - 2/7/15 - how to get access to raw data points?
-
             }
+        }
+    }
+
+    private static double[] transform(Double lon, Double lat) {
+        double[] longLat = {lon, lat};
+        if (transform == null) {
+            return longLat;
+        }
+        try {
+            double[] transformedLongLat = {lon, lat};
+            transform.transform(longLat, 0, transformedLongLat, 0, 1);
+            return transformedLongLat;
+        } catch (TransformException e) {
+            logger.warn("unable to transform " + Arrays.toString(longLat), e);
+            return longLat;
         }
     }
 
     public static List<Polygon> loadShapes() throws IOException {
         List<Polygon> polygons = new ArrayList<>();
-        final File file = new File("/Users/greg/code/rlis/Feb2015/arterial/arterial.shp");
+        final File file = new File(SHAPE_FILES + "arterial.shp");
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
             int count = 0;
             Envelope envelope = new Envelope();
@@ -54,28 +76,38 @@ public class ShapePlay {
                 count++;
                 polygons.add(polygon);
             }
-            System.out.println("polygon count " + count);
+            logger.info("polygon count " + count);
         }
         return polygons;
     }
 
     public static List<Map<String, Object>> loadDescriptions() throws IOException {
         List<Map<String, Object>> descriptions = new ArrayList<>();
-        final File file = new File("/Users/greg/code/rlis/Feb2015/arterial/arterial.dbf");
+        File file = new File(SHAPE_FILES + "arterial.dbf");
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
             int count = 0;
-            final DBFReader dbfReader = new DBFReader(new DataInputStream(new BufferedInputStream(fileInputStream)));
+            DBFReader dbfReader = new DBFReader(new DataInputStream(new BufferedInputStream(fileInputStream)));
             Map<String, Object> map = new HashMap<>();
             while (dbfReader.readRecordAsMap(map) != null) {
                 descriptions.add(map);
                 map = new HashMap<>();
                 count++;
-
             }
-            System.out.println("dbf count " + count);
+            logger.info("dbf count " + count);
         }
         return descriptions;
     }
 
+    public static void parseWellKnownText() {
+        try {
+            File file = new File(SHAPE_FILES + "arterial.prj");
+            String wkt = FileUtils.readFileToString(file);
+            logger.info("using wkt " + wkt);
+            CoordinateReferenceSystem coordinateReferenceSystem = CRS.parseWKT(wkt);
+            transform = CRS.findMathTransform(coordinateReferenceSystem, DefaultGeographicCRS.WGS84, true);
+        } catch (Exception e) {
+            logger.warn("unable to parse transform ", e);
+        } 
+    }
 
 }

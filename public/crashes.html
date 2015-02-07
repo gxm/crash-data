@@ -138,10 +138,10 @@
                                         <td><div title="Window: Heat map scale is relative to the user's view in the open map window (number reflects the number of viewable crashes)"><label for="window"><input id="window" type="radio" value="Window" ng-model='settings.scope' ng-change="loadData()"> Window: {{windowTotal}}</label></div></td>
                                         <td colspan="2"><div title="All crashes: Heat map scale is relative to the entire Portland Metro region (number reflects the number of crashes in the region)"><label for="regional"><input id="regional" type="radio" value="Regional" ng-model='settings.scope' ng-change="loadData()"> All Crashes: {{fixedTotal}}</label></div></td>
                                     </tr>
-                                    <!--<tr>
+                                    <tr>
                                         <th><div title="Show geographic locations where ODOT puts crashes without a precisely known location">Sinks:</div></th>
                                         <td colspan="3"><div title="Show geographic locations where ODOT puts crashes without a precisely known location"><label for="sinks"><input id="sinks" type="checkbox" value="false" ng-model="settings.sinks" ng-change="showSinks()"> Sinks Locations</label></div></td>
-                                    </tr>-->
+                                    </tr>
                                 </table>
                             </div>
                         </td>

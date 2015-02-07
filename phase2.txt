@@ -15,3 +15,5 @@ Next steps
     use shapefile to filter dataset
     show results on crash map
 
+add arterial layer to crash map
+    add all points
