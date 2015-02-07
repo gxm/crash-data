@@ -1,0 +1,17 @@
+Create a downloadable data set:
+    Use a user defined formula for crash serverity
+    Initially, use arterial shapefile overlay to limit crash set
+        may expand to include other existing criteria
+        may eventually include all streets, freeways, etc
+    What is the lat/lng area covered by decimal places at 45N?
+        http://en.wikipedia.org/wiki/Decimal_degrees
+        what is the range of N to S?
+            44.99 N
+            45.75 N
+            centered ~ 45.5
+
+Next steps
+    read shapefile
+    use shapefile to filter dataset
+    show results on crash map
+
