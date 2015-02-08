@@ -221,6 +221,30 @@ function CrashController($scope, $http, $location) {
         $('#autosuggest').val('');
     });
 
+    function addArterial() {
+
+        $scope.arterial = L.layerGroup();
+
+        $http.get($scope.host + 'arterials')
+            .success(function (data, status, headers) {
+                data.forEach(function (point) {
+                    var marker = L.marker([point.lat, point.lng]);
+
+                    marker.bindPopup(point.lat + ', ' + point.lng);
+                    var circle = L.circle([point.lat, point.lng], 13, {
+                        color: 'red',
+                        weight: 2,
+                        fillOpacity: 0
+                    });
+                    $scope.arterial.addLayer(marker);
+                    $scope.arterial.addLayer(circle);
+                });
+
+            }).error(function (data, status, headers) {
+                console.log('unable to load arterial', status);
+            });
+    }
+
     function windowOnLoad() {
         var loadlat = Number($scope.search('lat', 45.48));
         var loadlng = Number($scope.search('lng', -122.74));
@@ -252,6 +276,7 @@ function CrashController($scope, $http, $location) {
         });
 
         addSinks();
+        addArterial();
 
         var photoGroup = L.layerGroup([photo, xtraphoto, label]);
 
@@ -283,6 +308,7 @@ function CrashController($scope, $http, $location) {
 
         $scope.loadData();
         $scope.showSinks();
+        $scope.showArterial();
         tooltip();
     }
 
@@ -291,6 +317,14 @@ function CrashController($scope, $http, $location) {
             $scope.map.addLayer($scope.sinks);
         } else {
             $scope.map.removeLayer($scope.sinks);
+        }
+    };
+
+    $scope.showArterial = function showArterial() {
+        if ($scope.settings.arterial) {
+            $scope.map.addLayer($scope.arterial);
+        } else {
+            $scope.map.removeLayer($scope.arterial);
         }
     };
 

@@ -35,6 +35,7 @@ function CrashSettings($scope) {
 	that.scope = $scope.search('scope', 'Window');
 	that.sinks = $scope.search('sinks', false);
 	that.colors = $scope.search('colors', 'default');
+    that.arterial = $scope.search('arterial', false);
 }
 
 

@@ -17,34 +17,40 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.util.*;
 
-public class ShapePlay {
+public class ShapeLoader {
 
-    private static final Logger logger = LoggerFactory.getLogger(ShapePlay.class);
+    private static final Logger logger = LoggerFactory.getLogger(ShapeLoader.class);
 
-    public static final String SHAPE_FILES = "/Users/greg/code/rlis/Feb2015/arterial/";
+    private String path;
+    private String fileRoot;
+
     private static MathTransform transform;
 
-    public static void main(String[] args) throws IOException {
+    public ShapeLoader(String path, String fileRoot) {
+        this.path = path;
+        this.fileRoot = fileRoot;
+    }
+
+    public List<Shape> loadPolygons() throws IOException {
         parseWellKnownText();
+        List<Shape> shapes = new ArrayList<>();
         List<Polygon> polygons = loadShapes();
         List<Map<String, Object>> descriptions = loadDescriptions();
         for (int i = 0; i < polygons.size(); i++) {
             Polygon polygon = polygons.get(i);
             Map<String, Object> desc = descriptions.get(i);
 
-            String streetname = (String) desc.get("STREETNAME");
-            Double length = (Double) desc.get("LENGTH");
-            //Short type = (Short) desc.get("TYPE");
-            if (streetname.startsWith("MORRISON BRG") && length > 334 && length < 335) {
-                logger.info(polygon.toString() + " " + desc);
-                int pointCount = polygon.getPointCount();
-                for (int j  = 0; j < pointCount; j++) {
-                    Point point = polygon.getPoint(j);
-                    double[] transformed = transform(point.getX(), point.getY());
-                    System.out.println(point.getX() + "," + point.getY() + "," + transformed[0] + "," + transformed[1]);
-                }
+            Shape shape = new Shape(desc);
+            int pointCount = polygon.getPointCount();
+            for (int j  = 0; j < pointCount; j++) {
+                Point point = polygon.getPoint(j);
+                double[] transformed = transform(point.getX(), point.getY());
+                shape.getPoints().add(new com.moulliet.metro.crash.Point(transformed[0], transformed[1]));
             }
+
+            shapes.add(shape);
         }
+        return shapes;
     }
 
     private static double[] transform(Double lon, Double lat) {
@@ -62,9 +68,9 @@ public class ShapePlay {
         }
     }
 
-    public static List<Polygon> loadShapes() throws IOException {
+    public List<Polygon> loadShapes() throws IOException {
         List<Polygon> polygons = new ArrayList<>();
-        final File file = new File(SHAPE_FILES + "arterial.shp");
+        final File file = new File(path + fileRoot +  ".shp");
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
             int count = 0;
             Envelope envelope = new Envelope();
@@ -81,9 +87,9 @@ public class ShapePlay {
         return polygons;
     }
 
-    public static List<Map<String, Object>> loadDescriptions() throws IOException {
+    public List<Map<String, Object>> loadDescriptions() throws IOException {
         List<Map<String, Object>> descriptions = new ArrayList<>();
-        File file = new File(SHAPE_FILES + "arterial.dbf");
+        File file = new File(path + fileRoot + ".dbf");
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
             int count = 0;
             DBFReader dbfReader = new DBFReader(new DataInputStream(new BufferedInputStream(fileInputStream)));
@@ -98,9 +104,9 @@ public class ShapePlay {
         return descriptions;
     }
 
-    public static void parseWellKnownText() {
+    public void parseWellKnownText() {
         try {
-            File file = new File(SHAPE_FILES + "arterial.prj");
+            File file = new File(path + fileRoot + ".prj");
             String wkt = FileUtils.readFileToString(file);
             logger.info("using wkt " + wkt);
             CoordinateReferenceSystem coordinateReferenceSystem = CRS.parseWKT(wkt);

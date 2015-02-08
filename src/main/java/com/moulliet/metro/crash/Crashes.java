@@ -2,8 +2,9 @@ package com.moulliet.metro.crash;
 
 import com.mongodb.DBObject;
 import com.moulliet.metro.Statics;
+import com.moulliet.metro.arterial.Arterials;
 import com.moulliet.metro.filter.Filter;
-import com.moulliet.metro.filter.SinkFilter;
+import com.moulliet.metro.filter.Sinks;
 import com.moulliet.metro.mongo.MongoQueryCallback;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
@@ -50,8 +51,9 @@ public class Crashes {
     }
 
     public static synchronized void loadAll() throws IOException {
-        logger.info("loading sinks");
-        SinkFilter.loadSinkPoints();
+
+        Sinks.loadSinks();
+        Arterials.loadArterials();
         logger.info("loading crashes");
         Set<Crash> crashes = new HashSet<>();
         for (String dataset : Statics.datasetService.getActiveNames()) {
@@ -61,7 +63,7 @@ public class Crashes {
                 public void callback(Iterator<DBObject> iterator) {
                     while (iterator.hasNext()) {
                         Crash crash = Crash.create(iterator.next());
-                        if (crash != null && !SinkFilter.isSink(crash.getPoint())) {
+                        if (crash != null && !Sinks.isSink(crash.getPoint())) {
                             crashes.add(crash);
                         }
                     }

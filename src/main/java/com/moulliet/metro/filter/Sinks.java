@@ -13,14 +13,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class SinkFilter {
-    private static final Logger logger = LoggerFactory.getLogger(SinkFilter.class);
+public class Sinks {
+    private static final Logger logger = LoggerFactory.getLogger(Sinks.class);
     private static final ObjectMapper mapper = new ObjectMapper();
     private static Map<String, Point> filterMap = new HashMap<>();
     private static final float SINK_DELTA = 0.0002f;
     private static final float SINK_RADIUS = 0.0001f;
 
-    public static void loadSinkPoints() throws IOException {
+    public static void loadSinks() throws IOException {
+        logger.info("loading sinks");
         Iterator<JsonNode> elements = getRootNode().getElements();
         while (elements.hasNext()) {
             JsonNode node = elements.next();
