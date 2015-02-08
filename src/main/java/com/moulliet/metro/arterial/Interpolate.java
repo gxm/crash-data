@@ -15,9 +15,14 @@ public class Interpolate {
         List<Point> interpolated = new ArrayList<>(incoming);
         for (int i = 0; i <= incoming.size() - 2; i++) {
             Point one = incoming.get(i);
-            int difference = - one.getLatitiudeDifference(incoming.get(i + 1));
-            for (int j = 1; j <= difference; j++) {
+            Point two = incoming.get(i + 1);
+            int latDiff = - one.getLatitiudeDifference(two);
+            for (int j = 1; j <= latDiff; j++) {
                 interpolated.add(one.offset(0, j));
+            }
+            int lngDiff = - one.getLongitudeDifference(two);
+            for (int j = 1; j <= lngDiff; j++) {
+                interpolated.add(one.offset(j, 0));
             }
         }
         return interpolated;

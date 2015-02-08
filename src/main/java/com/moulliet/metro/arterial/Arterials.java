@@ -31,7 +31,7 @@ public class Arterials {
         logger.info("loaded {} arterial shapes ", shapes.size());
         rootNode = mapper.createArrayNode();
         for (Shape shape : shapes) {
-            //debug(shape);
+            debug(shape);
             addPoints(shape);
             createJson(shape);
         }
@@ -40,9 +40,18 @@ public class Arterials {
 
     private static void debug(Shape shape) {
         String streetname = (String) shape.getDescriptions().get("STREETNAME");
+        Double length = (Double) shape.getDescriptions().get("LENGTH");
+        /*
         if (streetname.startsWith("MARTIN")) {
-            Double length = (Double) shape.getDescriptions().get("LENGTH");
             if (length > 2640 && length < 2641) {
+                for (Point point : shape.getPoints()) {
+                    System.out.println(point.getLongitude() + "," + point.getLatitude());
+                }
+            }
+        }*/
+
+        if (streetname.startsWith("KILLINGSWORTH")) {
+            if (length > 7882 && length < 7883) {
                 for (Point point : shape.getPoints()) {
                     System.out.println(point.getLongitude() + "," + point.getLatitude());
                 }

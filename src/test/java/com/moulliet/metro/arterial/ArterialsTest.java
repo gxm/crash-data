@@ -6,19 +6,15 @@ import junit.framework.TestCase;
 
 public class ArterialsTest extends TestCase {
 
-    public void testFilter() {
+    public void testFilterX() {
         Shape shape = new Shape(null);
-        Point start = new Point(-122.0000, 45.0000);
-        shape.getPoints().add(start);
-        Point end = new Point(-122.0010, 45.0000);
-        shape.getPoints().add(end);
+        shape.getPoints().addAll(InterpolateTest.getXPoints());
 
         Arterials.addPoints(shape);
 
-        assertTrue(Arterials.isArterial(start));
-        assertTrue(Arterials.isArterial(end));
-        assertTrue(Arterials.isArterial(new Point(-122.0005, 45.0000)));
-
+        assertTrue(Arterials.isArterial(new Point(-122.6614, 45.5627)));
+        assertTrue(Arterials.isArterial(new Point(-122.6600, 45.5627)));
+        assertTrue(Arterials.isArterial(new Point(-122.6588, 45.5627)));
     }
 
     public void testFilterY() {

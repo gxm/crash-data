@@ -87,6 +87,6 @@ public class Point implements Comparable<Point> {
     }
 
     public Point offset(int lng, int lat) {
-        return new Point(x - (float) lng / (float) FACTOR, y + (float) lat / (float) FACTOR);
+        return new Point(x + (float) lng / (float) FACTOR, y + (float) lat / (float) FACTOR);
     }
 }
