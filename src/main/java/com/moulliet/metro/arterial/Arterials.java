@@ -22,7 +22,7 @@ public class Arterials {
     private static final ObjectMapper mapper = new ObjectMapper();
     private static ArrayNode rootNode;
     private static Map<String, Point> filterMap = new HashMap<>();
-    private static final float DELTA = 0.0001f;
+    private static final float DELTA = 0.0002f;
 
     public static void loadArterials() throws IOException {
         logger.info("loading arterials");
@@ -31,16 +31,40 @@ public class Arterials {
         logger.info("loaded {} arterial shapes ", shapes.size());
         rootNode = mapper.createArrayNode();
         for (Shape shape : shapes) {
-            ArrayNode shapesPoints = rootNode.addArray();
-            List<Point> points = shape.getPoints();
-            for (Point point : points) {
-                filterMap.put(point.createHash(), point);
-                ObjectNode node = shapesPoints.addObject();
-                node.put("lng", point.getLongitude());
-                node.put("lat", point.getLatitude());
+            //debug(shape);
+            addPoints(shape);
+            createJson(shape);
+        }
+        logger.info("loaded {} arterial map ", filterMap.size());
+    }
+
+    private static void debug(Shape shape) {
+        String streetname = (String) shape.getDescriptions().get("STREETNAME");
+        if (streetname.startsWith("MARTIN")) {
+            Double length = (Double) shape.getDescriptions().get("LENGTH");
+            if (length > 2640 && length < 2641) {
+                for (Point point : shape.getPoints()) {
+                    System.out.println(point.getLongitude() + "," + point.getLatitude());
+                }
             }
         }
-        logger.info("loaded {} arterial points ", rootNode.size());
+    }
+
+    private static void createJson(Shape shape) {
+        ArrayNode shapesPoints = rootNode.addArray();
+        List<Point> points = shape.getPoints();
+        for (Point point : points) {
+            ObjectNode node = shapesPoints.addObject();
+            node.put("lng", point.getLongitude());
+            node.put("lat", point.getLatitude());
+        }
+    }
+
+    static void addPoints(Shape shape) {
+        List<Point> points = Interpolate.interpolate(shape.getPoints());
+        for (Point point : points) {
+            filterMap.put(point.createHash(), point);
+        }
     }
 
     public static JsonNode getPoints() throws IOException {

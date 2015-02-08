@@ -22,4 +22,12 @@ public class Shape {
     public Map<String, Object> getDescriptions() {
         return descriptions;
     }
+
+    @Override
+    public String toString() {
+        return "Shape{" +
+                "points=" + points +
+                ", descriptions=" + descriptions +
+                '}';
+    }
 }

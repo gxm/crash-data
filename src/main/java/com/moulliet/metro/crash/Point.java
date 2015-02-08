@@ -12,12 +12,12 @@ public class Point implements Comparable<Point> {
     private float x;
     private float y;
 
-    public static DecimalFormat FORMAT = new DecimalFormat("####.####");
+    //public static DecimalFormat FORMAT = new DecimalFormat("####.####");
     private static DecimalFormat HASH = new DecimalFormat("###0.0000");
 
     public Point(Number x, Number y) {
-        this.x = Float.parseFloat(FORMAT.format(x));
-        this.y = Float.parseFloat(FORMAT.format(y));
+        this.x = Float.parseFloat(HASH.format(x));
+        this.y = Float.parseFloat(HASH.format(y));
     }
 
     public String toString() {
@@ -76,5 +76,17 @@ public class Point implements Comparable<Point> {
 
     public String createHash() {
         return HASH.format(y) + HASH.format(x);
+    }
+
+    public int getLatitiudeDifference(Point other) {
+        return (int) (FACTOR * (y - other.y));
+    }
+
+    public int getLongitudeDifference(Point other) {
+        return (int) (FACTOR * (x - other.x));
+    }
+
+    public Point offset(int lng, int lat) {
+        return new Point(x - (float) lng / (float) FACTOR, y + (float) lat / (float) FACTOR);
     }
 }
