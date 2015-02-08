@@ -33,46 +33,36 @@ public class Arterials {
         for (Shape shape : shapes) {
             debug(shape);
             addPoints(shape);
-            createJson(shape);
         }
         logger.info("loaded {} arterial map ", filterMap.size());
     }
 
     private static void debug(Shape shape) {
-        String streetname = (String) shape.getDescriptions().get("STREETNAME");
-        Double length = (Double) shape.getDescriptions().get("LENGTH");
-        /*
-        if (streetname.startsWith("MARTIN")) {
-            if (length > 2640 && length < 2641) {
-                for (Point point : shape.getPoints()) {
-                    System.out.println(point.getLongitude() + "," + point.getLatitude());
-                }
-            }
-        }*/
-
-        if (streetname.startsWith("KILLINGSWORTH")) {
-            if (length > 7882 && length < 7883) {
-                for (Point point : shape.getPoints()) {
-                    System.out.println(point.getLongitude() + "," + point.getLatitude());
-                }
-            }
-        }
+        //debug("KILLINGSWORTH", 7882, shape);
+        //debug("MARTIN", 2640, shape);
+        debug("DIVISION", 1884, shape);
     }
 
-    private static void createJson(Shape shape) {
-        ArrayNode shapesPoints = rootNode.addArray();
-        List<Point> points = shape.getPoints();
-        for (Point point : points) {
-            ObjectNode node = shapesPoints.addObject();
-            node.put("lng", point.getLongitude());
-            node.put("lat", point.getLatitude());
+    private static void debug(String name, int len, Shape shape) {
+        String streetname = (String) shape.getDescriptions().get("STREETNAME");
+        Double length = (Double) shape.getDescriptions().get("LENGTH");
+        if (streetname.startsWith(name)) {
+            if (length > len && length < len + 1) {
+                for (Point point : shape.getPoints()) {
+                    System.out.println(point.getLongitude() + "," + point.getLatitude());
+                }
+            }
         }
     }
 
     static void addPoints(Shape shape) {
         List<Point> points = Interpolate.interpolate(shape.getPoints());
+        ArrayNode shapesPoints = rootNode.addArray();
         for (Point point : points) {
             filterMap.put(point.createHash(), point);
+            ObjectNode node = shapesPoints.addObject();
+            node.put("lng", point.getLongitude());
+            node.put("lat", point.getLatitude());
         }
     }
 

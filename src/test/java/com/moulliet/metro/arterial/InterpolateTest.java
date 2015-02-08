@@ -2,6 +2,7 @@ package com.moulliet.metro.arterial;
 
 import com.moulliet.metro.crash.Point;
 import junit.framework.TestCase;
+import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +16,8 @@ public class InterpolateTest extends TestCase {
         for (Point point : interpolated) {
             System.out.println(point);
         }
-        assertTrue(interpolated.size() >= 27);
-
+        Assert.assertEquals(28, interpolated.size());
+        assertTrue(interpolated.contains(new Point(-122.6613, 45.5627)));
     }
 
     public static List<Point> getXPoints() {
@@ -32,9 +33,7 @@ public class InterpolateTest extends TestCase {
         for (Point point : interpolated) {
             System.out.println(point);
         }
-
-        assertTrue(interpolated.size() >= 73);
-
+        Assert.assertEquals(74, interpolated.size());
     }
 
     public static List<Point> getYPoints() {
@@ -56,7 +55,42 @@ public class InterpolateTest extends TestCase {
     }
 
     public void testInterpolateBoth() {
+        List<Point> interpolated = Interpolate.interpolate(getXYPoints());
+        for (Point point : interpolated) {
+            System.out.println(point);
+        }
 
+        //assertTrue(interpolated.size() >= 73);
+        /*assertTrue(interpolated.contains(new Point(-122.6607, 45.5074)));
+        assertTrue(interpolated.contains(new Point(-122.6606, 45.5074)));
+        assertTrue(interpolated.contains(new Point(-122.6605, 45.5074)));
+        assertTrue(interpolated.contains(new Point(-122.6605, 45.5073)));
+        assertTrue(interpolated.contains(new Point(-122.6604, 45.5073)));
+        assertTrue(interpolated.contains(new Point(-122.6604, 45.5072)));
+        assertTrue(interpolated.contains(new Point(-122.6603, 45.5072)));*/
+        System.out.println(interpolated.size());
     }
+
+    public static List<Point> getXYPoints() {
+        List<Point> points = new ArrayList<>();
+        points.add(new Point(-122.6608,45.5075));
+        points.add(new Point(-122.6607,45.5074));
+        points.add(new Point(-122.6603,45.5072));
+        points.add(new Point(-122.6598,45.5069));
+        points.add(new Point(-122.6591,45.5065));
+        points.add(new Point(-122.6587,45.5063));
+        points.add(new Point(-122.6578,45.5058));
+        points.add(new Point(-122.6572,45.5055));
+        points.add(new Point(-122.6568,45.5052));
+        points.add(new Point(-122.6565,45.5051));
+        points.add(new Point(-122.6563,45.505 ));
+        points.add(new Point(-122.6562,45.5049));
+        points.add(new Point(-122.6561,45.5049));
+        points.add(new Point(-122.656,45.5049 ));
+        points.add(new Point(-122.6558,45.5049));
+        points.add(new Point(-122.6547,45.5049));
+        return points;
+    }
+
 
 }
