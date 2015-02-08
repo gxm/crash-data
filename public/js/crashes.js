@@ -225,20 +225,10 @@ function CrashController($scope, $http, $location) {
 
         $scope.arterial = L.layerGroup();
 
-        $http.get($scope.host + 'arterials')
+        $http.get($scope.host + 'arterial')
             .success(function (data, status, headers) {
-                data.forEach(function (point) {
-                    var marker = L.marker([point.lat, point.lng]);
 
-                    marker.bindPopup(point.lat + ', ' + point.lng);
-                    var circle = L.circle([point.lat, point.lng], 13, {
-                        color: 'red',
-                        weight: 2,
-                        fillOpacity: 0
-                    });
-                    $scope.arterial.addLayer(marker);
-                    $scope.arterial.addLayer(circle);
-                });
+                L.multiPolyline(data, {color: 'red'}).addTo($scope.map);
 
             }).error(function (data, status, headers) {
                 console.log('unable to load arterial', status);

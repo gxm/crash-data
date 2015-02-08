@@ -27,9 +27,10 @@ public class Arterials {
         logger.info("loaded {} arterial shapes ", shapes.size());
         rootNode = mapper.createArrayNode();
         for (Shape shape : shapes) {
+            ArrayNode shapesPoints = rootNode.addArray();
             List<Point> points = shape.getPoints();
             for (Point point : points) {
-                ObjectNode node = rootNode.addObject();
+                ObjectNode node = shapesPoints.addObject();
                 node.put("lng", point.getLongitude());
                 node.put("lat", point.getLatitude());
             }
