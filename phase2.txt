@@ -11,9 +11,8 @@ Create a downloadable data set:
             centered ~ 45.5
 
 Next steps
-    read shapefile
+
     use shapefile to filter dataset
+        how to do this efficiently?
     show results on crash map
 
-add arterial layer to crash map
-    add all points

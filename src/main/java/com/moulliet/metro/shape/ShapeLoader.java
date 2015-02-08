@@ -39,7 +39,6 @@ public class ShapeLoader {
         for (int i = 0; i < polygons.size(); i++) {
             Polygon polygon = polygons.get(i);
             Map<String, Object> desc = descriptions.get(i);
-
             Shape shape = new Shape(desc);
             int pointCount = polygon.getPointCount();
             for (int j  = 0; j < pointCount; j++) {
@@ -47,7 +46,6 @@ public class ShapeLoader {
                 double[] transformed = transform(point.getX(), point.getY());
                 shape.getPoints().add(new com.moulliet.metro.crash.Point(transformed[0], transformed[1]));
             }
-
             shapes.add(shape);
         }
         return shapes;

@@ -228,7 +228,8 @@ function CrashController($scope, $http, $location) {
         $http.get($scope.host + 'arterial')
             .success(function (data, status, headers) {
 
-                L.multiPolyline(data, {color: 'red'}).addTo($scope.map);
+                var polyline = L.multiPolyline(data, {color: 'red'});
+                $scope.arterial.addLayer(polyline);
 
             }).error(function (data, status, headers) {
                 console.log('unable to load arterial', status);
