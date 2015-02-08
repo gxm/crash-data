@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Point implements Comparable<Point> {
     private static final Logger logger = LoggerFactory.getLogger(Point.class);
@@ -14,6 +16,7 @@ public class Point implements Comparable<Point> {
 
     //public static DecimalFormat FORMAT = new DecimalFormat("####.####");
     private static DecimalFormat HASH = new DecimalFormat("###0.0000");
+    private static final float SINK_RADIUS = 0.0001f;
 
     public Point(Number x, Number y) {
         this.x = Float.parseFloat(HASH.format(x));
@@ -79,14 +82,26 @@ public class Point implements Comparable<Point> {
     }
 
     public int getLatitiudeDifference(Point other) {
-        return (int) (FACTOR * (y - other.y));
+        return Math.round(FACTOR * (y - other.y));
     }
 
     public int getLongitudeDifference(Point other) {
-        return (int) (FACTOR * (x - other.x));
+        return Math.round(FACTOR * (x - other.x));
     }
 
     public Point offset(int lng, int lat) {
         return new Point(x + (float) lng / (float) FACTOR, y + (float) lat / (float) FACTOR);
+    }
+
+    public List<Point> star() {
+        ArrayList<Point> points = new ArrayList<>();
+        points.add(this);
+        for (float i = -SINK_RADIUS; i <= SINK_RADIUS; i += SINK_RADIUS) {
+            points.add(new Point(x + i, y));
+            for (float j = -SINK_RADIUS; j <= SINK_RADIUS; j += SINK_RADIUS) {
+                points.add(new Point(x + i, y + j));
+            }
+        }
+        return points;
     }
 }

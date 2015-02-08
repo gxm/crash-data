@@ -72,7 +72,8 @@ public class InterpolateTest extends TestCase {
     }
 
     public static List<Point> getXYPoints() {
-        List<Point> points = new ArrayList<>();
+        //debug("DIVISION", 1884, shape);
+        /*List<Point> points = new ArrayList<>();
         points.add(new Point(-122.6608,45.5075));
         points.add(new Point(-122.6607,45.5074));
         points.add(new Point(-122.6603,45.5072));
@@ -88,7 +89,16 @@ public class InterpolateTest extends TestCase {
         points.add(new Point(-122.6561,45.5049));
         points.add(new Point(-122.656,45.5049 ));
         points.add(new Point(-122.6558,45.5049));
-        points.add(new Point(-122.6547,45.5049));
+        points.add(new Point(-122.6547,45.5049));*/
+
+        //debug("SUNSET", 940, shape);
+        List<Point> points = new ArrayList<>();
+        points.add(new Point(-122.6968,45.5158));
+        points.add(new Point(-122.6956,45.5156));
+        points.add(new Point(-122.6952,45.5156));
+        points.add(new Point(-122.6944,45.5154));
+        points.add(new Point(-122.6938,45.5153));
+        points.add(new Point(-122.6932,45.5152));
         return points;
     }
 

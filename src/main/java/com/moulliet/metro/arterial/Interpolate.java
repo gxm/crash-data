@@ -6,15 +6,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class Interpolate {
 
     private static final Logger logger = LoggerFactory.getLogger(Interpolate.class);
 
     public static List<Point> interpolate(List<Point> incoming) {
-        Set<Point> interpolated = new TreeSet<>(incoming);
+        List<Point> interpolated = new ArrayList<>(incoming);
         for (int i = 0; i <= incoming.size() - 2; i++) {
             Point one = incoming.get(i);
             Point two = incoming.get(i + 1);
@@ -29,11 +27,15 @@ public class Interpolate {
                     interpolated.add(one.offset(j, 0));
                 }
             } else {
-                int steps = Math.min(Math.abs(latDiff), Math.abs(lngDiff));
+                int steps = Math.max(Math.abs(latDiff), Math.abs(lngDiff));
                 int lngStep = (int) ((float) lngDiff / (float) steps);
                 int latStep = (int) ((float) latDiff / (float) steps);
                 for (int j = 0; j < steps; j++) {
-                    interpolated.add(one.offset(lngStep , latStep));
+                    Point point = one.offset(j * lngStep, j * latStep);
+                    logger.trace("point {}", point);
+                    for (Point starPoint : point.star()) {
+                        interpolated.add(starPoint);
+                    }
                 }
             }
         }

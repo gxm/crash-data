@@ -223,7 +223,7 @@ function CrashController($scope, $http, $location) {
 
     function addArterial() {
 
-        $scope.arterial = L.layerGroup();
+        /*$scope.arterial = L.layerGroup();
 
         $http.get($scope.host + 'arterial')
             .success(function (data, status, headers) {
@@ -234,7 +234,7 @@ function CrashController($scope, $http, $location) {
 
             }).error(function (data, status, headers) {
                 console.log('unable to load arterial', status);
-            });
+            });*/
     }
 
     function windowOnLoad() {
@@ -313,11 +313,11 @@ function CrashController($scope, $http, $location) {
     };
 
     $scope.showArterial = function showArterial() {
-        if ($scope.settings.overlay) {
+        /*if ($scope.settings.overlay) {
             $scope.map.addLayer($scope.arterial);
         } else {
             $scope.map.removeLayer($scope.arterial);
-        }
+        }*/
     };
 
     windowOnLoad();

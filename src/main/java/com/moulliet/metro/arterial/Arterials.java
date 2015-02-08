@@ -20,7 +20,7 @@ public class Arterials {
     private static final Logger logger = LoggerFactory.getLogger(Arterials.class);
 
     private static final ObjectMapper mapper = new ObjectMapper();
-    private static ArrayNode rootNode;
+    private static ArrayNode rootNode = mapper.createArrayNode();
     private static Map<String, Point> filterMap = new HashMap<>();
     private static final float DELTA = 0.0002f;
 
@@ -29,7 +29,6 @@ public class Arterials {
         ShapeLoader shapeLoader = new ShapeLoader("/Users/greg/code/rlis/Feb2015/arterial/", "arterial");
         List<Shape> shapes = shapeLoader.loadPolygons();
         logger.info("loaded {} arterial shapes ", shapes.size());
-        rootNode = mapper.createArrayNode();
         for (Shape shape : shapes) {
             debug(shape);
             addPoints(shape);
@@ -40,7 +39,8 @@ public class Arterials {
     private static void debug(Shape shape) {
         //debug("KILLINGSWORTH", 7882, shape);
         //debug("MARTIN", 2640, shape);
-        debug("DIVISION", 1884, shape);
+        //debug("DIVISION", 1884, shape);
+        debug("SUNSET", 940, shape);
     }
 
     private static void debug(String name, int len, Shape shape) {
@@ -60,6 +60,7 @@ public class Arterials {
         ArrayNode shapesPoints = rootNode.addArray();
         for (Point point : points) {
             filterMap.put(point.createHash(), point);
+            logger.trace("adding {} {}", point.createHash(), point);
             ObjectNode node = shapesPoints.addObject();
             node.put("lng", point.getLongitude());
             node.put("lat", point.getLatitude());
