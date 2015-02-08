@@ -60,6 +60,8 @@ public class CrashResource {
                            @DefaultValue("true") @QueryParam("injuryB") boolean injuryB,
                            @DefaultValue("true") @QueryParam("injuryC") boolean injuryC,
                            @DefaultValue("true") @QueryParam("property") boolean property,
+                           @DefaultValue("true") @QueryParam("arterial") boolean arterial,
+                           @DefaultValue("true") @QueryParam("local") boolean local,
                            @DefaultValue("Window") @QueryParam("scope") String scope
     ) throws Exception {
         try {
@@ -76,6 +78,7 @@ public class CrashResource {
             filters.years(y2007, y2008, y2009, y2010, y2011, y2012, y2013);
             filters.type(angle, headOn, rearEnd, sideSwipe, turning, other);
             filters.severity(fatal, injuryA, injuryB, injuryC, property);
+            filters.arterial(arterial, local);
 
             final Crashes crashes = new Crashes();
             Response.ResponseBuilder builder = Response.ok(new StreamingOutput() {

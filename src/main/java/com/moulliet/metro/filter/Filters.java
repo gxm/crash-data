@@ -1,5 +1,6 @@
 package com.moulliet.metro.filter;
 
+import com.moulliet.metro.arterial.Arterials;
 import com.moulliet.metro.crash.Crash;
 
 import java.util.ArrayList;
@@ -236,6 +237,24 @@ public class Filters implements Filter {
                 }
             });
         }
+    }
+
+    public void arterial(boolean arterial, boolean local) {
+        if (arterial && local) {
+            return;
+        } else if (!arterial && !local) {
+            returnFalse = true;
+        }
+        add(new Filter() {
+            @Override
+            public boolean include(Crash crash) {
+                if (arterial) {
+                    return Arterials.isArterial(crash.getPoint());
+                } else {
+                    return !Arterials.isArterial(crash.getPoint());
+                }
+            }
+        });
     }
 }
 

@@ -12,7 +12,5 @@ Create a downloadable data set:
 
 Next steps
 
-    use shapefile to filter dataset
-        how to do this efficiently?
-    show results on crash map
+
 

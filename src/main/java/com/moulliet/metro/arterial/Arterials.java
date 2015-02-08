@@ -11,7 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Arterials {
 
@@ -19,6 +21,8 @@ public class Arterials {
 
     private static final ObjectMapper mapper = new ObjectMapper();
     private static ArrayNode rootNode;
+    private static Map<String, Point> filterMap = new HashMap<>();
+    private static final float DELTA = 0.0001f;
 
     public static void loadArterials() throws IOException {
         logger.info("loading arterials");
@@ -30,6 +34,7 @@ public class Arterials {
             ArrayNode shapesPoints = rootNode.addArray();
             List<Point> points = shape.getPoints();
             for (Point point : points) {
+                filterMap.put(point.createHash(), point);
                 ObjectNode node = shapesPoints.addObject();
                 node.put("lng", point.getLongitude());
                 node.put("lat", point.getLatitude());
@@ -40,5 +45,17 @@ public class Arterials {
 
     public static JsonNode getPoints() throws IOException {
         return rootNode;
+    }
+
+    public static boolean isArterial(Point point) {
+        String hash = point.createHash();
+        Point sinkPoint = filterMap.get(hash);
+        if (sinkPoint == null) {
+            logger.trace("point {} not in hash map {} ", point, hash);
+            return false;
+        }
+        boolean within = point.isWithin(sinkPoint, DELTA);
+        logger.trace("point: {} withing? {} sink: {}", point, within, sinkPoint);
+        return within;
     }
 }

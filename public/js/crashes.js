@@ -228,8 +228,9 @@ function CrashController($scope, $http, $location) {
         $http.get($scope.host + 'arterial')
             .success(function (data, status, headers) {
 
-                var polyline = L.multiPolyline(data, {color: 'red'});
+                var polyline = L.multiPolyline(data, {color: 'black', fill: false});
                 $scope.arterial.addLayer(polyline);
+                $scope.map.addLayer($scope.arterial);
 
             }).error(function (data, status, headers) {
                 console.log('unable to load arterial', status);
@@ -312,11 +313,11 @@ function CrashController($scope, $http, $location) {
     };
 
     $scope.showArterial = function showArterial() {
-        if ($scope.settings.arterial) {
+        /*if ($scope.settings.arterial) {
             $scope.map.addLayer($scope.arterial);
         } else {
             $scope.map.removeLayer($scope.arterial);
-        }
+        }*/
     };
 
     windowOnLoad();
