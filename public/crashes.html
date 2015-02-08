@@ -139,11 +139,15 @@
                                         <td colspan="2"><div title="All crashes: Heat map scale is relative to the entire Portland Metro region (number reflects the number of crashes in the region)"><label for="regional"><input id="regional" type="radio" value="Regional" ng-model='settings.scope' ng-change="loadData()"> All Crashes: {{fixedTotal}}</label></div></td>
                                     </tr>
                                     <tr>
-                                        <th><div title="Show geographic locations where ODOT puts crashes without a precisely known location">Sinks:</div></th>
-                                        <td colspan="1"><div title="Show geographic locations where ODOT puts crashes without a precisely known location"><label for="sinks"><input id="sinks" type="checkbox" value="false" ng-model="settings.sinks" ng-change="showSinks()"> Sinks Locations</label></div></td>
+                                        <th><div title="Arterial">Arterial:</div></th>
                                         <td colspan="1"><div title="Temporary - Arterial"><label for="arterial"><input id="arterial" type="checkbox" value="false" ng-model="settings.arterial" ng-change="loadData()"> Arterial </label></div></td>
                                         <td colspan="1"><div title="Temporary - Local"><label for="local"><input id="local" type="checkbox" value="false" ng-model="settings.local" ng-change="loadData()"> Local </label></div></td>
+                                        <td colspan="1"><div title="Temporary - overlay"><label for="overlay"><input id="overlay" type="checkbox" value="false" ng-model="settings.overlay" ng-change="showArterial()"> Overlay </label></div></td>
                                     </tr>
+                                   <!-- <tr>
+                                        <th><div title="Show geographic locations where ODOT puts crashes without a precisely known location">Sinks:</div></th>
+                                        <td colspan="3"><div title="Show geographic locations where ODOT puts crashes without a precisely known location"><label for="sinks"><input id="sinks" type="checkbox" value="false" ng-model="settings.sinks" ng-change="showSinks()"> Sinks Locations</label></div></td>
+                                    </tr>-->
                                 </table>
                             </div>
                         </td>

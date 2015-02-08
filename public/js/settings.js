@@ -37,6 +37,7 @@ function CrashSettings($scope) {
 	that.colors = $scope.search('colors', 'default');
     that.arterial = $scope.search('arterial', true);
     that.local = $scope.search('local', true);
+    that.overlay = $scope.search('overlay', true);
 }
 
 

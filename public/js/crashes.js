@@ -313,11 +313,11 @@ function CrashController($scope, $http, $location) {
     };
 
     $scope.showArterial = function showArterial() {
-        /*if ($scope.settings.arterial) {
+        if ($scope.settings.overlay) {
             $scope.map.addLayer($scope.arterial);
         } else {
             $scope.map.removeLayer($scope.arterial);
-        }*/
+        }
     };
 
     windowOnLoad();
