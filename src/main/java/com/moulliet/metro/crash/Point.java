@@ -14,7 +14,6 @@ public class Point implements Comparable<Point> {
     private float x;
     private float y;
 
-    //public static DecimalFormat FORMAT = new DecimalFormat("####.####");
     private static DecimalFormat HASH = new DecimalFormat("###0.0000");
     private static final float SINK_RADIUS = 0.0001f;
 
@@ -63,18 +62,21 @@ public class Point implements Comparable<Point> {
     }
 
     public boolean isWithin(Point other, float delta) {
-        float latDiff = y - other.y;
-        if (Math.abs(latDiff) > delta) {
-            logger.trace("lat diff {}", latDiff);
+        if (deltaY(other) > delta) {
             return false;
         }
-        float longDiff = x - other.x;
-        if (Math.abs(longDiff) > delta) {
-            logger.trace("lng diff {}", longDiff);
+        if (deltaX(other) > delta) {
             return false;
         }
-        logger.trace("within {} {}", longDiff, latDiff);
         return true;
+    }
+
+    private float deltaX(Point other) {
+        return Math.abs(x - other.x);
+    }
+
+    private float deltaY(Point other) {
+        return Math.abs(y - other.y);
     }
 
     public String createHash() {
@@ -103,5 +105,11 @@ public class Point implements Comparable<Point> {
             }
         }
         return points;
+    }
+
+    public double distance(Point other) {
+        double deltaX = 36.516 * deltaX(other);
+        double deltaY = 25.82 * deltaY(other);
+        return 10000 * Math.sqrt(deltaX * deltaX  + deltaY * deltaY);
     }
 }

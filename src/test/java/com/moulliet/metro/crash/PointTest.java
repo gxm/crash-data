@@ -42,4 +42,16 @@ public class PointTest extends TestCase
         assertNull(found);
 
     }
+
+    public void testDistance() {
+        Point NW = new Point(-122.5651, 45.5124);
+        Point NE = new Point(-122.5650, 45.5124);
+        Point SE = new Point(-122.5650, 45.5123);
+        Point SW = new Point(-122.5651, 45.5123);
+
+        assertEquals(36.5, NW.distance(NE), 0.5);
+        assertEquals(44.722, NW.distance(SE), 0.5);
+        assertEquals(36.516, SW.distance(SE), 0.5);
+        assertEquals(25.820, NE.distance(SE), 1);
+    }
 }

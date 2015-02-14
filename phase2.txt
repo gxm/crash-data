@@ -13,4 +13,20 @@ Create a downloadable data set:
 Next steps
 
 
+How many shapefile segments?
+   what can the avg delta from 52' be?
+
+Two actions
+    To perform calculation
+        All Crashes
+            Arterial Crashes per 52x52
+                weighted for severity & distance
+
+    to show overlay of 'inside' & 'outside' arterial network.
+
+Efficient Filtering
+    Is this crash on an arterial?
+    Which 52' x 52' polygon is this in?
+
+
 
