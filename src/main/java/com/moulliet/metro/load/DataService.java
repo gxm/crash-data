@@ -5,7 +5,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 import com.moulliet.metro.Statics;
-import com.moulliet.metro.mongo.MongoQueryCallback;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
@@ -14,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class DataService {
@@ -23,18 +21,15 @@ public class DataService {
 
     public ArrayNode getAll() {
         ArrayNode list = mapper.createArrayNode();
-        Statics.mongoDao.query("datasets", null, new MongoQueryCallback() {
-            @Override
-            public void callback(Iterator<DBObject> iterator) {
-                while (iterator.hasNext()) {
-                    DBObject next = iterator.next();
-                    ObjectNode node = mapper.createObjectNode();
-                    node.put("name", (String) next.get("name"));
-                    node.put("active", (boolean) next.get("active"));
-                    node.put("count", (int) next.get("count"));
-                    node.put("uploaded", next.get("uploaded").toString());
-                    list.add(node);
-                }
+        Statics.mongoDao.query("datasets", null, iterator -> {
+            while (iterator.hasNext()) {
+                DBObject next = iterator.next();
+                ObjectNode node = mapper.createObjectNode();
+                node.put("name", (String) next.get("name"));
+                node.put("active", (boolean) next.get("active"));
+                node.put("count", (int) next.get("count"));
+                node.put("uploaded", next.get("uploaded").toString());
+                list.add(node);
             }
         });
         return list;
@@ -42,13 +37,10 @@ public class DataService {
 
     public List<String> getActiveNames() {
         List<String> datasets = new ArrayList<>();
-        Statics.mongoDao.query("datasets", new BasicDBObject("active", true), new MongoQueryCallback() {
-            @Override
-            public void callback(Iterator<DBObject> iterator) {
-                while (iterator.hasNext()) {
-                    DBObject next = iterator.next();
-                    datasets.add(next.get("name").toString());
-                }
+        Statics.mongoDao.query("datasets", new BasicDBObject("active", true), iterator -> {
+            while (iterator.hasNext()) {
+                DBObject next = iterator.next();
+                datasets.add(next.get("name").toString());
             }
         });
         return datasets;

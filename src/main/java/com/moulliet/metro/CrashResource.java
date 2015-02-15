@@ -10,7 +10,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
 import java.io.IOException;
-import java.io.OutputStream;
 
 @Path("/crashes")
 public class CrashResource {
@@ -81,16 +80,14 @@ public class CrashResource {
             filters.arterial(arterial, local);
 
             final Crashes crashes = new Crashes();
-            Response.ResponseBuilder builder = Response.ok(new StreamingOutput() {
-                public void write(OutputStream outputStream) throws IOException, WebApplicationException {
-                    try {
-                        outputStream.write((callback + "(").getBytes());
-                        int points = crashes.aggregatedCrashes(filters, outputStream, getRadius(zoom));
-                        logger.debug("wrote {} points in {} millis.", points, timer.reset());
-                        outputStream.write(");".getBytes());
-                    } catch (IOException e) {
-                        logger.warn("IOException ", e);
-                    }
+            Response.ResponseBuilder builder = Response.ok((StreamingOutput) outputStream -> {
+                try {
+                    outputStream.write((callback + "(").getBytes());
+                    int points = crashes.aggregatedCrashes(filters, outputStream, getRadius(zoom));
+                    logger.debug("wrote {} points in {} millis.", points, timer.reset());
+                    outputStream.write(");".getBytes());
+                } catch (IOException e) {
+                    logger.warn("IOException ", e);
                 }
             });
 
