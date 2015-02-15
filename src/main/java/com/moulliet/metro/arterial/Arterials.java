@@ -24,8 +24,9 @@ public class Arterials {
     private static ArrayNode multiLines = mapper.createArrayNode();
     private static ArrayNode multiPolygons = mapper.createArrayNode();
     private static Map<String, Point> filterMap = new HashMap<>();
-    //todo - gfm - 2/14/15 -
-    private static final Point center = new Point(-122.66534, 45.52422);
+    //todo - gfm - 2/14/15 - &lat=45.5553406&lng=-122.645869
+    private static final Point center = new Point(-122.645869, 45.55534);
+    //private static final Point center = new Point(-122.66534, 45.52422);
     private static final float DELTA = 0.0002f;
 
     public static void loadArterials() throws IOException {
@@ -66,7 +67,7 @@ public class Arterials {
 
         for (Point point : points) {
             //todo - gfm - 2/14/15 -
-            if (point.isWithin(center, (float) 0.01)) {
+            if (point.isWithin(center, (float) 0.02)) {
                 //filterMap.put(point.createHash(), point);
                 logger.trace("adding {} {}", point.createHash(), point);
                 if (shapesPoints == null) {
