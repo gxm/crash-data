@@ -54,6 +54,11 @@ public class Crashes {
 
         Sinks.loadSinks();
         Arterials.loadArterials();
+        allCrashes = Collections.unmodifiableList(loadCrashes());
+        logger.info("loaded {} crashes", allCrashes.size());
+    }
+
+    public static List<Crash> loadCrashes() {
         logger.info("loading crashes");
         Set<Crash> crashes = new HashSet<>();
         for (String dataset : Statics.datasetService.getActiveNames()) {
@@ -71,8 +76,7 @@ public class Crashes {
             });
             logger.info("loaded dataset: {}, total items: {}", dataset, crashes.size());
         }
-        allCrashes = Collections.unmodifiableList(new ArrayList<>(crashes));
-        logger.info("loaded {} crashes", allCrashes.size());
+        return new ArrayList<>(crashes);
     }
 
     private void consolidatePoints(Filter filter) {
@@ -82,6 +86,10 @@ public class Crashes {
                 crashTotals.addCrash(crash);
             }
         }
+    }
+
+    public static List<Crash> getAllCrashes() {
+        return allCrashes;
     }
 
     private void addPointToMap(Point point) {

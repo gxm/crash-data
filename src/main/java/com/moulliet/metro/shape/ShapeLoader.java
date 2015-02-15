@@ -9,6 +9,7 @@ import com.moulliet.metro.arterial.Tracker;
 import org.apache.commons.io.FileUtils;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
@@ -36,7 +37,7 @@ public class ShapeLoader {
     }
 
     public List<Shape> loadPolygons() throws IOException {
-        parseWellKnownText();
+        parseWellKnownText(path + fileRoot + ".prj");
         List<Shape> shapes = new ArrayList<>();
         List<Polygon> polygons = loadShapes();
         List<Map<String, Object>> descriptions = loadDescriptions();
@@ -112,16 +113,21 @@ public class ShapeLoader {
         return descriptions;
     }
 
-    public void parseWellKnownText() {
+    public static MathTransform parseWellKnownText(String filePath) {
         try {
-            File file = new File(path + fileRoot + ".prj");
-            String wkt = FileUtils.readFileToString(file);
-            logger.info("using wkt " + wkt);
-            CoordinateReferenceSystem coordinateReferenceSystem = CRS.parseWKT(wkt);
+            CoordinateReferenceSystem coordinateReferenceSystem = getCoordinateReferenceSystem(filePath);
             transform = CRS.findMathTransform(coordinateReferenceSystem, DefaultGeographicCRS.WGS84, true);
+            return transform;
         } catch (Exception e) {
             logger.warn("unable to parse transform ", e);
-        } 
+            return null;
+        }
+    }
+
+    public static CoordinateReferenceSystem getCoordinateReferenceSystem(String filePath) throws IOException, FactoryException {
+        String wkt = FileUtils.readFileToString(new File(filePath));
+        logger.info("using wkt " + wkt);
+        return CRS.parseWKT(wkt);
     }
 
 }
