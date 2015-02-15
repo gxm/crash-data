@@ -6,6 +6,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.strtree.STRtree;
+import com.vividsolutions.jts.linearref.LinearLocation;
 import com.vividsolutions.jts.linearref.LocationIndexedLine;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -22,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class GeoArterials {
 
@@ -29,10 +31,9 @@ public class GeoArterials {
 
     private static final ObjectMapper mapper = new ObjectMapper();
     private static ArrayNode multiLines = mapper.createArrayNode();
-
+    private static final double MAX_SEARCH_DISTANCE = 26;
     private static Coordinate center;
-    //private static final Point center = new Point(-122.66534, 45.52422);
-    private static final float DELTA = 0.0002f;
+    private static SpatialIndex rtree;
 
     public static void main(String[] args) throws IOException {
         GeoArterials.loadArterials();
@@ -45,13 +46,12 @@ public class GeoArterials {
         File file = new File("/Users/greg/code/rlis/Feb2015/arterial/arterial.shp");
         FileDataStore store = FileDataStoreFinder.getDataStore(file);
         FeatureSource source = store.getFeatureSource();
-        SpatialIndex rtree = new STRtree();
+        rtree = new STRtree();
         FeatureCollection features = source.getFeatures();
         features.accepts(feature -> {
             SimpleFeature simpleFeature = (SimpleFeature) feature;
             MultiLineString geometry = (MultiLineString) simpleFeature.getDefaultGeometry();
             if (geometry != null) {
-                //logger.info("geometry {}", geometry);
                 Envelope envelope = geometry.getEnvelopeInternal();
                 if (!envelope.isNull()) {
                     rtree.insert(envelope, new LocationIndexedLine(geometry));
@@ -59,7 +59,6 @@ public class GeoArterials {
                 addLines(geometry);
             }
         }, new NullProgressListener());
-
     }
 
     static void addLines(MultiLineString geometry) {
@@ -83,6 +82,28 @@ public class GeoArterials {
     }
 
     public static boolean isArterial(Point point) {
+
+        double[] doubles = Transform.toOregon(point.getLongitude(), point.getLatitude());
+        Coordinate coordinate = new Coordinate(doubles[0], doubles[1]);
+        Envelope search = new Envelope(coordinate);
+        search.expandBy(MAX_SEARCH_DISTANCE);
+        /*
+             * Query the spatial index for objects within the search envelope.
+             * Note that this just compares the point envelope to the line envelopes
+             * so it is possible that the point is actually more distant than
+             * MAX_SEARCH_DISTANCE from a line.
+             */
+        List<LocationIndexedLine> lines = rtree.query(search);
+
+        for (LocationIndexedLine line : lines) {
+            LinearLocation here = line.project(coordinate);
+            Coordinate extractPoint = line.extractPoint(here);
+            double distance = extractPoint.distance(coordinate);
+            if (distance < MAX_SEARCH_DISTANCE) {
+                return true;
+            }
+        }
+
         return false;
     }
 

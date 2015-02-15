@@ -1,6 +1,6 @@
 package com.moulliet.metro.filter;
 
-import com.moulliet.metro.arterial.EsriArterials;
+import com.moulliet.metro.arterial.GeoArterials;
 import com.moulliet.metro.crash.Crash;
 
 import java.util.ArrayList;
@@ -249,9 +249,9 @@ public class Filters implements Filter {
             @Override
             public boolean include(Crash crash) {
                 if (arterial) {
-                    return EsriArterials.isArterial(crash.getPoint());
+                    return GeoArterials.isArterial(crash.getPoint());
                 } else {
-                    return !EsriArterials.isArterial(crash.getPoint());
+                    return !GeoArterials.isArterial(crash.getPoint());
                 }
             }
         });
