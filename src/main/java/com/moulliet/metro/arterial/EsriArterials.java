@@ -15,9 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Arterials {
+public class EsriArterials {
 
-    private static final Logger logger = LoggerFactory.getLogger(Arterials.class);
+    private static final Logger logger = LoggerFactory.getLogger(EsriArterials.class);
 
     private static final ObjectMapper mapper = new ObjectMapper();
     private static ArrayNode multiLines = mapper.createArrayNode();

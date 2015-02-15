@@ -1,7 +1,8 @@
 package com.moulliet.metro.crash;
 
 import com.moulliet.metro.Statics;
-import com.moulliet.metro.arterial.Arterials;
+import com.moulliet.metro.arterial.EsriArterials;
+import com.moulliet.metro.arterial.GeoArterials;
 import com.moulliet.metro.filter.Filter;
 import com.moulliet.metro.filter.Sinks;
 import org.codehaus.jackson.JsonFactory;
@@ -51,7 +52,8 @@ public class Crashes {
     public static synchronized void loadAll() throws IOException {
 
         Sinks.loadSinks();
-        Arterials.loadArterials();
+        EsriArterials.loadArterials();
+        GeoArterials.loadArterials();
         allCrashes = Collections.unmodifiableList(loadCrashes());
         logger.info("loaded {} crashes", allCrashes.size());
     }

@@ -1,6 +1,6 @@
 package com.moulliet.metro;
 
-import com.moulliet.metro.arterial.Arterials;
+import com.moulliet.metro.arterial.GeoArterials;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -15,7 +15,7 @@ public class ArterialResource {
     @Path("/multiline")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLines() throws Exception {
-        return Response.status(200).entity(Arterials.getMultiLine().toString()).build();
+        return Response.status(200).entity(GeoArterials.getMultiLine().toString()).build();
     }
 
 }
