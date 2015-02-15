@@ -1,10 +1,8 @@
 package com.moulliet.metro.crash;
 
-import com.mongodb.DBObject;
 import com.moulliet.metro.Statics;
 import com.moulliet.metro.filter.Filter;
 import com.moulliet.metro.filter.SinkFilter;
-import com.moulliet.metro.mongo.MongoQueryCallback;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;
 import org.slf4j.Logger;
@@ -56,14 +54,11 @@ public class Crashes {
         Set<Crash> crashes = new HashSet<>();
         for (String dataset : Statics.datasetService.getActiveNames()) {
             logger.info("loading dataset: {}", dataset);
-            Statics.mongoDao.query(dataset, null, new MongoQueryCallback() {
-                @Override
-                public void callback(Iterator<DBObject> iterator) {
-                    while (iterator.hasNext()) {
-                        Crash crash = Crash.create(iterator.next());
-                        if (crash != null && !SinkFilter.isSink(crash.getPoint())) {
-                            crashes.add(crash);
-                        }
+            Statics.mongoDao.query(dataset, null, iterator -> {
+                while (iterator.hasNext()) {
+                    Crash crash = Crash.create(iterator.next());
+                    if (crash != null && !SinkFilter.isSink(crash.getPoint())) {
+                        crashes.add(crash);
                     }
                 }
             });
