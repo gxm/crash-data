@@ -14,12 +14,16 @@ public class Point implements Comparable<Point> {
     private float x;
     private float y;
 
-    private static DecimalFormat HASH = new DecimalFormat("###0.0000");
+    private static DecimalFormat POINT_FORMAT = new DecimalFormat("#######0.0000");
     private static final float SINK_RADIUS = 0.0001f;
 
     public Point(Number x, Number y) {
-        this.x = Float.parseFloat(HASH.format(x));
-        this.y = Float.parseFloat(HASH.format(y));
+        this(x, y, POINT_FORMAT);
+    }
+
+    public Point(Number x, Number y, DecimalFormat format) {
+        this.x = Float.parseFloat(format.format(x));
+        this.y = Float.parseFloat(format.format(y));
     }
 
     public String toString() {
@@ -80,7 +84,7 @@ public class Point implements Comparable<Point> {
     }
 
     public String createHash() {
-        return HASH.format(y) + HASH.format(x);
+        return POINT_FORMAT.format(y) + POINT_FORMAT.format(x);
     }
 
     public int getLatitiudeDifference(Point other) {

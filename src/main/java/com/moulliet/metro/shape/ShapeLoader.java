@@ -5,6 +5,7 @@ import com.esri.core.geometry.Point;
 import com.esri.core.geometry.Polygon;
 import com.esri.dbf.DBFReader;
 import com.esri.shp.ShpReader;
+import com.moulliet.metro.arterial.Tracker;
 import org.apache.commons.io.FileUtils;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -15,14 +16,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class ShapeLoader {
 
     private static final Logger logger = LoggerFactory.getLogger(ShapeLoader.class);
+    private final DecimalFormat format = new DecimalFormat("###0.000000");
 
     private String path;
     private String fileRoot;
+
 
     private static MathTransform transform;
 
@@ -40,11 +44,12 @@ public class ShapeLoader {
             Polygon polygon = polygons.get(i);
             Map<String, Object> desc = descriptions.get(i);
             Shape shape = new Shape(desc);
+            shape.polygon = polygon;
             int pointCount = polygon.getPointCount();
             for (int j  = 0; j < pointCount; j++) {
                 Point point = polygon.getPoint(j);
                 double[] transformed = transform(point.getX(), point.getY());
-                shape.getPoints().add(new com.moulliet.metro.crash.Point(transformed[0], transformed[1]));
+                shape.getPoints().add(new com.moulliet.metro.crash.Point(transformed[0], transformed[1], format));
             }
             shapes.add(shape);
         }
@@ -68,19 +73,24 @@ public class ShapeLoader {
 
     public List<Polygon> loadShapes() throws IOException {
         List<Polygon> polygons = new ArrayList<>();
+        Tracker tracker = new Tracker("SegmentsPlay");
         final File file = new File(path + fileRoot +  ".shp");
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
-            int count = 0;
+            int polygonCount = 0;
+            int pointCount = 0;
             Envelope envelope = new Envelope();
             ShpReader shpReader = new ShpReader(new DataInputStream(new BufferedInputStream(fileInputStream)));
             while (shpReader.hasMore()) {
                 Polygon polygon = new Polygon();
                 shpReader.queryPolygon(polygon);
                 polygon.queryEnvelope(envelope);
-                count++;
+                //polygon = (Polygon) OperatorDensifyByLength.local().execute(polygon, 52.0, tracker);
+                pointCount += polygon.getPointCount();
+                polygonCount++;
                 polygons.add(polygon);
             }
-            logger.info("points count " + count);
+            logger.info("polygon count " + polygonCount);
+            logger.info("point count " + pointCount);
         }
         return polygons;
     }

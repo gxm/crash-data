@@ -222,19 +222,31 @@ function CrashController($scope, $http, $location) {
     });
 
     function addArterial() {
-
-        /*$scope.arterial = L.layerGroup();
-
-        $http.get($scope.host + 'arterial')
+        var colors = ['#a6cee3' ,'#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00'];
+        $scope.arterialLines = L.layerGroup();
+        $http.get($scope.host + 'arterial/multiline')
             .success(function (data, status, headers) {
-
                 var polyline = L.multiPolyline(data, {color: 'black', fill: false});
-                $scope.arterial.addLayer(polyline);
-                $scope.map.addLayer($scope.arterial);
+                $scope.arterialLines.addLayer(polyline);
 
+                $scope.map.addLayer($scope.arterialLines);
             }).error(function (data, status, headers) {
                 console.log('unable to load arterial', status);
-            });*/
+            });
+
+        $scope.arterialPolys = L.layerGroup();
+        $http.get($scope.host + 'arterial/multipolygon')
+            .success(function (data, status, headers) {
+
+                for (var i = 0; i < data.length; i++) {
+                    var polyline = L.multiPolygon(data[i], {color: colors[i], fill: false});
+                    $scope.arterialPolys.addLayer(polyline);
+                }
+
+                $scope.map.addLayer($scope.arterialPolys);
+            }).error(function (data, status, headers) {
+                console.log('unable to load arterial', status);
+            });
     }
 
     function windowOnLoad() {
@@ -313,11 +325,11 @@ function CrashController($scope, $http, $location) {
     };
 
     $scope.showArterial = function showArterial() {
-        /*if ($scope.settings.overlay) {
-            $scope.map.addLayer($scope.arterial);
+        if ($scope.settings.overlay) {
+            $scope.map.addLayer($scope.arterialLines);
         } else {
-            $scope.map.removeLayer($scope.arterial);
-        }*/
+            $scope.map.removeLayer($scope.arterialLines);
+        }
     };
 
     windowOnLoad();
