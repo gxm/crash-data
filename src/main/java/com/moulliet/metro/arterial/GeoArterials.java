@@ -40,7 +40,8 @@ public class GeoArterials {
     }
 
     public static void loadArterials() throws IOException {
-        double[] centerTransform = Transform.toOregon(-122.647, 45.55534);
+
+        double[] centerTransform = Transform.toOregon(-122.66534, 45.52422);
         center = new Coordinate(centerTransform[0], centerTransform[1]);
 
         File file = new File("/Users/greg/code/rlis/Feb2015/arterial/arterial.shp");
@@ -65,7 +66,7 @@ public class GeoArterials {
         ArrayNode point = null;
         Coordinate[] coordinates = geometry.getCoordinates();
         for (Coordinate coordinate : coordinates) {
-            if (coordinate.distance(center) < 5500) {
+            if (coordinate.distance(center) < 2 * 5280) {
                 if (point == null) {
                     point = multiLines.addArray();
                 }
