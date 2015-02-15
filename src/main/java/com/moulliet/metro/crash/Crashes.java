@@ -1,7 +1,6 @@
 package com.moulliet.metro.crash;
 
 import com.moulliet.metro.Statics;
-import com.moulliet.metro.arterial.EsriArterials;
 import com.moulliet.metro.arterial.GeoArterials;
 import com.moulliet.metro.filter.Filter;
 import com.moulliet.metro.filter.Sinks;
@@ -52,7 +51,6 @@ public class Crashes {
     public static synchronized void loadAll() throws IOException {
 
         Sinks.loadSinks();
-        EsriArterials.loadArterials();
         GeoArterials.loadArterials();
         allCrashes = Collections.unmodifiableList(loadCrashes());
         logger.info("loaded {} crashes", allCrashes.size());
@@ -83,10 +81,6 @@ public class Crashes {
                 crashTotals.addCrash(crash);
             }
         }
-    }
-
-    public static List<Crash> getAllCrashes() {
-        return allCrashes;
     }
 
     private void addPointToMap(Point point) {

@@ -66,15 +66,13 @@ public class GeoArterials {
         ArrayNode point = null;
         Coordinate[] coordinates = geometry.getCoordinates();
         for (Coordinate coordinate : coordinates) {
-            if (coordinate.distance(center) < 2 * 5280) {
-                if (point == null) {
-                    point = multiLines.addArray();
-                }
-                ObjectNode node = point.addObject();
-                double[] wsg84 = Transform.toWSG84(coordinate.x, coordinate.y);
-                node.put("lng", wsg84[0]);
-                node.put("lat", wsg84[1]);
+            if (point == null) {
+                point = multiLines.addArray();
             }
+            ObjectNode node = point.addObject();
+            double[] wsg84 = Transform.toWSG84(coordinate.x, coordinate.y);
+            node.put("lng", wsg84[0]);
+            node.put("lat", wsg84[1]);
         }
     }
 
