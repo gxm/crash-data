@@ -1,5 +1,7 @@
 package com.moulliet.metro.shape;
 
+import com.moulliet.metro.crash.Crash;
+import com.moulliet.metro.crash.Crashes;
 import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.strtree.STRtree;
@@ -9,15 +11,18 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.NullProgressListener;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class SnapToLine {
 
@@ -44,7 +49,7 @@ public class SnapToLine {
             return;
         }
 
-        final SpatialIndex index = new STRtree();
+        final SpatialIndex rtree = new STRtree();
         FeatureCollection features = source.getFeatures();
         System.out.println("Slurping in features ...");
         features.accepts(new FeatureVisitor() {
@@ -57,46 +62,46 @@ public class SnapToLine {
                 if (geom != null) {
                     Envelope env = geom.getEnvelopeInternal();
                     if (!env.isNull()) {
-                        index.insert(env, new LocationIndexedLine(geom));
+                        rtree.insert(env, new LocationIndexedLine(geom));
                     }
                 }
             }
         }, new NullProgressListener());
 
-        /*
-         * For test data, we generate a large number of points placed randomly
-         * within the bounding rectangle of the features.
-         */
-        final int NUM_POINTS = 10000;
-        ReferencedEnvelope bounds = features.getBounds();
-        Coordinate[] points = new Coordinate[NUM_POINTS];
-        Random rand = new Random(file.hashCode());
-        for (int i = 0; i < NUM_POINTS; i++) {
-            points[i] = new Coordinate(
-                    bounds.getMinX() + rand.nextDouble() * bounds.getWidth(),
-                    bounds.getMinY() + rand.nextDouble() * bounds.getHeight());
+        //todo - gfm - 2/14/15 - figure out how to load real Oregon Lambert data points
+        CoordinateReferenceSystem crs = ShapeLoader.getCoordinateReferenceSystem("/Users/greg/code/rlis/Feb2015/arterial/arterial.prj");
+        MathTransform transform = CRS.findMathTransform(DefaultGeographicCRS.WGS84, crs, true);
+        List<Coordinate> points = new ArrayList<>();
+        List<Crash> crashes = Crashes.loadCrashes();
+
+        for (Crash crash : crashes) {
+            double lat = (double) crash.getLat();
+            double lng = (double) crash.getLng();
+            double[] longLat = {lng, lat};
+            double[] transformedLongLat = {lng, lat};
+            transform.transform(longLat, 0, transformedLongLat, 0, 1);
+            points.add(new Coordinate(transformedLongLat[0], transformedLongLat[1]));
         }
+
+
 
         /*
          * We defined the maximum distance that a line can be from a point
          * to be a candidate for snapping (1% of the width of the feature
          * bounds for this example).
          */
-        final double MAX_SEARCH_DISTANCE = 52;
+        final double MAX_SEARCH_DISTANCE = 26;
 
         // Maximum time to spend running the snapping process (milliseconds)
-        final long DURATION = 5000;
+        final long DURATION = 60 * 1000;
 
         int pointsProcessed = 0;
         int pointsSnapped = 0;
-        long elapsedTime = 0;
-        long startTime = System.currentTimeMillis();
-        while (pointsProcessed < NUM_POINTS &&
-                (elapsedTime = System.currentTimeMillis() - startTime) < DURATION) {
 
+        for (Coordinate coordinate : points) {
+            pointsProcessed++;
             // Get point and create search envelope
-            Coordinate pt = points[pointsProcessed++];
-            Envelope search = new Envelope(pt);
+            Envelope search = new Envelope(coordinate);
             search.expandBy(MAX_SEARCH_DISTANCE);
 
             /*
@@ -105,7 +110,7 @@ public class SnapToLine {
              * so it is possible that the point is actually more distant than
              * MAX_SEARCH_DISTANCE from a line.
              */
-            List<LocationIndexedLine> lines = index.query(search);
+            List<LocationIndexedLine> lines = rtree.query(search);
 
             // Initialize the minimum distance found to our maximum acceptable
             // distance plus a little bit
@@ -113,32 +118,29 @@ public class SnapToLine {
             Coordinate minDistPoint = null;
 
             for (LocationIndexedLine line : lines) {
-                LinearLocation here = line.project(pt);
-                Coordinate point = line.extractPoint(here);
-                double dist = point.distance(pt);
+                LinearLocation here = line.project(coordinate);
+                Coordinate extractPoint = line.extractPoint(here);
+                double dist = extractPoint.distance(coordinate);
                 if (dist < minDist) {
                     minDist = dist;
-                    minDistPoint = point;
+                    minDistPoint = extractPoint;
                 }
             }
 
 
             if (minDistPoint == null) {
                 // No line close enough to snap the point to
-                System.out.println(pt + "- X");
+                System.out.println(coordinate + "- X");
 
             } else {
                 System.out.printf("%s - snapped by moving %.4f\n",
-                        pt.toString(), minDist);
+                        coordinate.toString(), minDist);
                 pointsSnapped++;
             }
         }
 
-        System.out.printf("Processed %d points (%.2f points per second). \n"
-                        + "Snapped %d points.\n\n",
-                pointsProcessed,
-                1000.0 * pointsProcessed / elapsedTime,
-                pointsSnapped);
+        System.out.println("found crashes " + crashes.size());
+        System.out.printf("Processed %d points. \nSnapped %d points.\n\n", pointsProcessed, pointsSnapped);
 
         System.out.println("MAX_SEARCH_DISTANCE " + MAX_SEARCH_DISTANCE);
     }
