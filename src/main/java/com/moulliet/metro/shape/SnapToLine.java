@@ -14,8 +14,6 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.NullProgressListener;
-import org.opengis.feature.Feature;
-import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -52,18 +50,14 @@ public class SnapToLine {
         final SpatialIndex rtree = new STRtree();
         FeatureCollection features = source.getFeatures();
         System.out.println("Slurping in features ...");
-        features.accepts(new FeatureVisitor() {
-
-            @Override
-            public void visit(Feature feature) {
-                SimpleFeature simpleFeature = (SimpleFeature) feature;
-                Geometry geom = (MultiLineString) simpleFeature.getDefaultGeometry();
-                // Just in case: check for  null or empty geometry
-                if (geom != null) {
-                    Envelope env = geom.getEnvelopeInternal();
-                    if (!env.isNull()) {
-                        rtree.insert(env, new LocationIndexedLine(geom));
-                    }
+        features.accepts(feature -> {
+            SimpleFeature simpleFeature = (SimpleFeature) feature;
+            Geometry geom = (MultiLineString) simpleFeature.getDefaultGeometry();
+            // Just in case: check for  null or empty geometry
+            if (geom != null) {
+                Envelope env = geom.getEnvelopeInternal();
+                if (!env.isNull()) {
+                    rtree.insert(env, new LocationIndexedLine(geom));
                 }
             }
         }, new NullProgressListener());
@@ -83,17 +77,12 @@ public class SnapToLine {
             points.add(new Coordinate(transformedLongLat[0], transformedLongLat[1]));
         }
 
-
-
         /*
          * We defined the maximum distance that a line can be from a point
          * to be a candidate for snapping (1% of the width of the feature
          * bounds for this example).
          */
         final double MAX_SEARCH_DISTANCE = 26;
-
-        // Maximum time to spend running the snapping process (milliseconds)
-        final long DURATION = 60 * 1000;
 
         int pointsProcessed = 0;
         int pointsSnapped = 0;
