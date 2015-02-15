@@ -18,11 +18,4 @@ public class ArterialResource {
         return Response.status(200).entity(Arterials.getMultiLine().toString()).build();
     }
 
-    @Path("/multipolygon")
-    @Produces(MediaType.APPLICATION_JSON)
-    @GET
-    public Response getPolygon() throws Exception {
-        return Response.status(200).entity(Arterials.getMultiPolygon().toString()).build();
-    }
-
 }

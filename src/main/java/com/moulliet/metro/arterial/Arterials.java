@@ -1,6 +1,5 @@
 package com.moulliet.metro.arterial;
 
-import com.esri.core.geometry.Polygon;
 import com.moulliet.metro.crash.Point;
 import com.moulliet.metro.shape.Shape;
 import com.moulliet.metro.shape.ShapeLoader;
@@ -22,7 +21,7 @@ public class Arterials {
 
     private static final ObjectMapper mapper = new ObjectMapper();
     private static ArrayNode multiLines = mapper.createArrayNode();
-    private static ArrayNode multiPolygons = mapper.createArrayNode();
+
     private static Map<String, Point> filterMap = new HashMap<>();
     //todo - gfm - 2/14/15 - &lat=45.5553406&lng=-122.645869
     private static final Point center = new Point(-122.645869, 45.55534);
@@ -40,25 +39,6 @@ public class Arterials {
         }
         logger.info("loaded {} arterial map ", filterMap.size());
     }
-
-    private static void debug(Shape shape) {
-        //debug("KILLINGSWORTH", 7882, shape);
-        //debug("MARTIN", 2640, shape);
-        //debug("DIVISION", 1884, shape);
-        //debug("SUNSET", 940, shape);
-    }
-
-/*    private static void debug(String name, int len, Shape shape) {
-        String streetname = (String) shape.getDescriptions().get("STREETNAME");
-        Double length = (Double) shape.getDescriptions().get("LENGTH");
-        if (streetname.startsWith(name)) {
-            if (length > len && length < len + 1) {
-                for (Point point : shape.getMultiLine()) {
-                    System.out.println(point.getLongitude() + "," + point.getLatitude());
-                }
-            }
-        }
-    }*/
 
     static void addPoints(Shape shape) {
         //List<Point> points = Interpolate.interpolate(shape.getMultiLine());
@@ -78,22 +58,12 @@ public class Arterials {
                 node.put("lat", point.getLatitude());
             }
         }
-        //todo - gfm - 2/14/15 - create segment polygons
-        Polygon polygon = shape.getPolygon();
-        double length2D = polygon.calculateLength2D();
-        //polygon.interpolateAttributes();
-        //todo - gfm - 2/14/15 - look for connections among multi-lines
-        //todo - gfm - 2/14/15 - add to multiPolygons
+
 
     }
 
     public static JsonNode getMultiLine() throws IOException {
         return multiLines;
-    }
-
-    public static JsonNode getMultiPolygon() throws IOException {
-        //todo - gfm - 2/14/15 - return an array of 8
-        return multiPolygons;
     }
 
     public static boolean isArterial(Point point) {
@@ -107,4 +77,23 @@ public class Arterials {
         logger.trace("point: {} withing? {} sink: {}", point, within, sinkPoint);
         return within;
     }
+
+    /*
+    private static void debug(Shape shape) {
+        debug("KILLINGSWORTH", 7882, shape);
+        debug("MARTIN", 2640, shape);
+    }
+
+    private static void debug(String name, int len, Shape shape) {
+        String streetname = (String) shape.getDescriptions().get("STREETNAME");
+        Double length = (Double) shape.getDescriptions().get("LENGTH");
+        if (streetname.startsWith(name)) {
+            if (length > len && length < len + 1) {
+                for (Point point : shape.getMultiLine()) {
+                    System.out.println(point.getLongitude() + "," + point.getLatitude());
+                }
+            }
+        }
+    }
+    */
 }

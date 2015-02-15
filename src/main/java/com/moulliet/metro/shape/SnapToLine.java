@@ -47,7 +47,7 @@ public class SnapToLine {
             return;
         }
 
-        final SpatialIndex rtree = new STRtree();
+        SpatialIndex rtree = new STRtree();
         FeatureCollection features = source.getFeatures();
         System.out.println("Slurping in features ...");
         features.accepts(feature -> {
