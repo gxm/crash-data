@@ -32,7 +32,6 @@ public class GeoArterials {
     private static final ObjectMapper mapper = new ObjectMapper();
     private static ArrayNode multiLines = mapper.createArrayNode();
     private static final double MAX_SEARCH_DISTANCE = 26;
-    private static Coordinate center;
     private static SpatialIndex rtree;
 
     public static void main(String[] args) throws IOException {
@@ -40,10 +39,6 @@ public class GeoArterials {
     }
 
     public static void loadArterials() throws IOException {
-
-        double[] centerTransform = Transform.toOregon(-122.66534, 45.52422);
-        center = new Coordinate(centerTransform[0], centerTransform[1]);
-
         File file = new File("/Users/greg/code/rlis/Feb2015/arterial/arterial.shp");
         FileDataStore store = FileDataStoreFinder.getDataStore(file);
         FeatureSource source = store.getFeatureSource();
@@ -81,8 +76,7 @@ public class GeoArterials {
     }
 
     public static boolean isArterial(Point point) {
-
-        double[] doubles = Transform.toOregon(point.getLongitude(), point.getLatitude());
+        double[] doubles = Transform.toOregon(point.getOriginals()[0], point.getOriginals()[1]);
         Coordinate coordinate = new Coordinate(doubles[0], doubles[1]);
         Envelope search = new Envelope(coordinate);
         search.expandBy(MAX_SEARCH_DISTANCE);

@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Point implements Comparable<Point> {
     private static final Logger logger = LoggerFactory.getLogger(Point.class);
@@ -13,15 +11,17 @@ public class Point implements Comparable<Point> {
 
     private float x;
     private float y;
+    private double [] originals = new double[2];
 
     private static DecimalFormat POINT_FORMAT = new DecimalFormat("#######0.0000");
-    private static final float SINK_RADIUS = 0.0001f;
 
     public Point(Number x, Number y) {
         this(x, y, POINT_FORMAT);
     }
 
     public Point(Number x, Number y, DecimalFormat format) {
+        originals[0] = x.doubleValue();
+        originals[1] = y.doubleValue();
         this.x = Float.parseFloat(format.format(x));
         this.y = Float.parseFloat(format.format(y));
     }
@@ -87,33 +87,7 @@ public class Point implements Comparable<Point> {
         return POINT_FORMAT.format(y) + POINT_FORMAT.format(x);
     }
 
-    public int getLatitiudeDifference(Point other) {
-        return Math.round(FACTOR * (y - other.y));
-    }
-
-    public int getLongitudeDifference(Point other) {
-        return Math.round(FACTOR * (x - other.x));
-    }
-
-    public Point offset(int lng, int lat) {
-        return new Point(x + (float) lng / (float) FACTOR, y + (float) lat / (float) FACTOR);
-    }
-
-    public List<Point> star() {
-        ArrayList<Point> points = new ArrayList<>();
-        points.add(this);
-        for (float i = -SINK_RADIUS; i <= SINK_RADIUS; i += SINK_RADIUS) {
-            points.add(new Point(x + i, y));
-            for (float j = -SINK_RADIUS; j <= SINK_RADIUS; j += SINK_RADIUS) {
-                points.add(new Point(x + i, y + j));
-            }
-        }
-        return points;
-    }
-
-    public double distance(Point other) {
-        double deltaX = 36.516 * deltaX(other);
-        double deltaY = 25.82 * deltaY(other);
-        return 10000 * Math.sqrt(deltaX * deltaX  + deltaY * deltaY);
+    public double[] getOriginals() {
+        return originals;
     }
 }
