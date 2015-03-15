@@ -1,6 +1,7 @@
 package com.moulliet.metro.arterial;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import com.moulliet.metro.Config;
 import com.moulliet.metro.crash.Point;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
@@ -40,8 +41,9 @@ public class GeoArterials {
     }
 
     public static void loadArterials() throws IOException {
-        File file = new File("/Users/greg/code/rlis/Feb2015/arterial/arterial.shp");
-        FileDataStore store = FileDataStoreFinder.getDataStore(file);
+        String arterialShapefile = Config.getConfig().getString("arterial.shapefile");
+        logger.info("using arterial shapefile {}", arterialShapefile);
+        FileDataStore store = FileDataStoreFinder.getDataStore(new File(arterialShapefile));
         FeatureSource source = store.getFeatureSource();
         rtree = new STRtree();
         FeatureCollection features = source.getFeatures();
@@ -82,8 +84,6 @@ public class GeoArterials {
     public static boolean isArterial(Point point) {
         double[] doubles = Transform.toOregon(point.getOriginals()[0], point.getOriginals()[1]);
         Coordinate coordinate = new Coordinate(doubles[0], doubles[1]);
-        Envelope envelope = new Envelope();
-
         Envelope search = new Envelope(coordinate);
         search.expandBy(MAX_SEARCH_DISTANCE);
         /*

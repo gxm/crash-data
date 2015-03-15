@@ -13,7 +13,6 @@ function UserController($scope, $http, $location, $cookieStore) {
 
     $scope.loadLinks = function loadData() {
         var user = $cookieStore.get('user');
-        console.log('user', user);
         if (user) {
             if (user.type === 'admin') {
                 $scope.links = [

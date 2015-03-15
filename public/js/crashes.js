@@ -228,22 +228,6 @@ function CrashController($scope, $http, $location) {
             .success(function (data, status, headers) {
                 var polyline = L.multiPolyline(data, {color: 'black', fill: false});
                 $scope.arterialLines.addLayer(polyline);
-
-                $scope.map.addLayer($scope.arterialLines);
-            }).error(function (data, status, headers) {
-                console.log('unable to load arterial', status);
-            });
-
-        $scope.arterialPolys = L.layerGroup();
-        $http.get($scope.host + 'arterial/multipolygon')
-            .success(function (data, status, headers) {
-
-                for (var i = 0; i < data.length; i++) {
-                    var polyline = L.multiPolygon(data[i], {color: colors[i], fill: false});
-                    $scope.arterialPolys.addLayer(polyline);
-                }
-
-                $scope.map.addLayer($scope.arterialPolys);
             }).error(function (data, status, headers) {
                 console.log('unable to load arterial', status);
             });
