@@ -1,5 +1,6 @@
 package com.moulliet.metro.arterial;
 
+import com.moulliet.metro.Config;
 import com.moulliet.metro.shape.ShapeLoader;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -17,7 +18,9 @@ public class Transform {
 
     static {
         try {
-            CoordinateReferenceSystem crs = ShapeLoader.getCoordinateReferenceSystem("/Users/greg/code/rlis/Feb2015/arterial/arterial.prj");
+            String arterialProject = Config.getConfig().getString("arterial.shapefile") + ".prj";
+            logger.info("using arterial project {}", arterialProject);
+            CoordinateReferenceSystem crs = ShapeLoader.getCoordinateReferenceSystem(arterialProject);
             toOregon = CRS.findMathTransform(DefaultGeographicCRS.WGS84, crs, true);
             toWSG84 = CRS.findMathTransform(crs, DefaultGeographicCRS.WGS84, true);
         } catch (Exception e) {

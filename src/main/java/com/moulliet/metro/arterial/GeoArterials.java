@@ -41,7 +41,7 @@ public class GeoArterials {
     }
 
     public static void loadArterials() throws IOException {
-        String arterialShapefile = Config.getConfig().getString("arterial.shapefile");
+        String arterialShapefile = Config.getConfig().getString("arterial.shapefile") + ".shp";
         logger.info("using arterial shapefile {}", arterialShapefile);
         FileDataStore store = FileDataStoreFinder.getDataStore(new File(arterialShapefile));
         FeatureSource source = store.getFeatureSource();
