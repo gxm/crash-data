@@ -1,5 +1,6 @@
 package com.moulliet.metro.arterial;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import com.moulliet.metro.crash.Point;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
@@ -44,9 +45,11 @@ public class GeoArterials {
         FeatureSource source = store.getFeatureSource();
         rtree = new STRtree();
         FeatureCollection features = source.getFeatures();
+        AtomicDouble totalLength = new AtomicDouble();
         features.accepts(feature -> {
             SimpleFeature simpleFeature = (SimpleFeature) feature;
             MultiLineString geometry = (MultiLineString) simpleFeature.getDefaultGeometry();
+            totalLength.addAndGet((Double) simpleFeature.getAttribute("LENGTH"));
             if (geometry != null) {
                 Envelope envelope = geometry.getEnvelopeInternal();
                 if (!envelope.isNull()) {
@@ -55,6 +58,7 @@ public class GeoArterials {
                 addLines(geometry);
             }
         }, new NullProgressListener());
+        logger.info("total length {}", totalLength);
     }
 
     static void addLines(MultiLineString geometry) {
@@ -78,6 +82,8 @@ public class GeoArterials {
     public static boolean isArterial(Point point) {
         double[] doubles = Transform.toOregon(point.getOriginals()[0], point.getOriginals()[1]);
         Coordinate coordinate = new Coordinate(doubles[0], doubles[1]);
+        Envelope envelope = new Envelope();
+
         Envelope search = new Envelope(coordinate);
         search.expandBy(MAX_SEARCH_DISTANCE);
         /*
@@ -88,9 +94,9 @@ public class GeoArterials {
              */
         List<LocationIndexedLine> lines = rtree.query(search);
 
-        for (LocationIndexedLine line : lines) {
-            LinearLocation here = line.project(coordinate);
-            Coordinate extractPoint = line.extractPoint(here);
+        for (LocationIndexedLine indexedLine : lines) {
+            LinearLocation linearLocation = indexedLine.project(coordinate);
+            Coordinate extractPoint = indexedLine.extractPoint(linearLocation);
             double distance = extractPoint.distance(coordinate);
             if (distance < MAX_SEARCH_DISTANCE) {
                 return true;
