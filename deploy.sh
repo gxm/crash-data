@@ -1,14 +1,15 @@
 #!/bin/sh
 
-if [ $# != 1 ]
+if [ $# != 2 ]
 then
-	echo "Usage: bash $0 {deploy|build}"
+	echo "Usage: bash $0 {deploy|build} {server}"
 	echo "deploy: pushes out static files to the server"
 	echo "build: performs a clean build and runs test, then deploys with a restart"
 	exit
 fi
 
 SCRIPTS="crash-data/scripts"
+SERVER=$2
 
 build() {
     # this requires JAVA_HOME & DYLD_LIBRARY_PATH to be set for maven
@@ -21,21 +22,21 @@ build() {
         echo "Build Failed, exiting"
         exit
     fi
-    rsync -avr target/crash-data-0.1-SNAPSHOT-jar-with-dependencies.jar crash01:crash-data/
+    rsync -avr target/crash-data-0.1-SNAPSHOT-jar-with-dependencies.jar ${SERVER}:crash-data/
 }
 
 deploy() {
     echo "deploying files"
-    rsync -avr config/prod/ crash01:crash-data/config/
-    rsync -avr scripts/*.sh crash01:${SCRIPTS}/
-    rsync -avr data/* crash01:data/
-    ssh crash01 chmod u+x ${SCRIPTS}/*.sh
-    rsync -avr public/ crash01:crash-data/public/
+    rsync -avr config/prod/ ${SERVER}:crash-data/config/
+    rsync -avr scripts/*.sh ${SERVER}:${SCRIPTS}/
+    rsync -avr data/* ${SERVER}:data/
+    ssh ${SERVER} chmod u+x ${SCRIPTS}/*.sh
+    rsync -avr public/ ${SERVER}:crash-data/public/
 }
 
 restart() {
     echo "restarting service"
-    ssh crash01 bash ${SCRIPTS}/crash-data.sh restart
+    ssh ${SERVER} bash ${SCRIPTS}/crash-data.sh restart
 }
 
 case $1 in
@@ -49,5 +50,5 @@ case $1 in
 		restart
 		;;
 	*)
-		echo "Usage: bash $0 {deploy|build}" >&2
+		echo "Usage: bash $0 {deploy|build} {server}" >&2
 esac

@@ -23,7 +23,7 @@ public class CrashServiceMain {
     public static void main(String[] args) throws Exception {
         Config.load();
         logger.debug("starting CrashServiceMain");
-        startResources(8080);
+        startResources(Config.getConfig().getInt("app.port", 8080));
         server.join();
     }
 
