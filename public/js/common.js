@@ -3,15 +3,14 @@ angular.module('crash', ['ngCookies']);
 function Common($scope, $http, $location) {
     'use strict';
 
-    //todo - gfm - this should be in configuration
-    $scope.hosts = ['http://104.237.130.146:8080/',
-        'http://localhost:8080/'];
-
-    $scope.host = $scope.hosts[0];
-
     var host = $location.host();
-    if (host === undefined || host === '' || host === 'localhost') {
-        $scope.host = $scope.hosts[1];
+    console.log('$location.host()', $location.host());
+    if (host === 'crashmap.oregonmetro.gov') {
+        $scope.host = 'http://crashmap.oregonmetro.gov/';
+    } else if (host === '104.237.130.146') {
+        $scope.host = 'http://104.237.130.146:8080/';
+    } else {
+        $scope.host = 'http://localhost:8080/';
     }
 
     $scope.refreshDiv = function refreshDiv() {

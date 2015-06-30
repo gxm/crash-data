@@ -43,7 +43,7 @@ startService ()
 
     # only use this version for debugging
 	#java ${OPTIONS} com.moulliet.metro.CrashServiceMain
-	sudo nohup java ${OPTIONS} com.moulliet.metro.CrashServiceMain  1>> ${STD_OUT_LOG} 2>&1 &
+	nohup java ${OPTIONS} com.moulliet.metro.CrashServiceMain  1>> ${STD_OUT_LOG} 2>&1 &
 
 	echo -n $! > "${PID_FILE}"
 	echo STARTED
