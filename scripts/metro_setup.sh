@@ -50,4 +50,5 @@ wget http://central.maven.org/maven2/com/sun/jersey/contribs/jersey-multipart/1.
 
 # http://www.serverlab.ca/tutorials/linux/network-services/deploying-an-haproxy-load-balancer-on-centos-6/
 
-# how is the adming login created?
+sudo vim /etc/haproxy/haproxy.cfg
+sudo service haproxy restart
