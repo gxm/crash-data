@@ -85,8 +85,30 @@ table, td {
 .main {
     margin-left: 5px;
 }
-body {
-    padding-top: 41px;  /*60px to make the container go all the way to the bottom of the topbar*/
+
+.map-body {
+    padding-top: 41px;  /* to make the container go all the way to the bottom of the topbar*/
+}
+
+@media (max-width: 978px) {
+    .container {
+        padding:0;
+        margin:0;
+    }
+
+    body {
+        padding: 0;
+    }
+
+    .navbar-fixed-top, .navbar-fixed-bottom, .navbar-static-top {
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom:0;
+    }
+    .map-body {
+        padding: 0;
+    }
+
 }
 
 .locations, .locations svg {
