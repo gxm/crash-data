@@ -87,7 +87,7 @@ table, td {
 }
 
 .body-pad {
-    padding-top: 41px;  /* makes the container drop to the bottom of the topbar */
+    padding-top: 50px;  /* makes the container drop to the bottom of the topbar */
 }
 
 @media (max-width: 978px) {
@@ -107,6 +107,10 @@ table, td {
     }
     .body-pad {
         padding: 0;
+    }
+
+    .navbar .brand {
+        margin-left: 0;
     }
 
 }
@@ -133,9 +137,8 @@ table, td {
     background: RGBA(0,0,0,0);
 }
 
-.navbar .nav {
-    padding: 0px 0px 0px 0px;
-
+.navbar .nav , .navbar .brand {
+    padding: 0;
 }
 
 .navbar .nav > .active > a,
@@ -146,6 +149,19 @@ table, td {
     -moz-box-shadow: none;
     box-shadow: none;
 }
+
+.navbar .nav > li > a,
+.navbar .nav > li > a:hover,
+.navbar .nav > li > a:focus {
+    text-shadow: 0 1px 0 #333;
+    color: #fff;
+}
+
+.navbar .nav > li > a:hover,
+.navbar .nav > li > a:focus {
+    text-decoration: underline;
+}
+
 .navbar-inner{
     background-image:none !important;
 }
