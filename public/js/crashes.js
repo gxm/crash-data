@@ -1,4 +1,4 @@
-function CrashController($scope, $http, $location) {
+function CrashController($scope, $http, $location, $window) {
 
     'use strict';
 
@@ -271,7 +271,9 @@ function CrashController($scope, $http, $location) {
 
         $('#changeSettings').show();
         $('#settingsTable').show();
-        $('#settingsTable').collapse('show');
+        if ($window.innerWidth > 978) {
+            $('#settingsTable').collapse('show');
+        }
 
         $('#settingsTable').on('hidden', function () {
             $('#settingsText').show();

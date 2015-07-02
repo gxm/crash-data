@@ -85,8 +85,42 @@ table, td {
 .main {
     margin-left: 5px;
 }
-body {
-    padding-top: 41px;  /*60px to make the container go all the way to the bottom of the topbar*/
+
+.body-pad {
+    padding-top: 50px;  /* makes the container drop to the bottom of the topbar */
+}
+
+@media (max-width: 978px) {
+    .container {
+        padding:0;
+        margin:0;
+    }
+
+    body {
+        padding: 0;
+    }
+
+    .navbar-fixed-top, .navbar-fixed-bottom, .navbar-static-top {
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom:0;
+    }
+    .body-pad {
+        padding: 0;
+    }
+
+    .navbar .brand {
+        margin-left: 0;
+    }
+
+    .navbar-inverse .nav-collapse .nav>li>a, .navbar-inverse .nav-collapse .dropdown-menu a {
+        text-shadow: 0 1px 0 #333;
+        color: #fff;
+    }
+
+    .navbar-fixed-top .navbar-inner, .navbar-fixed-bottom .navbar-inner {
+        padding: 0 0 4px 0;
+    }
 }
 
 .locations, .locations svg {
@@ -111,9 +145,8 @@ body {
     background: RGBA(0,0,0,0);
 }
 
-.navbar .nav {
-    padding: 0px 0px 0px 0px;
-
+.navbar .nav , .navbar .brand {
+    padding: 0;
 }
 
 .navbar .nav > .active > a,
@@ -124,8 +157,22 @@ body {
     -moz-box-shadow: none;
     box-shadow: none;
 }
+
+.navbar .nav > li > a,
+.navbar .nav > li > a:hover,
+.navbar .nav > li > a:focus {
+    text-shadow: 0 1px 0 #333;
+    color: #fff;
+}
+
+.navbar .nav > li > a:hover,
+.navbar .nav > li > a:focus {
+    text-decoration: underline;
+}
+
 .navbar-inner{
     background-image:none !important;
+    padding-bottom: 4px;
 }
 
 .navbar-inverse .nav .active>a, .navbar-inverse .nav .active>a:hover, .navbar-inverse .nav .active>a:focus {

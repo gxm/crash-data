@@ -6,21 +6,13 @@
     <meta name="description" content="Metro Crash Map">
     <meta name="author" content="Greg Moulliet">
     <link rel="icon" href="http://www.oregonmetro.gov/favicon.ico" type="image/x-icon">
-
     <link href="lib/bootstrap-css/css/bootstrap.min.css" rel="stylesheet">
     <link href="lib/bootstrap-css/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="css/crash-data.css" rel="stylesheet">
-<style>
-    body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-    }
-</style>
-
 </head>
-
-<body>
+<body class="body-pad">
 <div ng-controller="UserController">
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-fixed-top navbar-inverse">
         <div class="navbar-inner">
             <div class="container">
                 <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -28,7 +20,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="brand" href="#">Metro Crash Map - Home</a>
+                <a class="brand" href="#"> <img src="img/crashmap-logo-header.png"></a>
                 <div class="nav-collapse collapse">
                     <ul class="nav">
                         <li><a href="crashes.html">Crash Map</a></li>
@@ -117,8 +109,9 @@
 
     </ul>
     <h3>Map Software Development</h3><a name="Development"></a>
-    Moulliet Software...TBD
-
+    This site was developed by Moulliet Software.  <br>
+    Moulliet Software is a custom software shop that specializes in mapping and data visualization.  <br>
+    For more info contact <a href="mailto:">software@moulliet.com</a>
     <h3>Questions?</h3><a name="Questions"></a>
     Metro regional transportation planning<br>
     503-797-1750<br>
