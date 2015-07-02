@@ -169,6 +169,7 @@ table, td {
 
 .navbar-inner{
     background-image:none !important;
+    padding-bottom: 4px;
 }
 
 .navbar-inverse .nav .active>a, .navbar-inverse .nav .active>a:hover, .navbar-inverse .nav .active>a:focus {
