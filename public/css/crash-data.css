@@ -176,15 +176,15 @@ table, td {
 }
 
 .navbar-inverse .nav .active>a, .navbar-inverse .nav .active>a:hover, .navbar-inverse .nav .active>a:focus {
-    background-color: #4d5e66 !important;
+    background-color: #4d5e67 !important;
 }
 
 .navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
-    background-color: #4d5e66 !important;
+    background-color: #4d5e67 !important;
 }
 
 .navbar .nav li.dropdown.open > .dropdown-toggle{
-    background-color:#4d5e66 !important;
+    background-color:#4d5e67 !important;
     color:#fff;
 }
 
