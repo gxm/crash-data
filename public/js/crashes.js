@@ -185,12 +185,12 @@ function CrashController($scope, $http, $location, $window) {
     var subDomains = ['gistiles1', 'gistiles2', 'gistiles3', 'gistiles4'];
     var token = 'token=O95k2qhvXt3RArC0yQV5j4JinWb21wL0wLj2Ik-dLG0.';
     var attribution = "<a href='//gis.oregonmetro.gov'>Metro RLIS</a>";
-    var road = L.tileLayer('http://{s}.oregonmetro.gov/arcgis/rest/services/metromap/baseAll/MapServer/tile/{z}/{y}/{x}?' + token, {
+    var road = L.tileLayer('https://{s}.oregonmetro.gov/arcgis/rest/services/metromap/baseAll/MapServer/tile/{z}/{y}/{x}?' + token, {
         subdomains: subDomains,
         attribution: attribution,
         opacity: 0.5
     });
-    var photo = L.tileLayer('http://{s}.oregonmetro.gov/arcgis/rest/services/photo/2013aerialphoto/MapServer/tile/{z}/{y}/{x}?' + token, {
+    var photo = L.tileLayer('https://{s}.oregonmetro.gov/arcgis/rest/services/photo/2013aerialphoto/MapServer/tile/{z}/{y}/{x}?' + token, {
         subdomains: subDomains,
         zIndex: 10,
         opacity: 0.5,
@@ -201,7 +201,7 @@ function CrashController($scope, $http, $location, $window) {
         opacity: 0.5,
         zIndex: 0
     });
-    var label = L.tileLayer('http://{s}.oregonmetro.gov/arcgis/rest/services/metromap/baseAnno/MapServer/tile/{z}/{y}/{x}?' + token, {
+    var label = L.tileLayer('https://{s}.oregonmetro.gov/arcgis/rest/services/metromap/baseAnno/MapServer/tile/{z}/{y}/{x}?' + token, {
         subdomains: subDomains,
         opacity: 0.5,
         zIndex: 100,

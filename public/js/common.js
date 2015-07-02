@@ -4,9 +4,8 @@ function Common($scope, $http, $location) {
     'use strict';
 
     var host = $location.host();
-    console.log('$location.host()', $location.host());
     if (host === 'crashmap.oregonmetro.gov') {
-        $scope.host = 'http://crashmap.oregonmetro.gov/';
+        $scope.host = 'https://crashmap.oregonmetro.gov/';
     } else if (host === '104.237.130.146') {
         $scope.host = 'http://104.237.130.146:8080/';
     } else {
