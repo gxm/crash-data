@@ -118,6 +118,9 @@ table, td {
         color: #fff;
     }
 
+    .navbar-fixed-top .navbar-inner, .navbar-fixed-bottom .navbar-inner {
+        padding: 0 0 4px 0;
+    }
 }
 
 .locations, .locations svg {
