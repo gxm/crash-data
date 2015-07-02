@@ -113,6 +113,11 @@ table, td {
         margin-left: 0;
     }
 
+    .navbar-inverse .nav-collapse .nav>li>a, .navbar-inverse .nav-collapse .dropdown-menu a {
+        text-shadow: 0 1px 0 #333;
+        color: #fff;
+    }
+
 }
 
 .locations, .locations svg {
