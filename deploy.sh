@@ -42,7 +42,7 @@ restart() {
 case $1 in
 	deploy)
 		deploy
-		# restart
+		restart
 		;;
 	build)
 		build
