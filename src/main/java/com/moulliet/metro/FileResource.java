@@ -36,6 +36,7 @@ public class FileResource {
     }
 
     private Response redirect() {
-        return Response.temporaryRedirect(URI.create("/file/index.html")).build();
+        String baseUrl = Config.getConfig().getString("base.url", "https://crashmap.oregonmetro.gov/");
+        return Response.temporaryRedirect(URI.create(baseUrl + "/file/index.html")).build();
     }
 }

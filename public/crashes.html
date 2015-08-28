@@ -6,9 +6,9 @@
     <meta name="author" content="Greg Moulliet">
     <link rel="icon" href="http://www.oregonmetro.gov/favicon.ico" type="image/x-icon">
 
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-    <link rel="stylesheet" href="http://library.oregonmetro.gov/libraries/metro/rlis/css/autosuggest.css" />
+    <link rel="stylesheet" href="lib/leaflet/dist/leaflet.css" />
+    <script src="lib/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://library.oregonmetro.gov/libraries/metro/rlis/css/autosuggest.css" />
     <link href="lib/bootstrap-css/css/bootstrap.css" rel="stylesheet">
     <link href="lib/bootstrap-css/css/bootstrap-responsive.css" rel="stylesheet">
     <link href="css/crash-data.css" rel="stylesheet">
@@ -36,7 +36,7 @@
                 <div class="nav-collapse collapse">
                     <ul class="nav">
                         <ul class="nav">
-                            <li class="active"><a href="crashes.html">Crash Map</a></li>
+                            <li class="active"><a href="crashes.html">View Map</a></li>
                             <li ng-repeat="link in links">
                                 <a href="{{ link.href }}">{{ link.name }}</a>
                             </li>
@@ -177,7 +177,7 @@
 <script type="text/javascript" src="lib/heatmap.js/plugins/leaflet-heatmap.js"></script>
 <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="lib/bootstrap-css/js/bootstrap.js"></script>
-<script type="text/javascript" src="http://gis.oregonmetro.gov/rlisapi2/js/?token=GYJZSQrfbb8YrZ_RIn-64Kc1SpybpK4LpW4TenvGQmk."></script>
+<script type="text/javascript" src="https://gis.oregonmetro.gov/rlisapi2/js/?token=GYJZSQrfbb8YrZ_RIn-64Kc1SpybpK4LpW4TenvGQmk."></script>
 <script type="text/javascript" src="js/settings.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript" src="js/user.js"></script>
