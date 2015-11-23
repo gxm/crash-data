@@ -2,7 +2,7 @@
 
 if [ $# != 2 ]
 then
-	echo "Usage: bash $0 {deploy|build} {server}"
+	echo "Usage: sh $0 {restart|deploy|build} {server}"
 	echo "deploy: pushes out static files to the server"
 	echo "build: performs a clean build and runs test, then deploys with a restart"
 	exit
@@ -30,16 +30,19 @@ deploy() {
     rsync -avr config/prod/ ${SERVER}:crash-data/config/
     rsync -avr scripts/*.sh ${SERVER}:${SCRIPTS}/
     rsync -avr data/* ${SERVER}:data/
-    ssh ${SERVER} chmod u+x ${SCRIPTS}/*.sh
+    ssh ${SERVER} chmod +x ${SCRIPTS}/*.sh
     rsync -avr public/ ${SERVER}:crash-data/public/
 }
 
 restart() {
     echo "restarting service"
-    ssh ${SERVER} bash ${SCRIPTS}/crash-data.sh restart
+    ssh ${SERVER} sh ${SCRIPTS}/crash-data.sh restart
 }
 
 case $1 in
+    restart)
+		restart
+		;;
 	deploy)
 		deploy
 		restart
@@ -50,5 +53,5 @@ case $1 in
 		restart
 		;;
 	*)
-		echo "Usage: bash $0 {deploy|build} {server}" >&2
+		echo "Usage: bash $0 {restart|deploy|build} {server}" >&2
 esac

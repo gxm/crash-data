@@ -3,9 +3,9 @@ crash-data
 
 Tools for visualizing and analyzing crash data 
 
-### Use
+The Java process serves all static files and dynamic data.
 
-### Local Development
+## Local Development
 
 install:
 * [java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
@@ -18,12 +18,19 @@ install:
 * Run all tests
 * Run com.moulliet.metro.CrashServiceMain
 
-### Deployment
+## Deployment
 
-Deployed at 104.237.130.146
+Follow scripts/linode_setup.sh or metro_setup.sh to setup a new server.
 
-Java process serves data requests and static files
+To deploy from your local machine:
+* Download the project code from github
+* Setup ssh keys for target server(s)
+* run ./deploy.sh to build code and deploy to a server.
+    * sh deploy.sh build serverName
+* crash-data/scripts 
 
-follow scripts/linode_setup.sh to setup a server
-
-run deploy.sh to build code and deploy to a server.
+* The service can be restarted using:
+```
+sh crash-data/scripts/crash-data.sh restart
+```
+This should be run as the crash user

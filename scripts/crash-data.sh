@@ -32,7 +32,7 @@ startService ()
 	# jersey-multipart-1.19.jar only exists here to get around and issue with using SNAPSHOT-jar-with-dependencies
 	# http://stackoverflow.com/questions/25470505/missing-dependency-for-formdataparam-with-jersey-multipart-1-18-1-solved
 	OPTIONS="-Xms1g -Xmx2g -cp ${ROOT_DIR}/jersey-multipart-1.19.jar:${ROOT_DIR}/crash-data-0.1-SNAPSHOT-jar-with-dependencies.jar:${ROOT_DIR}/config
-        -Dconfig.properties=${ROOT_DIR}/config/crash-data.propertiesremove
+        -Dconfig.properties=${ROOT_DIR}/config/crash-data.properties
         -Djava.library.path=${USR_DIR}/giscore/filegdb/linux/filegdb/dist/Release/GNU-Linux-x86/
 	"
 
